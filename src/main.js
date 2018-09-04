@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import 'normalize.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 import App from './App.vue';
