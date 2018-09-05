@@ -63,12 +63,16 @@ This project have not determined about licensing yet. Please checkout later.
 ## Team Members
 |Profile Picture<br>รูปโปรไฟล์|Full Name<br>ชื่อจริง|Student ID<br>รหัสนักศึกษา|GitHub Username<br>บัญชี GitHub|
 |-|-|-|-|
-|![](img/profile-pic/59070022.png)|Kunanon Srisuntiroj<br>คุณานนต์ ศรีสันติโรจน์|59070022|[@sagelga](https://github.com/sagelga)|
-|![](img/profile-pic/59070043.png)|Thitipat Worrarat<br>ฐิติภัทร วรรัตน์|59070043|[@ynhof6](https://github.com/ynhof6)|
-|![](img/profile-pic/59070084.png)|นภสินธุ์ หงษ์เงิน|59070084|[@tiltgod](https://github.com/tiltgod)|
-|![](img/profile-pic/59070087.png)|นาธาร เยี่ยวศุภพนนทร์|59070087|[@zartre](https://github.com/zartre)|
-|![](img/profile-pic/59070117.png)|พัชรพร เลิศวิรุฬ|59070117|[@kukkikkpl](https://github.com/kukkikkpl)|
-|![](img/profile-pic/59070120.png)|พิมพ์พิชชา ปิติโชติโชคโภคิน|59070120|[@anjo120](https://github.com/)|
+|<img src="img/profile-pic/59070022.png" height="75px">|Kunanon Srisuntiroj<br>คุณานนต์ ศรีสันติโรจน์|59070022|[@sagelga](https://github.com/sagelga)|
+|<img src="img/profile-pic/59070043.png" height="75px">|Thitipat Worrarat<br>ฐิติภัทร วรรัตน์|59070043|[@ynhof6](https://github.com/ynhof6)|
+|<img src="img/profile-pic/59070084.png" height="75px">|Napasin Hongngern<br>นภสินธุ์ หงษ์เงิน|59070084|[@tiltgod](https://github.com/tiltgod)|
+|<img src="img/profile-pic/59070087.png" height="75px">|Nathan Yiangsupapaanontr<br>นาธาร เยี่ยวศุภพนนทร์|59070087|[@zartre](https://github.com/zartre)|
+|<img src="img/profile-pic/59070117.png" height="75px">|Patcharapon Lertvirul<br>พัชรพร เลิศวิรุฬ|59070117|[@kukkikkpl](https://github.com/kukkikkpl)|
+|<img src="img/profile-pic/59070120.png" height="75px">|Pimpitcha Pitichotphokin<br>พิมพ์พิชชา ปิติโชติโชคโภคิน|59070120|[@anjo120](https://github.com/)|
+
+### อาจารย์ที่ปรึกษา
+อาจารย์ ผศ.ดร.ธีรพงศ์ ลีลานุภาพ<br>
+<img src="img/profile-pic/KimLee.jpg" height="75px">
 
 รายงาน และ ซอร์สโค้ดนี้ เป็นส่วนหนึ่งของวิชา วิศวกรรมซอฟท์แวร์ Software Engineering (06016219)<br>
 หลักสูตรวิทยาศาสตร์บัณฑิต สาขาวิชาเทคโนโลยีสารสนเทศ<br>
