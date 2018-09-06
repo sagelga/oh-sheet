@@ -1,7 +1,6 @@
 # My Little Pony Team Project
 
-Share a lecture with us!
-
+Share lecture notes with us!
 
 Create a new issue here : kumakumamon.me<br>
 For Aj. Teerapong, please use this credential to login:
@@ -32,17 +31,17 @@ This Progressive Web Application uses Vue and Vue Router, with Vuesax as a UI fr
 ## Development
 This is how we develop. We use fat npm to do things with Vue dependencies.
 
-1 Install dependencies
+Install dependencies
 ```
 npm install
 ```
 
-2 Start the development server
+Start the development server
 ```
 npm run serve
 ```
 
-3 Build the project
+Build the project
 ```
 npm run build
 ```
