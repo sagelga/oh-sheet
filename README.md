@@ -7,12 +7,9 @@ A hub for students to share lecture notes and learn together.
 
 ## Features
 Features currently planned include:
-
 - User can upload lecture notes to the service.
 - User can browse through lecture notes to find desired lecture notes.
 - User can view lecture notes.
-
-and many much more!
 
 ## How to install
 It's magic. Just kidding, we will be back with an installation guide soon.
@@ -26,6 +23,7 @@ Create a new issue on [kumakumamon.me](http://kumakumamon.me)
 ### Development
 Just another JS project you know and 💗.
 
+## How to develop
 ```
 # Install dependencies (required on first run):
 npm install
@@ -71,7 +69,8 @@ We are team My Little Pony from ITKMITL
 | <img src="img/profile-pic/59070120.png" height="75px"> | Pimpitcha Pitichotphokin<br>พิมพ์พิชชา ปิติโชติโชคโภคิน | 59070120                | [@anjo120](https://github.com/)            |
 
 ### อาจารย์ที่ปรึกษา
-อาจารย์ ผศ.ดร.ธีรพงศ์ ลีลานุภาพ<br>
+ผศ.ดร.ธีรพงศ์ ลีลานุภาพ
+
 <img src="img/profile-pic/KimLee.jpg" height="75px">
 
 รายงาน และ ซอร์สโค้ดนี้ เป็นส่วนหนึ่งของวิชา วิศวกรรมซอฟท์แวร์ Software Engineering (06016219)<br>
