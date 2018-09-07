@@ -1,74 +1,62 @@
 # Project PONY (ระบบแชร์สรุปบทเรียนออนไลน์)
 
-Share a lecture with us!
+Share your lecture notes with us!
 
 ## Abstractions
-This service is for sharing a lecture to the others. When people share the lecture to the service, others receive a benefits from learning things from lecture.
+A hub for students to share lecture notes and learn together.
 
 ## Features
-All of the features will be released after the project version 1 is released.<br>
-Here's are some few features we have...
+Features currently planned include:
 
-- User can upload a lecture to the service
-- User can browse through lecture to find the lecture they like
-- User can view the lecture
+- User can upload lecture notes to the service.
+- User can browse through lecture notes to find desired lecture notes.
+- User can view lecture notes.
 
 and many much more!
 
 ## How to install
-It's a magic.<br>
-Just kidding, we will be back with a installation methods soon.
+It's magic. Just kidding, we will be back with an installation guide soon.
 
 ## Technology
 This Progressive Web Application uses Vue and Vue Router, with Vuesax as a UI framework.
 
-## Development
-This is how we develop. We use fat npm to do things with Vue dependencies.
+### Issue
+Create a new issue on [kumakumamon.me](http://kumakumamon.me)
 
-1 Install dependencies
+### Development
+Just another JS project you know and 💗.
+
 ```
+# Install dependencies (required on first run):
 npm install
-```
 
-2 Start the development server
-```
+# Start the development server:
 npm run serve
-```
 
-3 Build the project
-```
+# Build the for production:
 npm run build
-```
-
-### Project File Distributions
-```
-public
-src
-tests
 ```
 
 ## CI Checking
 We are currently running zero CI service. Please check later.
 
 ## Licensing
-This project have not determined about licensing yet. Please checkout later.
+This project has not determined about licensing yet. Please check out later.
 
 ## Links
 ### Issue Tracking 
-We use YouTrack for issue management + agile board <br>
-[kumakumamon.me](http://kumakumamon.me)
+We use YouTrack for issue management + Agile board [kumakumamon.me](http://kumakumamon.me)
 
-For Aj. Teerapong, you can use this credential to login and observe:
+For Aj. Teerapong, please use this credential to observe:
 
 - Username : `kimlee`
 - Password : `kimleeSE2018`
 
 ### Documentation
-We use GitHub Wiki on how to call API
+We use GitHub Wiki on how to call API [github.com/IRIS-KMITL/se-y61-project-my-little-pony/wiki](https://github.com/IRIS-KMITL/se-y61-project-my-little-pony/wiki)
 
 ### Notes
-We use Dropbox Paper to keep on how we should do work. We have coding standards, you know..<br>
-[paper.dropbox.com](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
+We use Dropbox Paper to keep on how we should do work. We have coding standards, you know.. > [Dropbox Paper](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
 
 ## Team Members
 We are team My Little Pony from ITKMITL
