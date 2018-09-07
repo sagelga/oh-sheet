@@ -2,17 +2,11 @@
 
 Share your lecture notes with us!
 
-For Aj. Teerapong, please use this credential to login:
-
-- Username : `kimlee`
-- Password : `kimleeSE2018`
-
 ## Abstractions
 A hub for students to share lecture notes and learn together.
 
 ## Features
 Features currently planned include:
-
 - User can upload lecture notes to the service.
 - User can browse through lecture notes to find desired lecture notes.
 - User can view lecture notes.
@@ -23,34 +17,22 @@ It's magic. Just kidding, we will be back with an installation guide soon.
 ## Technology
 This Progressive Web Application uses Vue and Vue Router, with Vuesax as a UI framework.
 
-## Contributing
-
 ### Issue
 Create a new issue on [kumakumamon.me](http://kumakumamon.me)
 
 ### Development
 Just another JS project you know and 💗.
 
-Install dependencies (required on first run):
+## How to develop
 ```
+# Install dependencies (required on first run):
 npm install
-```
 
-Start the development server:
-```
+# Start the development server:
 npm run serve
-```
 
-Build the project for production:
-```
+# Build the for production:
 npm run build
-```
-
-### Project File Distributions
-```
-public
-src
-tests
 ```
 
 ## CI Checking
@@ -63,10 +45,13 @@ This project has not determined about licensing yet. Please check out later.
 ### Issue Tracking 
 We use YouTrack for issue management + Agile board [kumakumamon.me](http://kumakumamon.me)
 
-For Aj. Teerapong, you can use this credential to login and observe:
+For Aj. Teerapong, please use this credential to observe:
 
 - Username : `kimlee`
 - Password : `kimleeSE2018`
+
+### Documentation
+We use GitHub Wiki on how to call API [github.com/IRIS-KMITL/se-y61-project-my-little-pony/wiki](https://github.com/IRIS-KMITL/se-y61-project-my-little-pony/wiki)
 
 ### Notes
 We use Dropbox Paper to keep on how we should do work. We have coding standards, you know.. > [Dropbox Paper](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
