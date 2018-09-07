@@ -1,13 +1,6 @@
-# My Little Pony Team Project
+# Project PONY (ระบบแชร์สรุปบทเรียนออนไลน์)
 
 Share a lecture with us!
-
-
-Create a new issue here : kumakumamon.me<br>
-For Aj. Teerapong, please use this credential to login:
-
-- Username : `kimlee`
-- Password : `kimleeSE2018`
 
 ## Abstractions
 This service is for sharing a lecture to the others. When people share the lecture to the service, others receive a benefits from learning things from lecture.
@@ -60,7 +53,26 @@ We are currently running zero CI service. Please check later.
 ## Licensing
 This project have not determined about licensing yet. Please checkout later.
 
+## Links
+### Issue Tracking 
+We use YouTrack for issue management + agile board <br>
+[kumakumamon.me](http://kumakumamon.me)
+
+For Aj. Teerapong, you can use this credential to login and observe:
+
+- Username : `kimlee`
+- Password : `kimleeSE2018`
+
+### Documentation
+We use GitHub Wiki on how to call API
+
+### Notes
+We use Dropbox Paper to keep on how we should do work. We have coding standards, you know..<br>
+[paper.dropbox.com](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
+
 ## Team Members
+We are team My Little Pony from ITKMITL
+
 | Profile Picture<br>รูปโปรไฟล์                            | Full Name<br>ชื่อจริง                               | Student ID<br>รหัสนักศึกษา | GitHub Username<br>บัญชี GitHub              |
 |--------------------------------------------------------|--------------------------------------------------|-------------------------|--------------------------------------------|
 | <img src="img/profile-pic/59070022.png" height="75px"> | Kunanon Srisuntiroj<br>คุณานนต์ ศรีสันติโรจน์          | 59070022                | [@sagelga](https://github.com/sagelga)     |
