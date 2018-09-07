@@ -1,47 +1,47 @@
 # Project PONY (ระบบแชร์สรุปบทเรียนออนไลน์)
 
-Share lecture notes with us!
+Share your lecture notes with us!
 
-Create a new issue here : kumakumamon.me<br>
 For Aj. Teerapong, please use this credential to login:
 
 - Username : `kimlee`
 - Password : `kimleeSE2018`
 
 ## Abstractions
-This service is for sharing a lecture to the others. When people share the lecture to the service, others receive a benefits from learning things from lecture.
+A hub for students to share lecture notes and learn together.
 
 ## Features
-All of the features will be released after the project version 1 is released.<br>
-Here's are some few features we have...
+Features currently planned include:
 
-- User can upload a lecture to the service
-- User can browse through lecture to find the lecture they like
-- User can view the lecture
-
-and many much more!
+- User can upload lecture notes to the service.
+- User can browse through lecture notes to find desired lecture notes.
+- User can view lecture notes.
 
 ## How to install
-It's a magic.<br>
-Just kidding, we will be back with a installation methods soon.
+It's magic. Just kidding, we will be back with an installation guide soon.
 
 ## Technology
 This Progressive Web Application uses Vue and Vue Router, with Vuesax as a UI framework.
 
-## Development
-This is how we develop. We use fat npm to do things with Vue dependencies.
+## Contributing
 
-Install dependencies
+### Issue
+Create a new issue on [kumakumamon.me](http://kumakumamon.me)
+
+### Development
+Just another JS project you know and 💗.
+
+Install dependencies (required on first run):
 ```
 npm install
 ```
 
-Start the development server
+Start the development server:
 ```
 npm run serve
 ```
 
-Build the project
+Build the project for production:
 ```
 npm run build
 ```
@@ -57,24 +57,19 @@ tests
 We are currently running zero CI service. Please check later.
 
 ## Licensing
-This project have not determined about licensing yet. Please checkout later.
+This project has not determined about licensing yet. Please check out later.
 
 ## Links
 ### Issue Tracking 
-We use YouTrack for issue management + agile board <br>
-[kumakumamon.me](http://kumakumamon.me)
+We use YouTrack for issue management + Agile board [kumakumamon.me](http://kumakumamon.me)
 
 For Aj. Teerapong, you can use this credential to login and observe:
 
 - Username : `kimlee`
 - Password : `kimleeSE2018`
 
-### Documentation
-We use GitHub Wiki on how to call API
-
 ### Notes
-We use Dropbox Paper to keep on how we should do work. We have coding standards, you know..<br>
-[paper.dropbox.com](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
+We use Dropbox Paper to keep on how we should do work. We have coding standards, you know.. > [Dropbox Paper](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc)
 
 ## Team Members
 We are team My Little Pony from ITKMITL
@@ -89,7 +84,8 @@ We are team My Little Pony from ITKMITL
 | <img src="img/profile-pic/59070120.png" height="75px"> | Pimpitcha Pitichotphokin<br>พิมพ์พิชชา ปิติโชติโชคโภคิน | 59070120                | [@anjo120](https://github.com/)            |
 
 ### อาจารย์ที่ปรึกษา
-อาจารย์ ผศ.ดร.ธีรพงศ์ ลีลานุภาพ<br>
+ผศ.ดร.ธีรพงศ์ ลีลานุภาพ
+
 <img src="img/profile-pic/KimLee.jpg" height="75px">
 
 รายงาน และ ซอร์สโค้ดนี้ เป็นส่วนหนึ่งของวิชา วิศวกรรมซอฟท์แวร์ Software Engineering (06016219)<br>
