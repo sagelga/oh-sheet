@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import 'normalize.css';
-import Vuesax from 'vuesax';
-import 'vuesax/dist/vuesax.css';
-import 'material-icons/iconfont/material-icons.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/th';
+// import 'material-icons/iconfont/material-icons.css';
 import App from './App.vue';
 import router from './router';
 import './registerServiceWorker';
 
-Vue.use(Vuesax);
+Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
 
 new Vue({
