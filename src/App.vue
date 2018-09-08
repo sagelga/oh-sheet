@@ -23,6 +23,10 @@ a {
     color: #409EFF - 20;
   }
 }
+.material-icons {
+  font-size: 1em;
+  vertical-align: middle;
+}
 .top-gap {
   margin-top: 5em;
 }

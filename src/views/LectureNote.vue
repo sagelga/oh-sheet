@@ -8,14 +8,22 @@
         <el-col :xs="24" :md="7">
           <el-card class="note-meta-card">
             <h1>พฤติกรรมผู้บริโภค</h1>
-            <h2>มนุษยศาสตร์</h2>
-            <UserChip avatar="/img/avatar.png" displayName="Nathan"/>
+            <router-link to="">
+              <h2>มนุษยศาสตร์</h2>
+            </router-link>
             <DateText :dateObj="new Date()"/>
-            <!-- <QualityThumbs voteUp="" voteDown="" /> -->
-            <hr style="margin-top: 1.3em">
-            <el-button type="text" style="font-size: 1em">รายงานเนื้อหาไม่เหมาะสม</el-button>
+            <UserChip avatar="/img/avatar.png" displayName="Nathan"/>
+            <QualityThumbs voteUp="10" voteDown="2" />
+            <hr style="margin-top: 0.5em">
+            <el-button type="text" style="font-size: 1em">
+              <span class="material-icons">report</span>
+              รายงานเนื้อหาไม่เหมาะสม
+            </el-button>
             <br>
-            <router-link to="./edit/">แก้ไข</router-link>
+            <router-link to="./edit/">
+              <span class="material-icons">edit</span>
+              แก้ไข
+            </router-link>
           </el-card>
         </el-col>
       </el-row>
@@ -32,10 +40,10 @@
     h2 {
       font-size: 1em;
       font-weight: normal;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
-    .user-chip, .date-text {
-      margin-bottom: 0.5rem;
+    .date-text {
+      margin-bottom: 0.8rem;
     }
   }
   .pdf-viewer {
@@ -48,11 +56,12 @@
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import UserChip from '@/components/UserChip.vue';
 import DateText from '@/components/DateText.vue';
+import QualityThumbs from '@/components/QualityThumbs.vue';
 
 export default {
   name: 'lectureNote',
   components: {
-    BoxedContainer, UserChip, DateText,
+    BoxedContainer, UserChip, DateText, QualityThumbs,
   },
 };
 </script>
