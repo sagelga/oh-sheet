@@ -13,6 +13,16 @@ h1, h2 {
   line-height: 1.5em;
   margin-top: 0;
 }
+a {
+  color: #409EFF;
+  text-decoration: none;
+  &:visited {
+    color: #409EFF;
+  }
+  &:hover {
+    color: #409EFF - 20;
+  }
+}
 .top-gap {
   margin-top: 5em;
 }
