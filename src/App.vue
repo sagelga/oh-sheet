@@ -9,6 +9,10 @@
 .top-gap {
   margin-top: 5em;
 }
+.row-wrap {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 </style>
 
 <script>
