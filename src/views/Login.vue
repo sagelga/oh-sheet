@@ -5,6 +5,7 @@
 
     <el-input placeholder="Please input password" v-model="username_input"></el-input>
     <el-input placeholder="Please input password" v-model="password_input"></el-input>
+    <vs-button v-on:click="type = disabled">Sign In</vs-button>
 </div>
 </template>
 
@@ -12,8 +13,11 @@
 export default {
   name: 'Login',
   data() {
+
     return {
-      input: 'Username',
+        sign_in_click: false,
+      username_input: 'Username',
+        password_input: 'Password',
     };
   },
 };
