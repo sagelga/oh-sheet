@@ -9,7 +9,7 @@
           <el-card class="note-meta-card">
             <h1>พฤติกรรมผู้บริโภค</h1>
             <h2>มนุษยศาสตร์</h2>
-            <!-- <AuthorChip avatar="" displayName=""/> -->
+            <UserChip avatar="/img/avatar.png" displayName="Nathan"/>
             <!-- <DateText date=""/> -->
             <!-- <QualityThumbs voteUp="" voteDown="" /> -->
           </el-card>
@@ -23,10 +23,12 @@
   .note-meta-card {
     h1 {
       font-size: 1em;
+      margin-bottom: 0.3rem;
     }
     h2 {
       font-size: 1em;
       font-weight: normal;
+      margin-bottom: 0.5rem;
     }
   }
   .pdf-viewer {
@@ -37,11 +39,12 @@
 
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
+import UserChip from '@/components/UserChip.vue';
 
 export default {
   name: 'lectureNote',
   components: {
-    BoxedContainer,
+    BoxedContainer, UserChip,
   },
 };
 </script>

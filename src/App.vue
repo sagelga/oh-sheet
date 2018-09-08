@@ -6,6 +6,13 @@
 </template>
 
 <style lang="scss">
+body {
+  font-family: sans-serif;
+}
+h1, h2 {
+  line-height: 1.5em;
+  margin-top: 0;
+}
 .top-gap {
   margin-top: 5em;
 }
