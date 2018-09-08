@@ -15,7 +15,7 @@
             <UserChip avatar="/img/avatar.png" displayName="Nathan"/>
             <QualityThumbs voteUp="10" voteDown="2" />
             <hr style="margin-top: 0.5em">
-            <el-button type="text" style="font-size: 1em">
+            <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
               <span class="material-icons">report</span>
               รายงานเนื้อหาไม่เหมาะสม
             </el-button>
@@ -28,6 +28,13 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog :visible.sync="reportDialogVisible" width="30%">
+      <span>ต้องการส่งรายงานความไม่เหมาะสมหรือไม่</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="reportDialogVisible = false">ส่ง</el-button>
+      </span>
+    </el-dialog>
   </BoxedContainer>
 </template>
 
@@ -62,6 +69,11 @@ export default {
   name: 'lectureNote',
   components: {
     BoxedContainer, UserChip, DateText, QualityThumbs,
+  },
+  data() {
+    return {
+      reportDialogVisible: false,
+    };
   },
 };
 </script>
