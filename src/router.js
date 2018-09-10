@@ -26,5 +26,10 @@ export default new Router({
       name: 'lectureNote',
       component: () => import('./views/LectureNote.vue'),
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/Login.vue'),
+    },
   ],
 });
