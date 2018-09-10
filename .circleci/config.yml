@@ -3,6 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
+
 jobs:
   build:
     docker:
@@ -12,9 +13,6 @@ jobs:
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
     # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
-#    working_directory: ~/repo
 
     steps:
     - checkout
@@ -30,3 +28,8 @@ jobs:
 
     # run tests!
     - run: npm run build
+
+notify:
+  webhooks:
+    - url: https://outlook.office.com/webhook/d4396a6d-63d2-48a5-83c9-db5feeee255c@fd206715-7509-4ae5-9b96-76bb97886a84/CircleCI/4c91e9b910e64935aa5c90e6d8733aa6/3877cbd7-4b44-4863-b3b4-4d1b5ea505a1
+    
