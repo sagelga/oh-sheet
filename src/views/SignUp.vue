@@ -1,5 +1,5 @@
 <template>
-  <div class="top-gap signup-wrap">
+  <div class="top-gap login-wrap">
     <el-card>
       <div slot="header">
         <span>สมัครสมาชิก</span>
@@ -21,7 +21,8 @@
         <el-form-item label="ชื่อที่ใช้แสดง">
           <el-input type="text" v-model="fields.username"></el-input>
         </el-form-item>
-        <el-button type="primary" round @click="checkBlankFields">สมัครสมาชิก</el-button>
+        <el-button type="primary" round @click="checkBlankFields"
+          style="margin-top: 1em">สมัครสมาชิก</el-button>
       </el-form>
     </el-card>
   </div>
@@ -66,23 +67,9 @@ export default {
           this.successfullySignedUp = true;
           console.log(response);
         }, (error) => {
-          console.log('e here');
           this.errorOnSignUp = error.message;
         });
     },
   },
 };
 </script>
-
-<style>
-.signup-wrap {
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.card-title-link {
-  float: right;
-  padding: 3px 0;
-  font-size: 0.9em;
-}
-</style>

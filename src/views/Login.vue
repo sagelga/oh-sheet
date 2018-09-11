@@ -3,8 +3,9 @@
     <el-card>
       <div slot="header" class="clearfix">
         <span>เข้าสู่ระบบ</span>
-        <el-button style="float: right; padding: 3px 0" type="text">สมัครสมาชิก</el-button>
+        <router-link class="card-title-link" to="/signup/">สมัครสมาชิก</router-link>
       </div>
+      <el-alert :title="error" type="error" v-show="error"></el-alert>
       <el-form>
         <el-form-item label="ชื่อผู้ใช้"><!--Username input-->
           <el-input v-model="username"
@@ -26,22 +27,21 @@
           <el-checkbox v-model="rememberPassword">จำฉันไว้</el-checkbox>
         </el-form-item>
         <!--Sign In / Sign Up Button-->
-        <el-button type="primary" round>เข้าสู่ระบบ</el-button>
+        <el-button type="primary" round @click="logInUser(username, password)">
+          เข้าสู่ระบบ
+        </el-button>
         <el-button type="text" style="margin-right: 2em">ลืมรหัสผ่าน</el-button>
       </el-form>
     </el-card>
   </div>
 </template>
 
-<style>
-  .login-wrap {
-    max-width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-</style>
-
 <script>
+const Parse = require('parse/dist/parse.min');
+
+Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
+Parse.serverURL = 'https://parseapi.back4app.com/';
+
 export default {
   name: 'Login',
   data() {
@@ -49,7 +49,25 @@ export default {
       username: '',
       password: '',
       rememberPassword: false,
+      error: '',
     };
+  },
+  methods: {
+    logInUser(usr, pwd) {
+      const that = this;
+      this.error = '';
+      Parse.User.logIn(usr, pwd)
+        .then(() => {
+          that.openModal();
+        }, (error) => {
+          that.error = error.message;
+        });
+    },
+    openModal() {
+      this.$alert('เข้าสู่ระบบสำเร็จ', 'ยินดีด้วย', {
+        confirmButtonText: 'ตกลง',
+      });
+    },
   },
 };
 </script>
