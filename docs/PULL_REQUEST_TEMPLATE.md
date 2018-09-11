@@ -17,4 +17,4 @@ I am sure that all the changes are intentional and made with care for Humanity a
 - [ ] I have update this branch with the parent branch and I will not generate conflict that is from forgetting to do that.
 
 **Just to make sure that you read**
-- [x] I **did not** this Pull Request template. I have not make this checkbox unchecked because I can't read.
+- [x] I **did not** unchecked this checkbox because I don't want a Pull Request approvals.
