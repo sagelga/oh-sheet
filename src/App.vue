@@ -23,6 +23,9 @@ a {
     color: #409EFF - 20;
   }
 }
+.el-form-item {
+  margin-bottom: 0.5em;
+}
 .material-icons {
   font-size: 1em;
   vertical-align: middle;
