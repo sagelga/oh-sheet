@@ -22,9 +22,13 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
     {
+      path: '/note/:noteId',
+      name: 'lectureNote',
+      component: () => import('./views/LectureNote.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
-
       component: () => import('./views/Login.vue'),
     },
   ],

@@ -6,22 +6,36 @@
 </template>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  font-family: sans-serif;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+h1, h2 {
+  line-height: 1.5em;
+  margin-top: 0;
+}
+a {
+  color: #409EFF;
+  text-decoration: none;
+  &:visited {
+    color: #409EFF;
   }
+  &:hover {
+    color: #409EFF - 20;
+  }
+}
+.el-form-item {
+  margin-bottom: 0.5em;
+}
+.material-icons {
+  font-size: 1em;
+  vertical-align: middle;
+}
+.top-gap {
+  margin-top: 5em;
+}
+.row-wrap {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>
 
