@@ -37,6 +37,16 @@ a {
   margin-left: 10px;
   margin-right: 10px;
 }
+.login-wrap {
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.card-title-link {
+  float: right;
+  padding: 3px 0;
+  font-size: 0.9em;
+}
 </style>
 
 <script>
