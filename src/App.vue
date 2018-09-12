@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopNav></TopNav>
+    <TopNav ref="topNav"></TopNav>
     <router-view/>
   </div>
 </template>
@@ -55,6 +55,16 @@ import TopNav from '@/components/TopNav.vue';
 export default {
   components: {
     TopNav,
+  },
+  data() {
+    return {
+      loggedIn: false,
+    };
+  },
+  watch: {
+    loggedIn() {
+      this.$refs.topNav.loggedInTemplateEnabled = this.loggedIn;
+    },
   },
 };
 </script>

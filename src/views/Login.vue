@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import router from '../router';
+
 const Parse = require('parse/dist/parse.min');
 
 Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
@@ -59,6 +61,8 @@ export default {
       Parse.User.logIn(usr, pwd)
         .then(() => {
           that.openModal();
+          this.$parent.loggedIn = true;
+          router.push('/');
         }, (error) => {
           that.error = error.message;
         });
@@ -71,4 +75,3 @@ export default {
   },
 };
 </script>
-

@@ -5,17 +5,20 @@
       <el-menu-item index="/">
         <i class="el-icon-search"></i>
       </el-menu-item>
-      <el-menu-item index="/saved">
+      <el-menu-item index="/saved" v-if="loggedInTemplateEnabled">
         <i class="el-icon-star-on"></i>
       </el-menu-item>
-      <el-menu-item index="/upload">
+      <el-menu-item index="/upload" v-if="loggedInTemplateEnabled">
         <i class="el-icon-upload"></i>
       </el-menu-item>
-      <el-submenu id="topnav-more" index="#">
+      <el-submenu id="topnav-more" index="#" v-if="loggedInTemplateEnabled">
         <template slot="title"><i class="el-icon-setting"></i></template>
         <el-menu-item index="/profile/zartre">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="/logout">ออกจากระบบ</el-menu-item>
       </el-submenu>
+      <el-menu-item index="/login" v-if="!loggedInTemplateEnabled">
+        เข้าสู่ระบบ/สมัครสมาชิก
+      </el-menu-item>
     </el-menu>
   </BoxedContainer>
 </template>
@@ -42,6 +45,7 @@ export default {
   data() {
     return {
       defaultActive: '/',
+      loggedInTemplateEnabled: false,
     };
   },
 };
