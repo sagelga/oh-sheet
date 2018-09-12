@@ -1,7 +1,7 @@
 <template>
   <BoxedContainer>
     <el-menu :default-active="defaultActive" mode="horizontal"
-      router="true" style="text-align: right;">
+      :router="true" style="text-align: right;">
       <el-menu-item index="/">
         <i class="el-icon-search"></i>
       </el-menu-item>
@@ -11,7 +11,7 @@
       <el-menu-item index="/upload">
         <i class="el-icon-upload"></i>
       </el-menu-item>
-      <el-submenu id="topnav-more">
+      <el-submenu id="topnav-more" index="#">
         <template slot="title"><i class="el-icon-setting"></i></template>
         <el-menu-item index="/profile/zartre">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="/logout">ออกจากระบบ</el-menu-item>
