@@ -138,4 +138,41 @@ export default {
     },
   },
 };
+
+const uploadLecture = () => {
+const fs = require('fs');
+const path = require('path');
+var AWS = require('aws-sdk');
+
+var accessKeyId = 'QASRGUKV45BJ4LO5DK3S';
+var secretAccessKey = 'RToDzC/KgTJ1aRavTn5w9fADYXt8OQ5XdhgZeA8esf4';
+var region = 'sgp1';
+
+var spacesEndpoint = new AWS.Endpoint('sgp1.digitaloceanspaces.com');
+var s3 = new AWS.S3({
+  endpoint: spacesEndpoint,
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey 
+});
+var bucketName = 'pony';
+var filePath = './testnaja2.jpeg';
+var params = {
+    Bucket: bucketName,
+    Key: path.basename(filePath),
+    Body: fs.createReadStream(filePath)
+};
+
+var options = {
+    partSize: 10 * 1024 * 1024, // 10 MB
+    queueSize: 10
+};
+
+s3.upload(params, options, function (err, data) {
+    if (!err) {
+        console.log(data); // successful response
+    } else {
+        console.log(err); // an error occurred
+    }
+});
+}
 </script>
