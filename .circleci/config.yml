@@ -5,8 +5,12 @@ version: 2
 
 jobs:
   basic-test:
-    # specify the version you desire here. 
-    # Version is documented at https://circleci.com/docs/2.0/circleci-images/
+    filters:
+      branches:
+        only: 
+          - /PONY-.*/
+
+    # Docker version is documented at https://circleci.com/docs/2.0/circleci-images/
     docker:
     - image: circleci/node:8.11.4
 
@@ -27,11 +31,6 @@ jobs:
     - run:
         name: Build the PWA app
         command: npm run build
-
-    - save_cache:
-        key: node-modules-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
   
   deep-test:
   filters:
@@ -39,12 +38,8 @@ jobs:
       only: 
         - /release\/sprint-.*/
         - master
-        - /PONY-.*/
 
-    docker:
-    - image: circleci/node:8.11.4
-
-    - run:
+    run:
         name: Check README file
         command: cat README.md
 
