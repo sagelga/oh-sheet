@@ -4,10 +4,10 @@
 version: 2
 
 jobs:
-  build:
-    docker:
+  basic-test:
     # specify the version you desire here. 
     # Version is documented at https://circleci.com/docs/2.0/circleci-images/
+    docker:
     - image: circleci/node:8.11.4
 
     steps:
@@ -15,15 +15,41 @@ jobs:
 
     # Download and cache dependencies
     - restore_cache:
-        keys:
+      keys:
         - v1-dependencies-{{ checksum "package.json" }}
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
 
-    - run: npm install
+    - run:
+        name: Install dependencies
+        command: |
+          npm install
 
-    # Run npm build test !!!
-    - run: npm run build
+    - run:
+        name: Build the PWA app
+        command: |
+          npm run build
+
+    - save_cache:
+        key: node-modules-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+  
+  deep-test:
+  filters:
+    branches:
+      only: 
+        - /release\/sprint-.*/
+        - master
+        - /PONY-.*/
+
+    docker:
+    - image: circleci/node:8.11.4
+
+    - run:
+        name: Check README file
+        command: |
+          cat README.md
 
 notify:
   webhooks:
