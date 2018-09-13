@@ -52,6 +52,11 @@ a {
 <script>
 import TopNav from '@/components/TopNav.vue';
 
+const Parse = require('parse/dist/parse.min');
+
+Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
+Parse.serverURL = 'https://parseapi.back4app.com/';
+
 export default {
   components: {
     TopNav,
@@ -61,10 +66,17 @@ export default {
       loggedIn: false,
     };
   },
+  methods: {
+  },
   watch: {
     loggedIn() {
       this.$refs.topNav.loggedInTemplateEnabled = this.loggedIn;
     },
+  },
+  mounted() {
+    if (Parse.User.current()) {
+      this.loggedIn = true;
+    }
   },
 };
 </script>
