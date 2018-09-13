@@ -8,8 +8,8 @@
       <el-alert title="กรุณากรอกให้ครบทุกช่อง" type="error" v-show="hasBlankField"></el-alert>
       <el-alert :title="errorOnSignUp" type="error" v-show="errorOnSignUp"></el-alert>
       <el-alert
-        title="สมัครสมาชิกเรียบร้อย กรุณาคลิกลิงก์ในอีเมลเพื่อยืนยันการสมัคร"
-        type="success" :closable="false" v-if="successfullySignedUp">
+          title="สมัครสมาชิกเรียบร้อย กรุณาคลิกลิงก์ในอีเมลเพื่อยืนยันการสมัคร"
+          type="success" :closable="false" v-if="successfullySignedUp">
       </el-alert>
       <el-form v-if="!successfullySignedUp">
         <el-form-item label="อีเมล">
@@ -22,7 +22,8 @@
           <el-input type="text" v-model="fields.username"></el-input>
         </el-form-item>
         <el-button type="primary" round @click="checkBlankFields"
-          style="margin-top: 1em">สมัครสมาชิก</el-button>
+                   style="margin-top: 1em">สมัครสมาชิก
+        </el-button>
       </el-form>
     </el-card>
   </div>
@@ -62,7 +63,11 @@ export default {
     },
     signUpUser(usr, eml, pwd) {
       const user = new Parse.User();
-      user.save({ username: usr, email: eml, password: pwd })
+      user.save({
+        username: usr,
+        email: eml,
+        password: pwd,
+      })
         .then((response) => {
           this.successfullySignedUp = true;
           console.log(response);

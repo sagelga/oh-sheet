@@ -13,7 +13,7 @@
             </router-link>
             <DateText :dateObj="new Date()"/>
             <UserChip avatar="/img/avatar.png" displayName="Nathan"/>
-            <QualityThumbs voteUp="10" voteDown="2" />
+            <QualityThumbs voteUp="10" voteDown="2"/>
             <hr style="margin-top: 0.5em">
             <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
               <span class="material-icons">report</span>
@@ -53,6 +53,7 @@
       margin-bottom: 0.8rem;
     }
   }
+
   .pdf-viewer {
     width: 100%;
     height: 70vh;
@@ -68,7 +69,10 @@ import QualityThumbs from '@/components/QualityThumbs.vue';
 export default {
   name: 'lectureNote',
   components: {
-    BoxedContainer, UserChip, DateText, QualityThumbs,
+    BoxedContainer,
+    UserChip,
+    DateText,
+    QualityThumbs,
   },
   data() {
     return {
