@@ -7,7 +7,9 @@ jobs:
   basic-test:
     filters:
       branches:
-        only: 
+        only:
+          - /release\/sprint-.*/
+          - master
           - /PONY-.*/
 
     # Docker version is documented at https://circleci.com/docs/2.0/circleci-images/
@@ -16,13 +18,6 @@ jobs:
 
     steps:
     - checkout
-
-    # Download and cache dependencies
-    - restore_cache:
-      keys:
-        - v1-dependencies-{{ checksum "package.json" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
 
     - run:
         name: Install dependencies
@@ -39,6 +34,10 @@ jobs:
         - /release\/sprint-.*/
         - master
 
+    # Docker version is documented at https://circleci.com/docs/2.0/circleci-images/
+    docker:
+    - image: circleci/node:8.11.4
+
     run:
         name: Check README file
         command: cat README.md
@@ -46,3 +45,10 @@ jobs:
 notify:
   webhooks:
     - url: https://outlook.office.com/webhook/d4396a6d-63d2-48a5-83c9-db5feeee255c@fd206715-7509-4ae5-9b96-76bb97886a84/CircleCI/4c91e9b910e64935aa5c90e6d8733aa6/3877cbd7-4b44-4863-b3b4-4d1b5ea505a1
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - basic-test
+      - deep-test
