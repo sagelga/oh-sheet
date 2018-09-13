@@ -51,7 +51,7 @@
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :file-list="fileList"
-                                    multiple
+                                    :auto-upload="false"
                                     style="width: max-content"
                             >
                                 <i class="el-icon-upload"></i>
@@ -65,7 +65,7 @@
                         </form>
                     </div>
                     <div style="margin-top: 20px">
-                        <el-button type="primary">อัปโหลด</el-button>
+                        <el-button type="primary" @click="uploadLecture()">อัปโหลด</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -81,6 +81,8 @@
 
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
+
+const AWS = require('aws-sdk');
 
 export default {
   name: 'uploadLecture',
@@ -130,49 +132,48 @@ export default {
         label: 'อุดมศึกษา',
       }],
       selectedSubject: [],
+      fileList: [],
     };
   },
   methods: {
     handleChange(value) {
       console.log(value);
     },
+    uploadLecture() {
+      const accessKeyId = 'QASRGUKV45BJ4LO5DK3S';
+      const secretAccessKey = 'RToDzC/KgTJ1aRavTn5w9fADYXt8OQ5XdhgZeA8esf4';
+      // const region = 'sgp1';
+
+      const selectedFile = document.getElementsByName('file')[0].files;
+      console.log(selectedFile);
+
+      const spacesEndpoint = new AWS.Endpoint('sgp1.digitaloceanspaces.com');
+      const s3 = new AWS.S3({
+        spacesEndpoint,
+        accessKeyId,
+        secretAccessKey,
+      });
+      const bucketName = 'pony';
+      const params = {
+        Bucket: bucketName,
+        //Key: 'something.txt',
+        //Body: 'somthing.txt', 
+        Key: selectedFile.name,
+        Body: selectedFile,
+      };
+      const options = {
+        partSize: selectedFile.size, // 10 MB
+        queueSize: 10,
+      };
+
+      s3.upload(params, options, (err, data) => {
+        if (!err) {
+          console.log(data); // successful response
+        } else {
+          console.log(err); // an error occurred
+        }
+      });
+    },
   },
 };
-
-const uploadLecture = () => {
-const fs = require('fs');
-const path = require('path');
-var AWS = require('aws-sdk');
-
-var accessKeyId = 'QASRGUKV45BJ4LO5DK3S';
-var secretAccessKey = 'RToDzC/KgTJ1aRavTn5w9fADYXt8OQ5XdhgZeA8esf4';
-var region = 'sgp1';
-
-var spacesEndpoint = new AWS.Endpoint('sgp1.digitaloceanspaces.com');
-var s3 = new AWS.S3({
-  endpoint: spacesEndpoint,
-  accessKeyId: accessKeyId,
-  secretAccessKey: secretAccessKey 
-});
-var bucketName = 'pony';
-var filePath = './testnaja2.jpeg';
-var params = {
-    Bucket: bucketName,
-    Key: path.basename(filePath),
-    Body: fs.createReadStream(filePath)
-};
-
-var options = {
-    partSize: 10 * 1024 * 1024, // 10 MB
-    queueSize: 10
-};
-
-s3.upload(params, options, function (err, data) {
-    if (!err) {
-        console.log(data); // successful response
-    } else {
-        console.log(err); // an error occurred
-    }
-});
-}
 </script>
