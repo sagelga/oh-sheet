@@ -38,5 +38,10 @@ export default new Router({
       name: 'signup',
       component: () => import('./views/SignUp.vue'),
     },
+    {
+      path: '/parse-samples',
+      name: 'parseSamples',
+      component: () => import('./views/ParseSamples.vue'),
+    },
   ],
 });
