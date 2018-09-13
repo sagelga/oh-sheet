@@ -60,17 +60,11 @@ export default {
       this.error = '';
       Parse.User.logIn(usr, pwd)
         .then(() => {
-          that.openModal();
-          this.$parent.loggedIn = true;
+          that.$parent.loggedIn = true;
           router.push('/');
         }, (error) => {
           that.error = error.message;
         });
-    },
-    openModal() {
-      this.$alert('เข้าสู่ระบบสำเร็จ', 'ยินดีด้วย', {
-        confirmButtonText: 'ตกลง',
-      });
     },
   },
 };
