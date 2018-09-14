@@ -1,7 +1,7 @@
 <template>
   <div class="user-chip">
     <img :src="avatar" :alt="displayName">
-    {{ displayName }}
+    <span id="displayName"></span>
   </div>
 </template>
 
