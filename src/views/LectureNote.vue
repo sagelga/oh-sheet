@@ -1,7 +1,13 @@
 <template>
   <BoxedContainer class="top-gap">
     <div class="row-wrap" v-if="!loading">
-      <el-row :gutter="20">
+      <el-row v-if="!foundLecture">
+        <el-col :xs="24" style="text-align: center;">
+          <h1>ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h1>
+          <img src="/img/undraw_empty_xct9.svg" alt="not found" class="lecture-not-found">
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" v-if="foundLecture">
         <el-col :xs="24" :md="17">
           <object :data="lectureNote.filePath" type="application/pdf" class="pdf-viewer"></object>
         </el-col>
@@ -58,6 +64,12 @@
     width: 100%;
     height: 70vh;
   }
+
+  .lecture-not-found {
+    width: 100%;
+    max-width: 360px;
+    margin-top: 2em;
+  }
 </style>
 
 <script>
@@ -84,6 +96,7 @@ export default {
       reportDialogVisible: false,
       lectureNote: {},
       loading: true,
+      foundLecture: false,
     };
   },
   methods: {
@@ -95,17 +108,20 @@ export default {
       lectureQuery.include('author');
 
       lectureQuery.find().then((results) => {
-        const lectureFields = ['author', 'categories', 'filePath', 'title',
-          'updatedAt', 'voteDown', 'voteUp'];
-        lectureFields.forEach((f) => {
-          this.lectureNote[f] = results[0].get(f);
-        });
-
-        const authorFields = ['username'];
-        authorFields.forEach((f) => {
-          this.lectureNote.author[f] = results[0].get('author').get(f);
-        });
-
+        if (results.length !== 0) {
+          const lectureFields = ['author', 'categories', 'filePath', 'title',
+            'updatedAt', 'voteDown', 'voteUp'];
+          lectureFields.forEach((f) => {
+            this.lectureNote[f] = results[0].get(f);
+          });
+          const authorFields = ['username'];
+          authorFields.forEach((f) => {
+            this.lectureNote.author[f] = results[0].get('author').get(f);
+          });
+          this.foundLecture = true;
+        } else {
+          this.foundLecture = false;
+        }
         this.loading = false;
       });
     },
