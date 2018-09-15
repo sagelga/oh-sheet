@@ -83,6 +83,7 @@
 import BoxedContainer from '@/components/BoxedContainer.vue';
 
 const AWS = require('aws-sdk');
+const fs = require('fs');
 
 export default {
   name: 'uploadLecture',
@@ -140,9 +141,8 @@ export default {
       console.log(value);
     },
     uploadLecture() {
-      const accessKeyId = 'QASRGUKV45BJ4LO5DK3S';
-      const secretAccessKey = 'RToDzC/KgTJ1aRavTn5w9fADYXt8OQ5XdhgZeA8esf4';
-      // const region = 'sgp1';
+      const accessKeyId = 'ZBV6IACU2KUARTKMLXYU';
+      const secretAccessKey = 'D4IQdkH7Gw6NJQWRva20gCPkq2YGsRHq3ToVqF0YQnI';
 
       const selectedFile = document.getElementsByName('file')[0].files;
       console.log(selectedFile);
@@ -156,10 +156,8 @@ export default {
       const bucketName = 'pony';
       const params = {
         Bucket: bucketName,
-        //Key: 'something.txt',
-        //Body: 'somthing.txt', 
         Key: selectedFile.name,
-        Body: selectedFile,
+        Body: fs.createReadStream(selectedFile),
       };
       const options = {
         partSize: selectedFile.size, // 10 MB
