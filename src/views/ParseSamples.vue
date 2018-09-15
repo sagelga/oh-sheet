@@ -21,11 +21,39 @@
         </el-form>
       </section>
 
+      <section>
+        <h1>2. Retrieving from Database</h1>
+        <el-form :inline="true">
+          <el-form-item label="Lecture Note ID">
+            <el-input v-model="getLectureFormData.lectureId"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary" @click="getLecture()" :disabled="getLectureFormData.loading">
+              {{ getLectureFormData.loading ? 'Submitting' : 'Get' }}
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-card v-if="lectureNote.title && !getLectureFormData.loading">
+          <ul>
+            <li><pre>title</pre> {{ lectureNote.title }}</li>
+            <li><pre>author.username</pre> {{ lectureNote.author.username }}</li>
+            <li><pre>voteUp</pre> {{ lectureNote.voteUp }}</li>
+            <li><pre>voteDown</pre> {{ lectureNote.voteDown }}</li>
+            <li><pre>updatedAt</pre> {{ lectureNote.updatedAt }}</li>
+          </ul>
+        </el-card>
+      </section>
+
     </BoxedContainer>
   </div>
 </template>
 
-<style></style>
+<style scoped>
+  section {
+    margin-bottom: 2em;
+  }
+</style>
 
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
@@ -56,6 +84,11 @@ export default {
           { required: true, message: 'A cat needs an age' },
         ],
       },
+      getLectureFormData: {
+        lectureId: 'azDugQ1izn',
+        loading: false,
+      },
+      lectureNote: {},
     };
   },
   methods: {
@@ -94,6 +127,36 @@ export default {
             });
         }
         return false;
+      });
+    },
+    getLecture() {
+      this.getLectureFormData.loading = true;
+
+      // Create a new LectureNote object from class LectureNote
+      const LectureNote = Parse.Object.extend('LectureNote');
+      // Create a query
+      const lectureQuery = new Parse.Query(LectureNote);
+      // Query from objectId
+      lectureQuery.equalTo('objectId', this.getLectureFormData.lectureId);
+      // Also query _User pointed in the author column
+      lectureQuery.include('author');
+
+      // Submit the query
+      lectureQuery.find().then((results) => {
+        // Declare fields (columns) that we want
+        const lectureFields = ['author', 'categories', 'filePath', 'title',
+          'updatedAt', 'voteDown', 'voteUp'];
+        // Save those field to lectureNote
+        lectureFields.forEach((f) => {
+          this.lectureNote[f] = results[0].get(f);
+        });
+        // author is a nested object, so we need another 'save' statement
+        const authorFields = ['username'];
+        authorFields.forEach((f) => {
+          this.lectureNote.author[f] = results[0].get('author').get(f);
+        });
+
+        this.getLectureFormData.loading = false;
       });
     },
   },
