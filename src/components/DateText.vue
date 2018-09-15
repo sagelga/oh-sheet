@@ -1,6 +1,6 @@
 <template>
   <div class="date-text">
-    {{ dateObj.getDate() }} {{ month }} {{ dateObj.getFullYear() }}
+    {{ date }} {{ month }} {{ year }}
   </div>
 </template>
 
@@ -17,13 +17,19 @@ export default {
   },
   data() {
     return {
+      monthsTH: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
       date: '',
       month: '',
       year: '',
     };
   },
-  mounted() {
-    this.month = monthsTH[this.dateObj.getMonth()];
+  watch: {
+    dateObj() {
+      this.date = this.dateObj.getDate();
+      this.month = monthsTH[this.dateObj.getMonth()];
+      this.year = this.dateObj.getFullYear();
+    },
   },
 };
 </script>

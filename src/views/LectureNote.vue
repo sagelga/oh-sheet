@@ -1,19 +1,19 @@
 <template>
   <BoxedContainer class="top-gap">
-    <div class="row-wrap">
+    <div class="row-wrap" v-if="!loading">
       <el-row :gutter="20">
         <el-col :xs="24" :md="17">
-          <object data="" type="application/pdf" class="pdf-viewer"></object>
+          <object :data="lectureNote.filePath" type="application/pdf" class="pdf-viewer"></object>
         </el-col>
         <el-col :xs="24" :md="7">
           <el-card class="note-meta-card">
-            <h1 id="title"></h1>
+            <h1>{{ lectureNote.title }}</h1>
             <router-link to="">
-              <h2 id="cat"></h2>
+              <h2>{{ lectureNote.categories[0] }}</h2>
             </router-link>
-            <DateText :dateObj="new Date()"/>
-            <UserChip avatar="/img/avatar.png"/>
-            <QualityThumbs/>
+            <DateText :dateObj="lectureNote.updatedAt"/>
+            <UserChip :user="lectureNote.author" />
+            <QualityThumbs :voteUp="lectureNote.voteUp" :voteDown="lectureNote.voteDown" />
             <hr style="margin-top: 0.5em">
             <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
               <span class="material-icons">report</span>
@@ -71,30 +71,6 @@ const Parse = require('parse/dist/parse.min');
 Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const LectureNote = Parse.Object.extend('LectureNote');
-const User = Parse.Object.extend('User');
-const query = new Parse.Query(LectureNote);
-query.equalTo('objectId', 'azDugQ1izn');
-query.find().then((results) => {
-  const voteUp = results[0].attributes.voteUp;
-  const voteDown = results[0].attributes.voteDown;
-  const filePath = results[0].attributes.filePath;
-  const categories = results[0].attributes.categories[0];
-  const title = results[0].attributes.title;
-  const author_id = results[0].attributes.author.id;
-  document.getElementsByTagName('object')[0].setAttribute('data', filePath);
-  document.getElementById('title').innerHTML = title;
-  document.getElementById('cat').innerHTML = categories;
-  document.getElementById('voteUp').innerHTML = voteUp;
-  document.getElementById('voteDown').innerHTML = voteDown;
-  const query2 = new Parse.Query(User);
-  query2.equalTo('objectId', author_id);
-  query2.find().then((authorName) => {
-    const username = authorName[0].attributes.username;
-    document.getElementById('displayName').innerHTML = username;
-  });
-});
-
 export default {
   name: 'lectureNote',
   components: {
@@ -106,11 +82,36 @@ export default {
   data() {
     return {
       reportDialogVisible: false,
+      lectureNote: {},
+      loading: true,
     };
   },
   methods: {
-    mounted() {
+    getLectureNote() {
+      const LectureNote = Parse.Object.extend('LectureNote');
+      const lectureQuery = new Parse.Query(LectureNote);
+
+      lectureQuery.equalTo('objectId', this.$route.params.noteId);
+      lectureQuery.include('author');
+
+      lectureQuery.find().then((results) => {
+        const lectureFields = ['author', 'categories', 'filePath', 'title',
+          'updatedAt', 'voteDown', 'voteUp'];
+        lectureFields.forEach((f) => {
+          this.lectureNote[f] = results[0].get(f);
+        });
+
+        const authorFields = ['username'];
+        authorFields.forEach((f) => {
+          this.lectureNote.author[f] = results[0].get('author').get(f);
+        });
+
+        this.loading = false;
+      });
     },
+  },
+  created() {
+    this.getLectureNote();
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="user-chip">
-    <img :src="avatar" :alt="displayName">
-    <span id="displayName"></span>
+    <img src="/img/avatar.png" :alt="user.username">
+    {{ user.username }}
   </div>
 </template>
 
@@ -26,13 +26,7 @@
 export default {
   name: 'UserChip',
   props: {
-    avatar: String,
-    displayName: String,
-  },
-  data() {
-    return {
-      undefined,
-    };
+    user: Object,
   },
 };
 </script>
