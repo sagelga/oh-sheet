@@ -1,69 +1,50 @@
-<template>
+ <template>
     <BoxedContainer class="top-gap">
         <div class="row-wrap">
             <el-row :gutter="20">
                 <el-col :span="10" :offset="2">
-                    <div>
-                        <h1>เพิ่ม Lecture Note</h1>
-                        <form>
-                            <p align="left">ชื่อ Lecture Note</p>
-                            <el-input
-                                    v-model="lectureName"
-                                    clearable="" size="large"
-                                    class=""
-                                    type="text">
-                            </el-input>
-                            <p align="left">หมวดหมู่</p>
-                            <el-cascader
-                                    class="option"
-                                    expand-trigger="hover"
-                                    :options="subjectOptions"
-                                    v-model="selectedSubject"
-                                    @change="handleChange">
-                            </el-cascader>
-                            <p align="left">แท็ก</p>
-                            <el-select
-                                    class="option"
-                                    v-model="lectureTag"
-                                    multiple
-                                    filterable
-                                    allow-create
-                                    default-first-option>
-                                <el-option
-                                        v-for="item in tagOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                            <p align="left">คำอธิบายเพิ่มเติม</p>
-                            <el-input v-model="lectureDescription"
-                                      clearable=""
-                                      size="large"
-                                      class=""
-                                      :autosize="{ minRows: 2, maxRows: 4 }"
-                                      type="textarea">
-                            </el-input>
-                            <p align="left">อัปโหลดไฟล์ Lecture Note</p>
-                            <el-upload
-                                    drag
-                                    action=""
-                                    :on-preview="handlePreview"
-                                    :on-remove="handleRemove"
-                                    :file-list="fileList"
-                                    :auto-upload="false"
-                                    style="width: max-content"
-                            >
-                                <i class="el-icon-upload"></i>
-                                <div class="el-upload__text">ลากไฟล์มาที่นี่ หรือ
-                                    <em> คลิกเพื่ออัปโหลด</em>
-                                </div>
-                                <div class="el-upload__tip" slot="tip">
-                                    ขนาดไม่เกิน xxx MB
-                                </div>
-                            </el-upload>
-                        </form>
-                    </div>
+                    <h1>เพิ่ม Lecture Note</h1>
+                    <form>
+                        <p align="left">ชื่อ Lecture Note</p>
+                        <el-input
+                                v-model="lectureName"
+                                clearable="" size="large"
+                                class=""
+                                type="text">
+                        </el-input>
+                        <p align="left">หมวดหมู่</p>
+                        <el-cascader
+                                class="option"
+                                expand-trigger="hover"
+                                :options="subjectOptions"
+                                v-model="selectedSubject">
+                        </el-cascader>
+                        <p align="left">แท็ก</p>
+                        <el-select
+                                class="option"
+                                v-model="lectureTag"
+                                multiple
+                                filterable
+                                allow-create
+                                default-first-option>
+                            <el-option
+                                    v-for="item in tagOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <p align="left">คำอธิบายเพิ่มเติม</p>
+                        <el-input v-model="lectureDescription"
+                                  clearable=""
+                                  size="large"
+                                  class=""
+                                  :autosize="{ minRows: 2, maxRows: 4 }"
+                                  type="textarea">
+                        </el-input>
+                        <p align="left">อัปโหลดไฟล์ Lecture Note</p>
+                        <div id="my-awesome-dropzone" class="dropzone"></div>
+                    </form>
                     <div style="margin-top: 20px">
                         <el-button type="primary" @click="uploadLecture()">อัปโหลด</el-button>
                     </div>
@@ -80,10 +61,10 @@
 </style>
 
 <script>
-import BoxedContainer from '@/components/BoxedContainer.vue';
+const Dropzone = require('dropzone');
 
-const AWS = require('aws-sdk');
-const fs = require('fs');
+import 'dropzone/dist/dropzone.css';
+import BoxedContainer from '@/components/BoxedContainer.vue';
 
 export default {
   name: 'uploadLecture',
@@ -136,42 +117,18 @@ export default {
       fileList: [],
     };
   },
-  methods: {
-    handleChange(value) {
-      console.log(value);
-    },
-    uploadLecture() {
-      const accessKeyId = 'ZBV6IACU2KUARTKMLXYU';
-      const secretAccessKey = 'D4IQdkH7Gw6NJQWRva20gCPkq2YGsRHq3ToVqF0YQnI';
-
-      const selectedFile = document.getElementsByName('file')[0].files;
-      console.log(selectedFile);
-
-      const spacesEndpoint = new AWS.Endpoint('sgp1.digitaloceanspaces.com');
-      const s3 = new AWS.S3({
-        spacesEndpoint,
-        accessKeyId,
-        secretAccessKey,
-      });
-      const bucketName = 'pony';
-      const params = {
-        Bucket: bucketName,
-        Key: selectedFile.name,
-        Body: fs.createReadStream(selectedFile),
-      };
-      const options = {
-        partSize: selectedFile.size, // 10 MB
-        queueSize: 10,
-      };
-
-      s3.upload(params, options, (err, data) => {
-        if (!err) {
-          console.log(data); // successful response
-        } else {
-          console.log(err); // an error occurred
-        }
-      });
-    },
+  mounted() {
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#my-awesome-dropzone", {
+      url: 'https://pony.zartre.com/upload-lecture-notes',
+      paramName: 'upload',
+      maxFiles: 1,
+      maxFilesize: 2, // MB
+      headers: {
+        'Cache-Control': '',
+        'X-Requested-With': '',
+      },
+    });
   },
 };
 </script>

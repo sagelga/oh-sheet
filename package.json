@@ -9,7 +9,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "aws-sdk": "^2.313.0",
+    "aws-sdk": "^2.327.0",
+    "dropzone": "^5.5.1",
     "element-ui": "^2.4.6",
     "material-icons": "^0.2.3",
     "normalize.css": "^8.0.0",
