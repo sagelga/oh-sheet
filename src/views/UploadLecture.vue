@@ -46,7 +46,7 @@
                         <div id="my-awesome-dropzone" class="dropzone"></div>
                     </form>
                     <div style="margin-top: 20px">
-                        <el-button type="primary" @click="uploadLecture()">อัปโหลด</el-button>
+                        <el-button type="primary" @click="saveLecture()">อัปโหลด</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -118,6 +118,45 @@ export default {
       selectedSubject: [],
       fileList: [],
     };
+  },
+  methods: {
+    saveLecture() {
+      this.$refs.lectureForm.validate((valid) => {
+        if (valid) {
+          this.lectureFormData.loading = true;
+
+          // Create a new Cat object from class Cat
+          const Lecture = Parse.Object.extend('Lecture');
+          // Create kitty the Cat
+          const note = new Lecture();
+          // Create a new User object from class User
+          const User = Parse.Object.extend('User');
+          // Create a pointer to kitty's owner
+          const ownerPointer = new User().set('objectId', this.lectureFormData.owner);
+
+          // Set kitty attributes
+          note.set('category', this.lectureFormData.tagOptions)
+          note.set('description', this.lectureFormData.lectureDescription);
+          note.set('title', this.lectureFormData.lectureName)
+      
+          note.save()
+            .then((returnedNote) => {
+              this.$message({
+                message: 'Saved to database with objectId: '.concat(returnedNote.id),
+                type: 'success',
+              });
+              this.lectureFormData.loading = false;
+            }, (error) => {
+              this.$message({
+                message: error.message,
+                type: 'error',
+              });
+              this.lectureFormData.loading = false;
+            });
+        }
+        return false;
+      });
+    }
   },
   mounted() {
     Dropzone.autoDiscover = false;
