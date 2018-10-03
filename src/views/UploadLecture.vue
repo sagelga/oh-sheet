@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="10" :offset="2">
                     <h1>เพิ่ม Lecture Note</h1>
-                    <form>
+                    <el-form :inline="true" :model="lectureFormData" :rules="lectureFormRules" ref="lectureForm">
                         <p align="left">ชื่อ Lecture Note</p>
                         <el-input
                                 v-model="lectureName"
@@ -44,7 +44,7 @@
                         </el-input>
                         <p align="left">อัปโหลดไฟล์ Lecture Note</p>
                         <div id="my-awesome-dropzone" class="dropzone"></div>
-                    </form>
+                    </el-form>
                     <div style="margin-top: 20px">
                         <el-button type="primary" @click="saveLecture()">อัปโหลด</el-button>
                     </div>
@@ -75,6 +75,10 @@ export default {
   },
   data() {
     return {
+      lectureFormData:{
+        lectureDescription: '',
+        lectureName: '',
+      },
       lectureDescription: '',
       lectureName: '',
       tagOptions: [{
@@ -117,6 +121,14 @@ export default {
       }],
       selectedSubject: [],
       fileList: [],
+      lectureFormRules: {
+        lectureName: [
+          { required: true, message: 'A lacture needs a name' },
+        ],
+        lectureDescription: [
+          { required: true, message: 'A lecture needs an description' },
+        ],
+      },
     };
   },
   methods: {
