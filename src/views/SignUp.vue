@@ -11,7 +11,7 @@
           title="สมัครสมาชิกเรียบร้อย กรุณาคลิกลิงก์ในอีเมลเพื่อยืนยันการสมัคร"
           type="success" :closable="false" v-if="successfullySignedUp">
       </el-alert>
-      <el-form v-if="!successfullySignedUp">
+      <el-form id="signup-form" v-if="!successfullySignedUp" v-loading="loading">
         <el-form-item label="อีเมล">
           <el-input type="text" v-model="fields.email"></el-input>
         </el-form-item>
@@ -21,7 +21,7 @@
         <el-form-item label="ชื่อที่ใช้แสดง">
           <el-input type="text" v-model="fields.username"></el-input>
         </el-form-item>
-        <el-button type="primary" round @click="checkBlankFields"
+        <el-button id="signup-btn" type="primary" round @click="checkBlankFields"
                    style="margin-top: 1em">สมัครสมาชิก
         </el-button>
       </el-form>
@@ -47,6 +47,7 @@ export default {
       hasBlankField: false,
       successfullySignedUp: false,
       errorOnSignUp: '',
+      loading: false,
     };
   },
   methods: {
@@ -62,6 +63,7 @@ export default {
       }
     },
     signUpUser(usr, eml, pwd) {
+      this.loading = true;
       const user = new Parse.User();
       user.save({
         username: usr,
@@ -70,11 +72,19 @@ export default {
       })
         .then((response) => {
           this.successfullySignedUp = true;
+          this.loading = false;
           console.log(response);
         }, (error) => {
           this.errorOnSignUp = error.message;
+          this.loading = false;
         });
     },
+  },
+  mounted() {
+    document.getElementById('signup-form').addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (e.keyCode === 13) document.getElementById('signup-btn').click();
+    });
   },
 };
 </script>
