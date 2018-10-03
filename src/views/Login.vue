@@ -67,9 +67,9 @@ export default {
           that.$parent.loggedIn = true;
           that.loading = false;
           router.push('/');
-        }, (error) => {
+        }, (e) => {
           that.loading = false;
-          that.error = error.message;
+          that.error = e.message;
         });
     },
   },
