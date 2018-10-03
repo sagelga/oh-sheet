@@ -5,6 +5,13 @@ version: 2
 
 jobs:
   build:
+    filters:
+      branches:
+        only:
+          - /PONY-.*/
+          - /release\/sprint-.*/
+          - master
+
     docker:
     # specify the version you desire here. 
     # Version is documented at https://circleci.com/docs/2.0/circleci-images/

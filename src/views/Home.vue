@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <h1>HOME PAGE</h1>
-    <router-link to="/note/123/">Lecture View</router-link>
+    <router-link to="/note/azDugQ1izn/">Lecture View</router-link>
   </div>
 </template>
 

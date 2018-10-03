@@ -6,7 +6,7 @@
         <router-link class="card-title-link" to="/signup/">สมัครสมาชิก</router-link>
       </div>
       <el-alert :title="error" type="error" v-show="error"></el-alert>
-      <el-form>
+      <el-form id="login-form" v-loading="loading">
         <el-form-item label="ชื่อผู้ใช้"><!--Username input-->
           <el-input v-model="username"
                     class="inputTextLogin"
@@ -23,14 +23,16 @@
           </el-input>
         </el-form-item>
         <!--Remember Password-->
-        <el-form-item>
+        <!--el-form-item>
           <el-checkbox v-model="rememberPassword">จำฉันไว้</el-checkbox>
-        </el-form-item>
+        </el-form-item-->
         <!--Sign In / Sign Up Button-->
-        <el-button type="primary" round @click="logInUser(username, password)">
-          เข้าสู่ระบบ
-        </el-button>
-        <el-button type="text" style="margin-right: 2em">ลืมรหัสผ่าน</el-button>
+        <div style="margin-top: 1.25em">
+          <el-button id="login-btn" type="primary" round @click="logInUser(username, password)">
+            เข้าสู่ระบบ
+          </el-button>
+          <el-button type="text" style="margin-right: 2em">ลืมรหัสผ่าน</el-button>
+        </div>
       </el-form>
     </el-card>
   </div>
@@ -52,20 +54,30 @@ export default {
       password: '',
       rememberPassword: false,
       error: '',
+      loading: false,
     };
   },
   methods: {
     logInUser(usr, pwd) {
+      this.loading = true;
       const that = this;
       this.error = '';
       Parse.User.logIn(usr, pwd)
         .then(() => {
           that.$parent.loggedIn = true;
+          that.loading = false;
           router.push('/');
         }, (error) => {
+          that.loading = false;
           that.error = error.message;
         });
     },
+  },
+  mounted() {
+    document.getElementById('login-form').addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (e.keyCode === 13) document.getElementById('login-btn').click();
+    });
   },
 };
 </script>
