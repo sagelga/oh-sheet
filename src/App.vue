@@ -1,29 +1,91 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <TopNav ref="topNav"></TopNav>
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+  body {
+    font-family: sans-serif;
+  }
+
+  h1, h2 {
+    line-height: 1.5em;
+    margin-top: 0;
+  }
+
   a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+    color: #409EFF;
+    text-decoration: none;
+    &:visited {
+      color: #409EFF;
+    }
+    &:hover {
+      color: #409EFF - 20;
     }
   }
-}
+
+  .el-form-item {
+    margin-bottom: 0.5em;
+  }
+
+  .material-icons {
+    font-size: 1em;
+    vertical-align: middle;
+  }
+
+  .top-gap {
+    margin-top: 5em;
+  }
+
+  .row-wrap {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .login-wrap {
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card-title-link {
+    float: right;
+    padding: 3px 0;
+    font-size: 0.9em;
+  }
 </style>
+
+<script>
+import TopNav from '@/components/TopNav.vue';
+
+const Parse = require('parse/dist/parse.min');
+
+Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
+Parse.serverURL = 'https://parseapi.back4app.com/';
+
+export default {
+  components: {
+    TopNav,
+  },
+  data() {
+    return {
+      loggedIn: false,
+    };
+  },
+  methods: {
+
+  },
+  watch: {
+    loggedIn() {
+      this.$refs.topNav.loggedInTemplateEnabled = this.loggedIn;
+    },
+  },
+  mounted() {
+    if (Parse.User.current()) {
+      this.loggedIn = true;
+    }
+  },
+};
+</script>
