@@ -74,9 +74,9 @@
 </template>
 
 <style type="text/css">
-    .option {
-        width: 100%;
-    }
+  .option {
+    width: 100%;
+  }
 </style>
 
 <script>
