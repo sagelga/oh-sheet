@@ -62,7 +62,9 @@
 
 <script>
 const Dropzone = require('dropzone');
-
+const Parse = require('parse/dist/parse.min');
+Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
+Parse.serverURL = 'https://parseapi.back4app.com/';
 import 'dropzone/dist/dropzone.css';
 import BoxedContainer from '@/components/BoxedContainer.vue';
 
