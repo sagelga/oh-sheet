@@ -14,12 +14,19 @@
         <el-col :xs="24" :md="7">
           <el-card class="note-meta-card">
             <h1>{{ lectureNote.title }}</h1>
-            <router-link to="">
-              <h2>{{ lectureNote.categories[0] }}</h2>
-            </router-link>
+            <h2>
+              <router-link to="">{{ lectureNote.categories[0] }}</router-link>
+            </h2>
             <DateText :dateObj="lectureNote.updatedAt"/>
             <UserChip :user="lectureNote.author" />
             <QualityThumbs :voteUp="lectureNote.voteUp" :voteDown="lectureNote.voteDown" />
+            <el-tooltip effect="dark"
+                        :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
+                        placement="bottom-end">
+              <span class="favourite-btn" @click="toggleFav">
+                <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
+              </span>
+            </el-tooltip>
             <hr style="margin-top: 0.5em">
             <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
               <span class="material-icons">report</span>
@@ -44,32 +51,33 @@
   </BoxedContainer>
 </template>
 
-<style lang="scss">
-  .note-meta-card {
-    h1 {
-      font-size: 1em;
-      margin-bottom: 0.3rem;
-    }
-    h2 {
-      font-size: 1em;
-      font-weight: normal;
-      margin-bottom: 0.6rem;
-    }
-    .date-text {
-      margin-bottom: 0.8rem;
-    }
-  }
+<style lang="sass">
+  .note-meta-card
+    position: relative
+    h1
+      font-size: 1em
+      margin-bottom: 0.3rem
+    h2
+      font-size: 1em
+      font-weight: normal
+      margin-bottom: 0.6rem
+    .date-text
+      margin-bottom: 0.8rem
+    .favourite-btn
+      font-size: 1.6em
+      position: absolute
+      right: 0.7em
+      top: 0.7em
+      cursor: pointer
 
-  .pdf-viewer {
-    width: 100%;
-    height: 70vh;
-  }
+  .pdf-viewer
+    width: 100%
+    height: 70vh
 
-  .lecture-not-found {
-    width: 100%;
-    max-width: 360px;
-    margin-top: 2em;
-  }
+  .lecture-not-found
+    width: 100%
+    max-width: 360px
+    margin-top: 2em
 </style>
 
 <script>
@@ -97,6 +105,7 @@ export default {
       lectureNote: {},
       loading: true,
       foundLecture: false,
+      isFaved: false,
     };
   },
   methods: {
@@ -114,16 +123,50 @@ export default {
           lectureFields.forEach((f) => {
             this.lectureNote[f] = results[0].get(f);
           });
+
           const authorFields = ['username'];
           authorFields.forEach((f) => {
             this.lectureNote.author[f] = results[0].get('author').get(f);
           });
-          this.foundLecture = true;
+
+          this.isRemotelyFaved()
+            .then((favStatus) => {
+              this.isFaved = favStatus;
+              this.foundLecture = true;
+              this.loading = false;
+            })
+            .catch(() => {});
         } else {
           this.foundLecture = false;
+          this.loading = false;
         }
-        this.loading = false;
-      });
+      }); // TODO: Add catch
+    },
+    async isRemotelyFaved() {
+      const favStatusQuery = new Parse.Query(Parse.User);
+      favStatusQuery.equalTo('objectId', Parse.User.current().id);
+      const user = await favStatusQuery.find();
+      const favedNotes = user[0].get('favedNotes');
+      if (favedNotes.includes(this.$route.params.noteId)) return true;
+      return false;
+    },
+    toggleFav() {
+      if (this.isFaved) {
+        Parse.User.current().remove('favedNotes', this.$route.params.noteId);
+      } else {
+        Parse.User.current().addUnique('favedNotes', this.$route.params.noteId);
+      }
+      Parse.User.current().save()
+        .then(() => {
+          this.isFaved = !this.isFaved;
+          return true;
+        })
+        .catch((e) => {
+          this.$alert(e.message, 'เกิดข้อผิดพลาด', {
+            confirmButtonText: 'OK',
+          });
+          return false;
+        });
     },
   },
   created() {
