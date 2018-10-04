@@ -123,6 +123,7 @@ export default {
           lectureFields.forEach((f) => {
             this.lectureNote[f] = results[0].get(f);
           });
+          this.lectureNote.objectId = results[0].id;
 
           const authorFields = ['username'];
           authorFields.forEach((f) => {
