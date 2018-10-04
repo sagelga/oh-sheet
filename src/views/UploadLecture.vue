@@ -81,7 +81,7 @@ export default {
         categories: '',
         filePath: '',
       },
-      /*tagOptions: [{
+      /* tagOptions: [{
         value: 'ไทย',
         label: 'ไทย',
       }, {
@@ -90,7 +90,7 @@ export default {
       }, {
         value: 'อังกฤษ',
         label: 'อังกฤษ',
-      }],*/
+      }], */
       subjectOptions: [{
         value: 'มัธยมต้น',
         label: 'มัธยมต้น',
@@ -149,29 +149,29 @@ export default {
             note.set(f, this.formData[f]);
           });
           note.set('author', authorPointer);
-      
+
           note.save()
             .then((returnedNote) => {
               this.$message({
                 message: 'Saved to database with objectId: '.concat(returnedNote.id),
                 type: 'success',
               });
-              this.lectureFormData.loading = false;
+              this.loading = false;
             }, (error) => {
               this.$message({
                 message: error.message,
                 type: 'error',
               });
-              this.lectureFormData.loading = false;
+              this.loading = false;
             });
         }
         return false;
       });
-    }
+    },
   },
   mounted() {
     Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("div#my-awesome-dropzone", {
+    const myDropzone = new Dropzone('div#my-awesome-dropzone', {
       url: 'https://pony.zartre.com/upload-lecture-notes',
       paramName: 'upload',
       maxFiles: 1,
@@ -180,6 +180,9 @@ export default {
         'Cache-Control': '',
         'X-Requested-With': '',
       },
+    });
+    myDropzone.on('success', (f, r) => {
+      this.formData.filePath = r.message;
     });
   },
 };
