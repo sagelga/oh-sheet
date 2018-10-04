@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap">
+  <BoxedContainer class="top-gap" v-loading="loading">
     <div class="row-wrap" v-if="!loading">
       <el-row v-if="!foundLecture">
         <el-col :xs="24" style="text-align: center;">
