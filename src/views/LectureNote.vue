@@ -19,7 +19,10 @@
             </h2>
             <DateText :dateObj="lectureNote.updatedAt"/>
             <UserChip :user="lectureNote.author" />
-            <QualityThumbs :voteUp="lectureNote.voteUp" :voteDown="lectureNote.voteDown" />
+            <QualityThumbs :voteUp="lectureNote.voteUp"
+                            :voteDown="lectureNote.voteDown"
+                            :lectureId="lectureNote.objectId"
+                            :chosen="chosenVote" />
             <el-tooltip effect="dark"
                         :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
                         placement="bottom-end">
@@ -91,6 +94,8 @@ const Parse = require('parse/dist/parse.min');
 Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
+const userId = Parse.User.current().id;
+
 export default {
   name: 'lectureNote',
   components: {
@@ -106,6 +111,7 @@ export default {
       loading: true,
       foundLecture: false,
       isFaved: false,
+      chosenVote: false,
     };
   },
   methods: {
@@ -119,11 +125,12 @@ export default {
       lectureQuery.find().then((results) => {
         if (results.length !== 0) {
           const lectureFields = ['author', 'categories', 'filePath', 'title',
-            'updatedAt', 'voteDown', 'voteUp'];
+            'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
           lectureFields.forEach((f) => {
             this.lectureNote[f] = results[0].get(f);
           });
           this.lectureNote.objectId = results[0].id;
+          this.chosenVote = this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
 
           const authorFields = ['username'];
           authorFields.forEach((f) => {
@@ -145,7 +152,7 @@ export default {
     },
     async isRemotelyFaved() {
       const favStatusQuery = new Parse.Query(Parse.User);
-      favStatusQuery.equalTo('objectId', Parse.User.current().id);
+      favStatusQuery.equalTo('objectId', userId);
       const user = await favStatusQuery.find();
       const favedNotes = user[0].get('favedNotes');
       if (favedNotes.includes(this.$route.params.noteId)) return true;
@@ -168,6 +175,12 @@ export default {
           });
           return false;
         });
+    },
+    findMyVote(upVoters, downVoters) {
+      // Find which vote the user did take
+      if (upVoters.includes(userId)) return 'up';
+      else if (downVoters.includes(userId)) return 'down';
+      return false;
     },
   },
   created() {
