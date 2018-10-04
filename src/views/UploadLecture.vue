@@ -4,22 +4,20 @@
             <el-row :gutter="20">
                 <el-col :span="10" :offset="2">
                     <h1>เพิ่ม Lecture Note</h1>
-                    <el-form :inline="true" :model="lectureFormData" :rules="lectureFormRules" ref="lectureForm">
+                    <el-form :model="formData" :rules="formRules" ref="lectureForm">
                         <p align="left">ชื่อ Lecture Note</p>
                         <el-input
-                                v-model="lectureName"
-                                clearable="" size="large"
-                                class=""
-                                type="text">
+                                v-model="formData.title"
+                                clearable="" size="large">
                         </el-input>
                         <p align="left">หมวดหมู่</p>
                         <el-cascader
                                 class="option"
                                 expand-trigger="hover"
                                 :options="subjectOptions"
-                                v-model="selectedSubject">
+                                v-model="formData.categories">
                         </el-cascader>
-                        <p align="left">แท็ก</p>
+                        <!--p align="left">แท็ก</p>
                         <el-select
                                 class="option"
                                 v-model="lectureTag"
@@ -33,12 +31,10 @@
                                     :label="item.label"
                                     :value="item.value">
                             </el-option>
-                        </el-select>
+                        </el-select-->
                         <p align="left">คำอธิบายเพิ่มเติม</p>
-                        <el-input v-model="lectureDescription"
-                                  clearable=""
+                        <el-input v-model="formData.description"
                                   size="large"
-                                  class=""
                                   :autosize="{ minRows: 2, maxRows: 4 }"
                                   type="textarea">
                         </el-input>
@@ -61,12 +57,14 @@
 </style>
 
 <script>
-const Dropzone = require('dropzone');
-const Parse = require('parse/dist/parse.min');
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
 import 'dropzone/dist/dropzone.css';
 import BoxedContainer from '@/components/BoxedContainer.vue';
+
+const Dropzone = require('dropzone');
+const Parse = require('parse/dist/parse.min');
+
+Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
+Parse.serverURL = 'https://parseapi.back4app.com/';
 
 export default {
   name: 'uploadLecture',
@@ -75,13 +73,15 @@ export default {
   },
   data() {
     return {
-      lectureFormData:{
-        lectureDescription: '',
-        lectureName: '',
+      loading: false,
+      orgFormData: {},
+      formData: {
+        description: '',
+        title: '',
+        categories: '',
+        filePath: '',
       },
-      lectureDescription: '',
-      lectureName: '',
-      tagOptions: [{
+      /*tagOptions: [{
         value: 'ไทย',
         label: 'ไทย',
       }, {
@@ -90,8 +90,7 @@ export default {
       }, {
         value: 'อังกฤษ',
         label: 'อังกฤษ',
-      }],
-      lectureTag: [],
+      }],*/
       subjectOptions: [{
         value: 'มัธยมต้น',
         label: 'มัธยมต้น',
@@ -119,13 +118,11 @@ export default {
         value: 'อุดมศึกษา',
         label: 'อุดมศึกษา',
       }],
-      selectedSubject: [],
-      fileList: [],
-      lectureFormRules: {
-        lectureName: [
-          { required: true, message: 'A lacture needs a name' },
+      formRules: {
+        name: [
+          { required: true, message: 'A lecture needs a name' },
         ],
-        lectureDescription: [
+        description: [
           { required: true, message: 'A lecture needs an description' },
         ],
       },
@@ -135,21 +132,23 @@ export default {
     saveLecture() {
       this.$refs.lectureForm.validate((valid) => {
         if (valid) {
-          this.lectureFormData.loading = true;
+          this.loading = true;
 
-          // Create a new Cat object from class Cat
-          const Lecture = Parse.Object.extend('Lecture');
-          // Create kitty the Cat
+          // Create a new Lecture object from class LectureNote
+          const Lecture = Parse.Object.extend('LectureNote');
+          // Create note the Lecture
           const note = new Lecture();
           // Create a new User object from class User
           const User = Parse.Object.extend('User');
-          // Create a pointer to kitty's owner
-          const ownerPointer = new User().set('objectId', this.lectureFormData.owner);
+          // Create a pointer to note's author
+          const authorPointer = new User().set('objectId', Parse.User.current().id);
 
-          // Set kitty attributes
-          note.set('category', this.lectureFormData.tagOptions)
-          note.set('description', this.lectureFormData.lectureDescription);
-          note.set('title', this.lectureFormData.lectureName)
+          // Set note attributes
+          const fields = Object.keys(this.formData);
+          fields.forEach((f) => {
+            note.set(f, this.formData[f]);
+          });
+          note.set('author', authorPointer);
       
           note.save()
             .then((returnedNote) => {
