@@ -5,18 +5,21 @@
                 <el-col :span="10" :offset="2">
                     <h1>เพิ่ม Lecture Note</h1>
                     <el-form :model="formData" :rules="formRules" ref="lectureForm">
-                        <p align="left">ชื่อ Lecture Note</p>
-                        <el-input
-                                v-model="formData.title"
-                                clearable="" size="large">
-                        </el-input>
-                        <p align="left">หมวดหมู่</p>
-                        <el-cascader
-                                class="option"
-                                expand-trigger="hover"
-                                :options="subjectOptions"
-                                v-model="formData.categories">
-                        </el-cascader>
+                        <el-form-item label="ชื่อโน้ต" prop="title">
+                          <el-input
+                                  v-model="formData.title"
+                                  size="large">
+                          </el-input>
+                        </el-form-item>
+                        <el-form-item label="หมวดหมู่" prop="categories">
+                          <el-cascader
+                                  class="option"
+                                  expand-trigger="hover"
+                                  :options="subjectOptions"
+                                  v-model="formData.categories"
+                                  prop="categories">
+                          </el-cascader>
+                        </el-form-item>
                         <!--p align="left">แท็ก</p>
                         <el-select
                                 class="option"
@@ -36,13 +39,18 @@
                         <el-input v-model="formData.description"
                                   size="large"
                                   :autosize="{ minRows: 2, maxRows: 4 }"
-                                  type="textarea">
+                                  type="textarea"
+                                  prop="description">
                         </el-input>
                         <p align="left">อัปโหลดไฟล์ Lecture Note</p>
                         <div id="my-awesome-dropzone" class="dropzone"></div>
                     </el-form>
                     <div style="margin-top: 20px">
-                        <el-button type="primary" @click="saveLecture()">อัปโหลด</el-button>
+                        <el-button type="primary"
+                                    @click="saveLecture()"
+                                    :disabled="!isSubmitBtnClickable">
+                          อัปโหลด
+                        </el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -73,6 +81,7 @@ export default {
   },
   data() {
     return {
+      isSubmitBtnClickable: false,
       loading: false,
       orgFormData: {},
       formData: {
@@ -119,11 +128,11 @@ export default {
         label: 'อุดมศึกษา',
       }],
       formRules: {
-        name: [
-          { required: true, message: 'A lecture needs a name' },
+        title: [
+          { required: true, message: 'กรุรากรอกชื่อ' },
         ],
-        description: [
-          { required: true, message: 'A lecture needs an description' },
+        categories: [
+          { required: true, message: 'กรุราเลือกหมวดหมู่'}
         ],
       },
     };
@@ -183,6 +192,7 @@ export default {
     });
     myDropzone.on('success', (f, r) => {
       this.formData.filePath = r.message;
+      this.isSubmitBtnClickable = true;
     });
   },
 };
