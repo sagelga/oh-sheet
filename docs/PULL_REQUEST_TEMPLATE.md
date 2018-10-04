@@ -1,19 +1,18 @@
-## What I have done
-In this pull request, I have done these as following...
+# แบบฟอร์มส่ง Pull Request
+จากการส่ง Pull Request นี้
 
-- [ ] Edit config.json
-- [ ] Add a file
-- [ ] Modify a file
-- [ ] Delete a file
+เราทำการ
+- [ ] เพื่มไฟล์
+- [ ] แก้ไขไฟล์
+- [ ] ลบไฟล์
 
-All the changes are shown on the diff view of this Pull Request.
-I am sure that all the changes are intentional and made with care for Humanity and Pony glorious race.
+หรือ / และ
+- [ ] ไฟล์ package-lock.json มีการแก้ไข
 
-## I understand that 
+และทุกอย่างที่เราทำ ได้อยู่ในหน้า `file changed` หมดแล้ว ไม่พูดมากเจ็บคอ ไปดูเอาเองนะ
 
-- [ ] I can run the website on my computer without compiling error.
-- [ ] I did not make changes on other developers' code. But if I did that, I have notified them that it is for Humanity's greater good.
-- [ ] I have updated this branch with the parent branch and I will not generate conflicts that are from forgetting to do that.
+และก็ได้ทำการเช็คแล้วว่า
+- [ ] เรารัน project นี้บนเครื่องของเราได้ ด้วยการทำ `npm run serve` และก็ไม่ได้เกิด error อะไร
 
-**Just to make sure that you read**
-- [x] I unchecked this checkbox because I want a Pull Request approval.
+และ
+- [x] เราไม่อยากได้ Pull Request หรอก เรากดขอเล่นๆ แต่ถ้าเราอยากได้เมื่อไหร่ เราก็จะมา untick ช่องนี้เอง และทำการเอา tag 'Work in Progress' ออก
