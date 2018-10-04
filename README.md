@@ -1,6 +1,6 @@
 # Project PONY (ระบบแชร์สรุปบทเรียนออนไลน์)
 
-## Project Abstracts ความสำคัณและที่มาของระบบ
+## Project Abstracts ความสำคัญและที่มาของระบบ
 นักเรียน นักศึกษา ต้องการอ่านสรุปบทเรียนจากหลายมุมมอง เพื่อให้ได้ข้อมูลที่อาจขาดหายไปจาก การบันทึกเพียงคนเดียว ซึ่งการไปหาสรุปจากคนอื่นๆ กระทำได้ยาก เนื่องจากไม่ทราบว่าใครมีสรุปของวิชา ใดบ้าง หรือมีเนื้อหาที่ต้องการหรือไม่
 
 เป้าหมายของระบบคือสร้างช่องทางให้ผู้ใช้งาน เช่น นักศึกษา ที่มีการเรียนในวิชาเดียวกัน หรือคล้ายคลึงกัน สามารถแบ่งปันสรุปของตนเองให้ผู้ใช้งานท่านอื่นได้ และสามารถเข้าไปดูสรุปของผู้ใช้งานอื่น เพื่อนำมาพัฒนาการจดบันทึกของตนเอง และเก็บตกความรู้ที่อาจจะตกไประหว่างการจดบันทึกของตนเอง
@@ -19,10 +19,9 @@
 - สมัครสมาชิก เพื่อที่จะสามารถเข้าสู่ระบบและเป็นสมาชิกของระบบได้
 - เรียกดูสรุปบทเรียนตามตัวกรองที่เลือก
 
-> NOTE : We are currently in Alpha development cycle right now. <br>
-> We continuously improved and ship new functional feature every month. Stay tuned.
+และอื่นๆ ที่กำลังถูกพัฒนาอยู่
 
-## How to install
+## How to install วิธีการเปิดใช้งาน
 ```
 # Install dependencies (required on first run):
 npm install
@@ -39,17 +38,14 @@ This Progressive Web Application uses Vue and Vue Router, with ElementJS as a UI
 
 We also use MongoDB and [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/) for database and file storage.
 
-## CI Checking
+## CI Checking ระบบเช็คอัตโนมัติ
 We are currently using CircleCI Continuous Integration service.<br>
 Here's are some status on each sprint branch.
 
-|master|release/sprint-1|release/sprint-2|release/sprint-3|release/sprint-4|
-|-|-|-|-|-|
-|`WIP`|`Status : Active`<br>[![CircleCI](https://circleci.com/gh/IRIS-KMITL/se-y61-project-my-little-pony/tree/release%2Fsprint-1.svg?style=svg&circle-token=4a79d7cd87beaeab28be229919c50730893c5a6b)](https://circleci.com/gh/IRIS-KMITL/se-y61-project-my-little-pony/tree/release%2Fsprint-1)|`Status : Inactive`<br>|`Status : Inactive`<br>|`Status : Inactive`<br>|
+|release/sprint-1|release/sprint-2|release/sprint-3|release/sprint-4|
+|-|-|-|-|
+|`Status : Active`<br>[![CircleCI](https://circleci.com/gh/IRIS-KMITL/se-y61-project-my-little-pony/tree/release%2Fsprint-1.svg?style=svg&circle-token=4a79d7cd87beaeab28be229919c50730893c5a6b)](https://circleci.com/gh/IRIS-KMITL/se-y61-project-my-little-pony/tree/release%2Fsprint-1)|`Status : Inactive`<br>|`Status : Inactive`<br>|`Status : Inactive`<br>|
 
-
-## Licensing
-We haven't thought about licensing this project yet. Please check out later.
 
 ## Links
 ### Issue Tracking 
