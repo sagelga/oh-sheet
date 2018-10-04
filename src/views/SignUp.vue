@@ -73,7 +73,6 @@ export default {
         .then((response) => {
           this.successfullySignedUp = true;
           this.loading = false;
-          console.log(response);
         }, (error) => {
           this.errorOnSignUp = error.message;
           this.loading = false;
