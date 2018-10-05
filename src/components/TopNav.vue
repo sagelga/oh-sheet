@@ -7,21 +7,21 @@
         <i class="el-icon-search"></i>
       </el-menu-item>
 
-      <el-menu-item index="/saved" v-if="loggedInTemplateEnabled">
+      <el-menu-item index="/saved" v-if="isLoggedIn">
         <i class="el-icon-star-on"></i>
       </el-menu-item>
 
-      <el-menu-item index="/upload" v-if="loggedInTemplateEnabled">
+      <el-menu-item index="/upload" v-if="isLoggedIn">
         <i class="el-icon-upload"></i>
       </el-menu-item>
 
-      <el-submenu id="topnav-more" index="#" v-if="loggedInTemplateEnabled">
+      <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title"><i class="el-icon-setting"></i></template>
         <el-menu-item index="/profile/zartre">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 
-      <el-menu-item index="/login" v-if="!loggedInTemplateEnabled">
+      <el-menu-item index="/login" v-if="!isLoggedIn">
         เข้าสู่ระบบ/สมัครสมาชิก
       </el-menu-item>
 
@@ -54,15 +54,18 @@ export default {
   data() {
     return {
       defaultActive: '/',
-      loggedInTemplateEnabled: false,
     };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.loggedIn;
+    },
   },
   methods: {
     logOutUser() {
-      const that = this;
       Parse.User.logOut()
         .then(() => {
-          that.$parent.loggedIn = false;
+          this.$store.commit('loggedIn', false);
         });
     },
   },

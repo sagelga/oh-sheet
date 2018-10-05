@@ -7,7 +7,7 @@
           <LectureNoteCard :author="author" :lectureNote="lecture" />
         </el-col>
       </el-row>
-  </BoxedContainer>
+    </BoxedContainer>
   </div>
 </template>
 

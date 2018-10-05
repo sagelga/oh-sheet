@@ -58,33 +58,21 @@
 </style>
 
 <script>
+import store from '@/store';
 import TopNav from '@/components/TopNav.vue';
 
 const Parse = require('parse/dist/parse.min');
 
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   components: {
     TopNav,
   },
-  data() {
-    return {
-      loggedIn: false,
-    };
-  },
-  methods: {
-
-  },
-  watch: {
-    loggedIn() {
-      this.$refs.topNav.loggedInTemplateEnabled = this.loggedIn;
-    },
-  },
   mounted() {
     if (Parse.User.current()) {
-      this.loggedIn = true;
+      this.$store.commit('loggedIn', true);
     }
   },
 };

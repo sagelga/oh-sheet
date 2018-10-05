@@ -22,11 +22,12 @@
             <QualityThumbs :voteUp="lectureNote.voteUp"
                             :voteDown="lectureNote.voteDown"
                             :lectureId="lectureNote.objectId"
-                            :chosen="chosenVote" />
+                            :chosen="chosenVote"
+                            v-if="isLoggedIn"/>
             <el-tooltip effect="dark"
                         :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
                         placement="bottom-end"
-                        v-if="userId">
+                        v-if="isLoggedIn">
               <span class="favourite-btn" @click="toggleFav">
                 <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
               </span>
@@ -56,37 +57,36 @@
 </template>
 
 <style lang="sass">
-  .note-meta-card
-    position: relative
-    h1
-      font-size: 1em
-      margin-bottom: 0.3rem
-    h2
-      font-size: 1em
-      font-weight: normal
-      margin-bottom: 0.6rem
-    .date-text
-      margin-bottom: 0.8rem
-    .favourite-btn
-      font-size: 1.6em
-      position: absolute
-      right: 0.7em
-      top: 0.7em
-      cursor: pointer
-    hr
-      border: 0
-      height: 0
-      border-top: 1px solid rgba(0, 0, 0, 0.1)
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3)
-
-  .pdf-viewer
-    width: 100%
-    height: 70vh
-
-  .lecture-not-found
-    width: 100%
-    max-width: 360px
-    margin-top: 2em
+.note-meta-card
+  position: relative
+  h1
+    font-size: 1em
+    margin-bottom: 0.3rem
+  h2
+    font-size: 1em
+    font-weight: normal
+    margin-bottom: 0.6rem
+  .date-text
+    margin-bottom: 0.8rem
+  .favourite-btn
+    font-size: 1.6em
+    position: absolute
+    right: 0.7em
+    top: 0.7em
+    cursor: pointer
+  hr
+    border: 0
+    height: 0
+    border-top: 1px solid rgba(0, 0, 0, 0.1)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3)
+    margin: 1em 0
+.pdf-viewer
+  width: 100%
+  height: 70vh
+.lecture-not-found
+  width: 100%
+  max-width: 360px
+  margin-top: 2em
 </style>
 
 <script>
@@ -94,11 +94,12 @@ import BoxedContainer from '@/components/BoxedContainer.vue';
 import UserChip from '@/components/UserChip.vue';
 import DateText from '@/components/DateText.vue';
 import QualityThumbs from '@/components/QualityThumbs.vue';
+import store from '@/store';
 
 const Parse = require('parse/dist/parse.min');
 
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   name: 'lectureNote',
@@ -119,6 +120,11 @@ export default {
       userId: Parse.User.current() ? Parse.User.current().id : null,
     };
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.loggedIn;
+    },
+  },
   methods: {
     getLectureNote() {
       const LectureNote = Parse.Object.extend('LectureNote');
@@ -136,10 +142,8 @@ export default {
           });
           this.lectureNote.objectId = results[0].id;
 
-          if (this.lectureNote.upVoters === undefined)
-            this.lectureNote.upVoters = [];
-          if (this.lectureNote.downVoters === undefined)
-            this.lectureNote.downVoters = [];
+          if (this.lectureNote.upVoters === undefined) { this.lectureNote.upVoters = []; }
+          if (this.lectureNote.downVoters === undefined) { this.lectureNote.downVoters = []; }
           this.chosenVote = this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
 
           if (this.userId) {
