@@ -28,7 +28,7 @@
                         :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
                         placement="bottom-end"
                         v-if="isLoggedIn">
-              <span class="favourite-btn" @click="toggleFav">
+              <span class="favourite-btn" @click="toggleFav(lectureNote.objectId)">
                 <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
               </span>
             </el-tooltip>
@@ -126,11 +126,11 @@ export default {
     },
   },
   methods: {
-    getLectureNote() {
+    getLectureNote(noteId) {
       const LectureNote = Parse.Object.extend('LectureNote');
       const lectureQuery = new Parse.Query(LectureNote);
 
-      lectureQuery.equalTo('objectId', this.$route.params.noteId);
+      lectureQuery.equalTo('objectId', noteId);
       lectureQuery.include('author');
 
       lectureQuery.find().then((results) => {
@@ -174,18 +174,19 @@ export default {
         }
       }); // TODO: Add catch
     },
-    async isRemotelyFaved() {
+    async isRemotelyFaved(noteId) {
       const favStatusQuery = new Parse.Query(Parse.User);
       favStatusQuery.equalTo('objectId', this.userId);
       const user = await favStatusQuery.find();
+      // TODO: Change find to first
       const favedNotes = user[0].get('favedNotes');
-      return favedNotes.includes(this.$route.params.noteId);
+      return favedNotes.includes(noteId);
     },
-    toggleFav() {
+    toggleFav(noteId) {
       if (this.isFaved) {
-        Parse.User.current().remove('favedNotes', this.$route.params.noteId);
+        Parse.User.current().remove('favedNotes', noteId);
       } else {
-        Parse.User.current().addUnique('favedNotes', this.$route.params.noteId);
+        Parse.User.current().addUnique('favedNotes', noteId);
       }
       Parse.User.current().save()
         .then(() => {
@@ -207,7 +208,7 @@ export default {
     },
   },
   created() {
-    this.getLectureNote();
+    this.getLectureNote(this.$route.params.noteId);
   },
 };
 </script>
