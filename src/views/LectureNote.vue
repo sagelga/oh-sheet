@@ -1,6 +1,6 @@
 <template>
   <BoxedContainer class="top-gap" v-loading="loading">
-    <div class="row-wrap" v-if="!loading">
+    <div class="side-margin" v-if="!loading">
       <el-row v-if="!foundLecture">
         <el-col :xs="24" style="text-align: center;">
           <h1>ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h1>
@@ -151,7 +151,7 @@ export default {
               this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
           }
 
-          const authorFields = ['username'];
+          const authorFields = ['username', 'avatarPath'];
           authorFields.forEach((f) => {
             this.lectureNote.author[f] = results[0].get('author').get(f);
           });
