@@ -32,10 +32,12 @@
 </style>
 
 <script>
+import store from '@/store';
+
 const Parse = require('parse/dist/parse.min');
 
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 const LectureNote = Parse.Object.extend('LectureNote');
 const ln = new LectureNote();

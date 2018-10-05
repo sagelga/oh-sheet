@@ -22,11 +22,12 @@
             <QualityThumbs :voteUp="lectureNote.voteUp"
                             :voteDown="lectureNote.voteDown"
                             :lectureId="lectureNote.objectId"
-                            :chosen="chosenVote" />
+                            :chosen="chosenVote"
+                            v-if="isLoggedIn"/>
             <el-tooltip effect="dark"
                         :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
                         placement="bottom-end"
-                        v-if="userId">
+                        v-if="isLoggedIn">
               <span class="favourite-btn" @click="toggleFav">
                 <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
               </span>
@@ -78,6 +79,7 @@
     height: 0
     border-top: 1px solid rgba(0, 0, 0, 0.1)
     border-bottom: 1px solid rgba(255, 255, 255, 0.3)
+    margin: 1em 0
 .pdf-viewer
   width: 100%
   height: 70vh
@@ -117,6 +119,11 @@ export default {
       chosenVote: '',
       userId: Parse.User.current() ? Parse.User.current().id : null,
     };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.loggedIn;
+    },
   },
   methods: {
     getLectureNote() {
@@ -201,7 +208,6 @@ export default {
   },
   created() {
     this.getLectureNote();
-    console.log(store.state.loggedIn);
   },
 };
 </script>
