@@ -5,7 +5,7 @@
       <h1>{{ user.username }}</h1>
     </div>
     <el-row :gutter="20" v-loading="loadingLectureNotes">
-      <el-col :span="6" v-for="lecture in lectureNotes">
+      <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId">
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
@@ -25,7 +25,7 @@
 <script>
 import store from '@/store';
 import BoxedContainer from '@/components/BoxedContainer.vue';
-import LectureNoteCard from '@/components/LectureNoteCard';
+import LectureNoteCard from '@/components/LectureNoteCard.vue';
 
 const Parse = require('parse/dist/parse.min');
 

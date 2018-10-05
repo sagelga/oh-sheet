@@ -1,61 +1,61 @@
- <template>
-    <BoxedContainer class="top-gap">
-        <div class="row-wrap">
-            <el-row :gutter="20">
-                <el-col :span="10" :offset="2">
-                    <h1>เพิ่ม Lecture Note</h1>
-                    <el-form :model="formData" :rules="formRules" ref="lectureForm">
-                        <el-form-item label="ชื่อโน้ต" prop="title">
-                          <el-input
-                                  v-model="formData.title"
-                                  size="large">
-                          </el-input>
-                        </el-form-item>
-                        <el-form-item label="หมวดหมู่" prop="categories">
-                          <el-cascader
-                                  class="option"
-                                  expand-trigger="hover"
-                                  :options="subjectOptions"
-                                  v-model="formData.categories"
-                                  prop="categories">
-                          </el-cascader>
-                        </el-form-item>
-                        <!--p align="left">แท็ก</p>
-                        <el-select
-                                class="option"
-                                v-model="lectureTag"
-                                multiple
-                                filterable
-                                allow-create
-                                default-first-option>
-                            <el-option
-                                    v-for="item in tagOptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select-->
-                        <p align="left">คำอธิบายเพิ่มเติม</p>
-                        <el-input v-model="formData.description"
-                                  size="large"
-                                  :autosize="{ minRows: 2, maxRows: 4 }"
-                                  type="textarea"
-                                  prop="description">
-                        </el-input>
-                        <p align="left">อัปโหลดไฟล์ Lecture Note</p>
-                        <div id="my-awesome-dropzone" class="dropzone"></div>
-                    </el-form>
-                    <div style="margin-top: 20px">
-                        <el-button type="primary"
-                                    @click="saveLecture()"
-                                    :disabled="!isSubmitBtnClickable">
-                          อัปโหลด
-                        </el-button>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-    </BoxedContainer>
+<template>
+  <BoxedContainer class="top-gap">
+    <div class="row-wrap">
+      <el-row :gutter="20">
+        <el-col :span="10" :offset="2">
+          <h1>เพิ่ม Lecture Note</h1>
+          <el-form :model="formData" :rules="formRules" ref="lectureForm">
+            <el-form-item label="ชื่อโน้ต" prop="title">
+              <el-input
+                  v-model="formData.title"
+                  size="large">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="หมวดหมู่" prop="categories">
+              <el-cascader
+                  class="option"
+                  expand-trigger="hover"
+                  :options="subjectOptions"
+                  v-model="formData.categories"
+                  prop="categories">
+              </el-cascader>
+            </el-form-item>
+            <!--p align="left">แท็ก</p>
+            <el-select
+                    class="option"
+                    v-model="lectureTag"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option>
+                <el-option
+                        v-for="item in tagOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select-->
+            <p align="left">คำอธิบายเพิ่มเติม</p>
+            <el-input v-model="formData.description"
+                      size="large"
+                      :autosize="{ minRows: 2, maxRows: 4 }"
+                      type="textarea"
+                      prop="description">
+            </el-input>
+            <p align="left">อัปโหลดไฟล์ Lecture Note</p>
+            <div id="my-awesome-dropzone" class="dropzone"></div>
+          </el-form>
+          <div style="margin-top: 20px">
+            <el-button type="primary"
+                       @click="saveLecture()"
+                       :disabled="!isSubmitBtnClickable">
+              อัปโหลด
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+  </BoxedContainer>
 </template>
 
 <style type="text/css">
@@ -132,7 +132,7 @@ export default {
           { required: true, message: 'กรุรากรอกชื่อ' },
         ],
         categories: [
-          { required: true, message: 'กรุราเลือกหมวดหมู่'}
+          { required: true, message: 'กรุราเลือกหมวดหมู่' },
         ],
       },
     };
@@ -142,6 +142,7 @@ export default {
       this.$refs.lectureForm.validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.isSubmitBtnClickable = false;
 
           // Create a new Lecture object from class LectureNote
           const Lecture = Parse.Object.extend('LectureNote');
@@ -161,10 +162,7 @@ export default {
 
           note.save()
             .then((returnedNote) => {
-              this.$message({
-                message: 'Saved to database with objectId: '.concat(returnedNote.id),
-                type: 'success',
-              });
+              this.$router.push(`/note/${returnedNote.id}/`);
               this.loading = false;
             }, (error) => {
               this.$message({
@@ -172,6 +170,7 @@ export default {
                 type: 'error',
               });
               this.loading = false;
+              this.isSubmitBtnClickable = true;
             });
         }
         return false;
