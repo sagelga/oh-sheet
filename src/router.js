@@ -43,5 +43,10 @@ export default new Router({
       name: 'parseSamples',
       component: () => import('./views/ParseSamples.vue'),
     },
+    {
+      path: '/profile/:username',
+      name: 'profile',
+      component: () => import('./views/Profile.vue'),
+    },
   ],
 });
