@@ -1,11 +1,13 @@
 <template>
-  <BoxedContainer v-loading="loadingProfile" class="top-gap">
+  <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
       <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
       <h1>{{ user.username }}</h1>
     </div>
-    <el-row :gutter="20">
-      <el-col :span="6"></el-col>
+    <el-row :gutter="20" v-loading="loadingLectureNotes">
+      <el-col :span="6" v-for="lecture in lectureNotes">
+        <LectureNoteCard :author="user" :lecture-note="lecture" />
+      </el-col>
     </el-row>
   </BoxedContainer>
 </template>
@@ -23,6 +25,7 @@
 <script>
 import store from '@/store';
 import BoxedContainer from '@/components/BoxedContainer.vue';
+import LectureNoteCard from '@/components/LectureNoteCard';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -31,12 +34,14 @@ Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   name: 'Profile',
-  components: { BoxedContainer },
+  components: { LectureNoteCard, BoxedContainer },
   data() {
     return {
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt'],
+      lectureNotes: [],
       loadingProfile: true,
+      loadingLectureNotes: true,
       foundProfile: false,
     };
   },
@@ -54,6 +59,16 @@ export default {
       const lectureNotes = await query.find();
       return lectureNotes;
     },
+    getLectureNoteAttrs(lecture, attrs) {
+      const newLecture = {};
+      attrs.forEach((a) => {
+        newLecture[a] = lecture.get(a);
+      });
+      if (attrs.includes('objectId') || attrs.includes('id')) {
+        newLecture.objectId = lecture.id;
+      }
+      return newLecture;
+    },
   },
   created() {
     this.getUserProfile(this.$route.params.username)
@@ -66,7 +81,11 @@ export default {
         this.foundProfile = true;
         this.getLecturesOfUserPointer(user)
           .then((lectureNotes) => {
-            console.log(lectureNotes);
+            lectureNotes.forEach((lec) => {
+              const wantedAttrs = ['objectId', 'title', 'description', 'categories', 'thumbnailPath'];
+              this.lectureNotes.push(this.getLectureNoteAttrs(lec, wantedAttrs));
+            });
+            this.loadingLectureNotes = false;
           });
       });
   },

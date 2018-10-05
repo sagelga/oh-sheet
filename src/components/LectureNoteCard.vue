@@ -4,7 +4,7 @@
       <img src="https://via.placeholder.com/300x424" alt="Preview">
       <div style="padding: 1em;">
         <h1>{{ lectureNote.title }}</h1>
-        <span class="meta">{{ lectureNote.categories[0] }}</span>
+        <span class="meta">{{ categories }}</span>
         <UserChip :user="author" />
       </div>
     </el-card>
@@ -20,6 +20,12 @@ export default {
   props: {
     author: Object,
     lectureNote: Object,
+  },
+  computed: {
+    categories() {
+      if (this.lectureNote.categories) return this.lectureNote.categories[0];
+      return '';
+    },
   },
 };
 </script>
