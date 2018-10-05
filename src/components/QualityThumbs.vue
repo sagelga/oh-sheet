@@ -4,13 +4,13 @@
     <el-button type="text" style="margin-right: 0.5em" @click="submitVoteUp"
                 :class="{ chosen: chosenVote === 'up', disabled: userId == null }">
       <span class="material-icons" >thumb_up</span>
-      {{ voteUps }}
+      {{ voteUps || 0 }}
     </el-button>
 
     <el-button type="text" @click="submitVoteDown"
                :class="{ chosen: chosenVote === 'down', disabled: userId == null }">
       <span class="material-icons" style="margin-right: 0.15em">thumb_down</span>
-      {{ voteDowns }}
+      {{ voteDowns || 0 }}
     </el-button>
 
   </div>
