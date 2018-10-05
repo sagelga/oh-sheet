@@ -17,7 +17,7 @@
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title"><i class="el-icon-setting"></i></template>
-        <el-menu-item index="/profile/zartre">โปรไฟล์ของฉัน</el-menu-item>
+        <el-menu-item :index="'/profile/' + Parse.User.current().username">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 

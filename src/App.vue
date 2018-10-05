@@ -39,6 +39,10 @@
     margin-top: 5em;
   }
 
+  .bottom-gap {
+    margin-bottom: 5em;
+  }
+
   .row-wrap {
     margin-left: 10px;
     margin-right: 10px;
