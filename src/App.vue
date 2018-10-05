@@ -43,7 +43,7 @@
     margin-bottom: 5em;
   }
 
-  .row-wrap {
+  .side-margin {
     margin-left: 10px;
     margin-right: 10px;
   }
