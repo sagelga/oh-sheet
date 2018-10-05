@@ -17,7 +17,7 @@
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title"><i class="el-icon-setting"></i></template>
-        <el-menu-item :index="'/profile/' + Parse.User.current().username">โปรไฟล์ของฉัน</el-menu-item>
+        <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 
@@ -43,8 +43,12 @@
 
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
+import store from '@/store';
 
 const Parse = require('parse/dist/parse.min');
+
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   name: 'TopNav',
@@ -59,6 +63,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.state.loggedIn;
+    },
+    username() {
+      return Parse.User.current().get('username');
     },
   },
   methods: {
