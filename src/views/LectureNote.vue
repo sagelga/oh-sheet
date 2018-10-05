@@ -136,6 +136,12 @@ export default {
           });
           this.lectureNote.objectId = results[0].id;
 
+          if (this.lectureNote.upVoters === undefined)
+            this.lectureNote.upVoters = [];
+          if (this.lectureNote.downVoters === undefined)
+            this.lectureNote.downVoters = [];
+          this.chosenVote = this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
+
           if (this.userId) {
             this.chosenVote =
               this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
