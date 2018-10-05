@@ -25,21 +25,22 @@
                             :chosen="chosenVote" />
             <el-tooltip effect="dark"
                         :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
-                        placement="bottom-end">
+                        placement="bottom-end"
+                        v-if="userId">
               <span class="favourite-btn" @click="toggleFav">
                 <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
               </span>
             </el-tooltip>
-            <hr style="margin-top: 0.5em">
+            <hr>
             <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
               <span class="material-icons">report</span>
               รายงานเนื้อหาไม่เหมาะสม
             </el-button>
             <br>
-            <router-link to="./edit/">
+            <!--router-link to="./edit/">
               <span class="material-icons">edit</span>
               แก้ไข
-            </router-link>
+            </router-link-->
           </el-card>
         </el-col>
       </el-row>
@@ -72,6 +73,11 @@
       right: 0.7em
       top: 0.7em
       cursor: pointer
+    hr
+      border: 0
+      height: 0
+      border-top: 1px solid rgba(0, 0, 0, 0.1)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3)
 
   .pdf-viewer
     width: 100%
@@ -94,8 +100,6 @@ const Parse = require('parse/dist/parse.min');
 Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const userId = Parse.User.current().id;
-
 export default {
   name: 'lectureNote',
   components: {
@@ -111,7 +115,8 @@ export default {
       loading: true,
       foundLecture: false,
       isFaved: false,
-      chosenVote: false,
+      chosenVote: '',
+      userId: Parse.User.current() ? Parse.User.current().id : null,
     };
   },
   methods: {
@@ -130,20 +135,29 @@ export default {
             this.lectureNote[f] = results[0].get(f);
           });
           this.lectureNote.objectId = results[0].id;
-          this.chosenVote = this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
+
+          if (this.userId) {
+            this.chosenVote =
+              this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
+          }
 
           const authorFields = ['username'];
           authorFields.forEach((f) => {
             this.lectureNote.author[f] = results[0].get('author').get(f);
           });
 
-          this.isRemotelyFaved()
-            .then((favStatus) => {
-              this.isFaved = favStatus;
-              this.foundLecture = true;
-              this.loading = false;
-            })
-            .catch(() => {});
+          if (this.userId) {
+            this.isRemotelyFaved()
+              .then((favStatus) => {
+                this.isFaved = favStatus;
+                this.foundLecture = true;
+                this.loading = false;
+              })
+              .catch(() => {});
+          } else {
+            this.foundLecture = true;
+            this.loading = false;
+          }
         } else {
           this.foundLecture = false;
           this.loading = false;
@@ -152,11 +166,10 @@ export default {
     },
     async isRemotelyFaved() {
       const favStatusQuery = new Parse.Query(Parse.User);
-      favStatusQuery.equalTo('objectId', userId);
+      favStatusQuery.equalTo('objectId', this.userId);
       const user = await favStatusQuery.find();
       const favedNotes = user[0].get('favedNotes');
-      if (favedNotes.includes(this.$route.params.noteId)) return true;
-      return false;
+      return favedNotes.includes(this.$route.params.noteId);
     },
     toggleFav() {
       if (this.isFaved) {
@@ -178,9 +191,9 @@ export default {
     },
     findMyVote(upVoters, downVoters) {
       // Find which vote the user did take
-      if (upVoters.includes(userId)) return 'up';
-      else if (downVoters.includes(userId)) return 'down';
-      return false;
+      if (upVoters.includes(this.userId)) return 'up';
+      else if (downVoters.includes(this.userId)) return 'down';
+      return '';
     },
   },
   created() {
