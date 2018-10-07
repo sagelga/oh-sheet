@@ -1,8 +1,8 @@
 <template>
-  <BoxedContainer class="top-gap">
-    <div class="row-wrap">
+  <BoxedContainer class="top-gap bottom-gap">
+    <div class="side-margin">
       <el-row :gutter="20">
-        <el-col :span="10" :offset="2">
+        <el-col :xs="24" :md="12">
           <h1>เพิ่ม Lecture Note</h1>
           <el-form :model="formData" :rules="formRules" ref="lectureForm">
             <el-form-item label="ชื่อโน้ต" prop="title">
@@ -67,12 +67,13 @@
 <script>
 import 'dropzone/dist/dropzone.css';
 import BoxedContainer from '@/components/BoxedContainer.vue';
+import store from '@/store';
 
 const Dropzone = require('dropzone');
 const Parse = require('parse/dist/parse.min');
 
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   name: 'uploadLecture',
@@ -89,6 +90,7 @@ export default {
         title: '',
         categories: '',
         filePath: '',
+        thumbnailPath: '',
       },
       /* tagOptions: [{
         value: 'ไทย',
@@ -129,10 +131,10 @@ export default {
       }],
       formRules: {
         title: [
-          { required: true, message: 'กรุรากรอกชื่อ' },
+          { required: true, message: 'กรุณากรอกชื่อ' },
         ],
         categories: [
-          { required: true, message: 'กรุราเลือกหมวดหมู่' },
+          { required: true, message: 'กรุณาเลือกหมวดหมู่' },
         ],
       },
     };
@@ -144,16 +146,10 @@ export default {
           this.loading = true;
           this.isSubmitBtnClickable = false;
 
-          // Create a new Lecture object from class LectureNote
           const Lecture = Parse.Object.extend('LectureNote');
-          // Create note the Lecture
           const note = new Lecture();
-          // Create a new User object from class User
-          const User = Parse.Object.extend('User');
-          // Create a pointer to note's author
-          const authorPointer = new User().set('objectId', Parse.User.current().id);
+          const authorPointer = new Parse.User().set('objectId', Parse.User.current().id);
 
-          // Set note attributes
           const fields = Object.keys(this.formData);
           fields.forEach((f) => {
             note.set(f, this.formData[f]);
@@ -180,18 +176,21 @@ export default {
   mounted() {
     Dropzone.autoDiscover = false;
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {
-      url: 'https://pony.zartre.com/upload-lecture-notes',
+      url: store.state.endpoints.uploadHandler.concat('/upload-lecture-notes'),
       paramName: 'upload',
       maxFiles: 1,
-      maxFilesize: 2, // MB
+      maxFilesize: 5, // MB
       headers: {
         'Cache-Control': '',
         'X-Requested-With': '',
       },
     });
     myDropzone.on('success', (f, r) => {
-      this.formData.filePath = r.message;
-      this.isSubmitBtnClickable = true;
+      if (r.status === 200) {
+        this.formData.filePath = r.message.filePath;
+        this.formData.thumbnailPath = r.message.thumbnailPath;
+        this.isSubmitBtnClickable = true;
+      }
     });
   },
 };
