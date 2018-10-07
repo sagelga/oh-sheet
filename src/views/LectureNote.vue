@@ -136,14 +136,14 @@ export default {
       lectureQuery.equalTo('objectId', noteId);
       lectureQuery.include('author');
 
-      lectureQuery.find().then((results) => {
-        if (results.length !== 0) {
+      lectureQuery.first().then((result) => {
+        if (result) {
           const lectureFields = ['author', 'categories', 'filePath', 'title',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
           lectureFields.forEach((f) => {
-            this.lectureNote[f] = results[0].get(f);
+            this.lectureNote[f] = result.get(f);
           });
-          this.lectureNote.objectId = results[0].id;
+          this.lectureNote.objectId = result.id;
 
           if (this.lectureNote.categories === undefined) { this.lectureNote.categories = ['']; }
           if (this.lectureNote.upVoters === undefined) { this.lectureNote.upVoters = []; }
@@ -157,11 +157,11 @@ export default {
 
           const authorFields = ['username', 'avatarPath'];
           authorFields.forEach((f) => {
-            this.lectureNote.author[f] = results[0].get('author').get(f);
+            this.lectureNote.author[f] = result.get('author').get(f);
           });
 
           if (this.userId) {
-            this.isRemotelyFaved()
+            this.isRemotelyFaved(this.$route.params.noteId)
               .then((favStatus) => {
                 this.isFaved = favStatus;
                 this.foundLecture = true;
@@ -181,9 +181,9 @@ export default {
     async isRemotelyFaved(noteId) {
       const favStatusQuery = new Parse.Query(Parse.User);
       favStatusQuery.equalTo('objectId', this.userId);
-      const user = await favStatusQuery.find();
+      const user = await favStatusQuery.first();
       // TODO: Change find to first
-      const favedNotes = user[0].get('favedNotes');
+      const favedNotes = user.get('favedNotes');
       return favedNotes.includes(noteId);
     },
     toggleFav(noteId) {
