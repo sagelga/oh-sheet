@@ -13,7 +13,7 @@
             </el-form-item>
             <el-form-item label="หมวดหมู่" prop="categories">
               <el-cascader
-                  class="option"
+                  class="category-cascader"
                   expand-trigger="hover"
                   :options="subjectOptions"
                   v-model="formData.categories"
@@ -35,14 +35,17 @@
                         :value="item.value">
                 </el-option>
             </el-select-->
-            <p align="left">คำอธิบายเพิ่มเติม</p>
-            <el-input v-model="formData.description"
-                      size="large"
-                      :autosize="{ minRows: 2, maxRows: 4 }"
-                      type="textarea"
-                      prop="description">
-            </el-input>
-            <p align="left">อัปโหลดไฟล์ Lecture Note</p>
+            <el-form-item label="คำอธิบาย" prop="description">
+              <el-input v-model="formData.description"
+                        size="large"
+                        :autosize="{ minRows: 2, maxRows: 4 }"
+                        type="textarea"
+                        prop="description">
+              </el-input>
+            </el-form-item>
+            <div>
+              <label class="el-form-item__label" style="float: none;">อัปโหลดไฟล์ PDF</label>
+            </div>
             <div id="my-awesome-dropzone" class="dropzone"></div>
           </el-form>
           <div style="margin-top: 20px">
@@ -58,10 +61,10 @@
   </BoxedContainer>
 </template>
 
-<style type="text/css">
-  .option {
-    width: 100%;
-  }
+<style scoped>
+.category-cascader {
+  width: 100%;
+}
 </style>
 
 <script>
