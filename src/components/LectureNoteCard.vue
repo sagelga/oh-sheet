@@ -1,7 +1,7 @@
 <template>
   <router-link :to="'/note/' + lectureNote.objectId">
     <el-card :body-style="{padding: '0px'}" style="margin-bottom: 1em;" shadow="hover">
-      <img src="https://via.placeholder.com/300x424" alt="Preview">
+      <img :src="thumbnailUrl" :alt="lectureNote.title">
       <div style="padding: 1em;">
         <h1>{{ lectureNote.title }}</h1>
         <span class="meta">{{ categories }}</span>
@@ -13,6 +13,7 @@
 
 <script>
 import UserChip from '@/components/UserChip.vue';
+import store from '@/store';
 
 export default {
   name: 'LectureNoteCard',
@@ -25,6 +26,9 @@ export default {
     categories() {
       if (this.lectureNote.categories) return this.lectureNote.categories[0];
       return '';
+    },
+    thumbnailUrl() {
+      return `${store.state.endpoints.objectStorage}/${this.lectureNote.thumbnailPath}`;
     },
   },
 };

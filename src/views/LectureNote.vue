@@ -125,7 +125,7 @@ export default {
       return this.$store.state.loggedIn;
     },
     pdfUrl() {
-      return store.state.endpoints.objectStorage.concat(`/${this.lectureNote.filePath}`);
+      return `${store.state.endpoints.objectStorage}/${this.lectureNote.filePath}`;
     },
   },
   methods: {
