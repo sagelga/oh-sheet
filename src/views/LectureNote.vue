@@ -9,7 +9,7 @@
       </el-row>
       <el-row :gutter="20" v-if="foundLecture">
         <el-col :xs="24" :md="17">
-          <object :data="lectureNote.filePath" type="application/pdf" class="pdf-viewer"></object>
+          <object :data="pdfUrl" type="application/pdf" class="pdf-viewer"></object>
         </el-col>
         <el-col :xs="24" :md="7">
           <el-card class="note-meta-card">
@@ -123,6 +123,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.state.loggedIn;
+    },
+    pdfUrl() {
+      return store.state.endpoints.objectStorage.concat(`/${this.lectureNote.filePath}`);
     },
   },
   methods: {
