@@ -1,50 +1,52 @@
 <template>
-  <BoxedContainer class="top-gap" v-loading="loading">
-    <div class="side-margin" v-if="!loading">
-      <el-row v-if="!foundLecture">
-        <el-col :xs="24" style="text-align: center;">
-          <h1>ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h1>
-          <img src="/img/undraw_empty_xct9.svg" alt="not found" class="lecture-not-found">
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" v-if="foundLecture">
-        <el-col :xs="24" :md="17">
-          <object :data="pdfUrl" type="application/pdf" class="pdf-viewer"></object>
-        </el-col>
-        <el-col :xs="24" :md="7">
-          <el-card class="note-meta-card">
-            <h1>{{ lectureNote.title }}</h1>
-            <h2>
-              <router-link to="">{{ lectureNote.categories[0] }}</router-link>
-            </h2>
-            <DateText :dateObj="lectureNote.updatedAt"/>
-            <UserChip :user="lectureNote.author" />
-            <QualityThumbs :voteUp="lectureNote.voteUp"
-                            :voteDown="lectureNote.voteDown"
-                            :lectureId="lectureNote.objectId"
-                            :chosen="chosenVote"
-                            v-if="isLoggedIn"/>
-            <el-tooltip effect="dark"
-                        :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
-                        placement="bottom-end"
-                        v-if="isLoggedIn">
-              <span class="favourite-btn" @click="toggleFav(lectureNote.objectId)">
-                <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
-              </span>
-            </el-tooltip>
-            <hr>
-            <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
-              <span class="material-icons">report</span>
-              รายงานเนื้อหาไม่เหมาะสม
-            </el-button>
-            <br>
-            <!--router-link to="./edit/">
-              <span class="material-icons">edit</span>
-              แก้ไข
-            </router-link-->
-          </el-card>
-        </el-col>
-      </el-row>
+  <BoxedContainer class="top-gap" >
+    <div v-loading="loading">
+      <div class="side-margin" v-if="!loading">
+        <el-row v-if="!foundLecture">
+          <el-col :xs="24" style="text-align: center;">
+            <h1>ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h1>
+            <img src="/img/undraw_empty_xct9.svg" alt="not found" class="lecture-not-found">
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-if="foundLecture">
+          <el-col :xs="24" :md="17">
+            <object :data="pdfUrl" type="application/pdf" class="pdf-viewer"></object>
+          </el-col>
+          <el-col :xs="24" :md="7">
+            <el-card class="note-meta-card">
+              <h1>{{ lectureNote.title }}</h1>
+              <h2>
+                <router-link to="">{{ lectureNote.categories[0] }}</router-link>
+              </h2>
+              <DateText :dateObj="lectureNote.updatedAt"/>
+              <UserChip :user="lectureNote.author" />
+              <QualityThumbs :voteUp="lectureNote.voteUp"
+                              :voteDown="lectureNote.voteDown"
+                              :lectureId="lectureNote.objectId"
+                              :chosen="chosenVote"
+                              v-if="isLoggedIn" />
+              <el-tooltip effect="dark"
+                          :content="isFaved ? 'ลบจากคอลเลกชัน' : 'เก็บในคอลเลกชัน'"
+                          placement="bottom-end"
+                          v-if="isLoggedIn">
+                <span class="favourite-btn" @click="toggleFav(lectureNote.objectId)">
+                  <span class="material-icons">{{ isFaved ? 'star' : 'star_border' }}</span>
+                </span>
+              </el-tooltip>
+              <hr>
+              <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
+                <span class="material-icons">report</span>
+                รายงานเนื้อหาไม่เหมาะสม
+              </el-button>
+              <br>
+              <!--router-link to="./edit/">
+                <span class="material-icons">edit</span>
+                แก้ไข
+              </router-link-->
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
     </div>
     <el-dialog :visible.sync="reportDialogVisible" width="30%">
       <span>ต้องการส่งรายงานความไม่เหมาะสมหรือไม่</span>

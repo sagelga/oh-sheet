@@ -28,7 +28,7 @@ a
   font-size: 1em
   vertical-align: middle
 .top-gap
-  margin-top: 5em
+  padding-top: 7em
 .bottom-gap
   margin-bottom: 5em
 .side-margin
