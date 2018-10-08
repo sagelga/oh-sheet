@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BoxedContainer class="home-hero top-gap">
+    <BoxedContainer class="home-hero">
       <div class="side-margin">
         <h1>ค้นหาและแบ่งปันโน้ตเลคเชอร์</h1>
         <el-select v-model="chosenCategory">
@@ -9,7 +9,7 @@
         </el-select>
       </div>
     </BoxedContainer>
-    <hr id="home-divider">
+    <!-- <hr id="home-divider"> -->
     <BoxedContainer class="bottom-gap home-section">
       <div class="side-margin">
         <h1>โน้ตเลคเชอร์ล่าสุด</h1>
@@ -28,7 +28,17 @@
 <style lang="sass">
 .home-hero
   text-align: center
-  padding-bottom: 3em
+  padding-top: 6em
+  padding-bottom: 6em
+  background: url('/img/home-banner-1.png') bottom/cover no-repeat
+  h1
+    color: #fff
+  .el-select
+    font-family: 'Neue Helvetica W31', sans-serif
+    .el-input input.el-input__inner
+      font-size: 1.3em
+      line-height: 1em
+      padding-bottom: 0.3em
 hr#home-divider
   margin: 2em 0
   border: 0
