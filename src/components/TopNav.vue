@@ -34,7 +34,7 @@
     position: fixed
     width: 100%
     max-width: 100%
-    z-index: 2001
+    z-index: 2000
     & + div:not(.top-gap)
       padding-top: 61px
   .main-nav

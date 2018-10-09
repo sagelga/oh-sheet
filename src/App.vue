@@ -38,6 +38,8 @@ a
   max-width: 350px
   margin-left: auto
   margin-right: auto
+.el-card.is-hover-shadow:hover
+  border-color: #0000ff
 .card-title-link
   float: right
   padding: 3px 0
