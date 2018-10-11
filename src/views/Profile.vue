@@ -3,6 +3,11 @@
     <div class="profile-meta">
       <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
       <h1>{{ user.username }}</h1>
+      <img :src="user.avatarPath || '/img/avatar.png'" style="display:inline-block; margin-right: 10px;" width="50" height="50">
+      <img :src="user.avatarPath || '/img/avatar.png'" style="display:inline-block; margin-right: 10px;" width="50" height="50">
+      <img :src="user.avatarPath || '/img/avatar.png'" style="display:inline-block; margin-right: 10px;" width="50" height="50">
+      <img :src="user.avatarPath || '/img/avatar.png'" style="display:inline-block; margin-right: 10px;" width="50" height="50">
+      <img :src="user.avatarPath || '/img/avatar.png'" style="display:inline-block; margin-right: 10px;" width="50" height="50">
     </div>
     <el-row :gutter="20" v-loading="loadingLectureNotes">
       <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId">
