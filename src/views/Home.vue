@@ -3,10 +3,25 @@
     <BoxedContainer class="home-hero">
       <div class="side-margin">
         <h1>ค้นหาและแบ่งปันโน้ตเลคเชอร์</h1>
-        <el-select v-model="chosenCategory">
-          <el-option v-for="cat in categoryOptions" :key="cat" :label="cat" :value="cat">
-          </el-option>
-        </el-select>
+        <el-row :gutter="20" class="search-box-wrapper">
+          <el-col :xs="24">
+            <el-input v-model="searchQueries.keyword" placeholder="หัวข้อ"></el-input>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-select v-model="searchQueries.level" placeholder="ระดับชั้น">
+              <el-option v-for="level in levelList"
+                         :key="level.key" :label="level.value" :value="level.key">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-autocomplete :trigger-on-focus="false"
+                             :fetch-suggestions="findSubjectSuggestions"
+                             placeholder="วิชา"
+                             v-model="searchQueries.tag">
+            </el-autocomplete>
+          </el-col>
+        </el-row>
       </div>
     </BoxedContainer>
     <!-- <hr id="home-divider"> -->
@@ -29,16 +44,20 @@
 .home-hero
   text-align: center
   padding-top: 6em
-  padding-bottom: 6em
+  padding-bottom: calc(6em - 20px)
   background: url('/img/home-banner-1.png') bottom/cover no-repeat
   h1
     color: #fff
-  .el-select
-    font-family: 'Neue Helvetica W31', sans-serif
-    .el-input input.el-input__inner
-      font-size: 1.3em
-      line-height: 1em
-      padding-bottom: 0.3em
+  .search-box-wrapper
+    margin-right: auto !important
+    margin-left: auto !important
+    max-width: 450px
+  .el-select, .el-autocomplete
+    width: 100%
+  .el-input
+    font-size: 1.2em
+  .el-autocomplete, .el-input
+    margin-bottom: 20px
 hr#home-divider
   margin: 2em 0
   border: 0
@@ -53,49 +72,54 @@ div.home-section
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import LectureNoteCard from '@/components/LectureNoteCard.vue';
-import store from '@/store';
-
-const Parse = require('parse/dist/parse.min');
-
-Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
-Parse.serverURL = store.state.parseCred.serverUrl;
+import ph from '@/helpers/parseHelper';
 
 export default {
   name: 'home',
   components: { BoxedContainer, LectureNoteCard },
   data() {
     return {
-      chosenCategory: '',
-      categoryOptions: ['สังคมศาสตร์', 'มนุษยศาสตร์', 'เกรียนศาสตร์', 'ไอศาสตร์'],
+      searchQueries: {
+        keyword: '',
+        tag: '',
+        level: '',
+      },
+      levelList: [
+        { value: 'มัธยมต้น', key: 'lowerSecondary' },
+        { value: 'มัธยมปลาย', key: 'upperSecondary' },
+        { value: 'ปริญญาตรี', key: 'bachelor' },
+      ],
+      subjectList: [
+        { value: 'Software Engineering' },
+        { value: 'Management Information System' },
+        { value: 'Requirement Engineering' },
+      ],
       lectureNotes: [],
     };
   },
   methods: {
-    async getRecentLectures(n) {
-      const LectureNote = Parse.Object.extend('LectureNote');
-      const query = new Parse.Query(LectureNote);
-      query.include('author');
-      query.limit(n);
-      const lectureNotes = await query.find();
-      return lectureNotes;
+    findSubjectSuggestions(queryString, cb) {
+      const results = queryString ?
+        this.subjectList.filter(this.createFilter(queryString)) : this.subjectList;
+      cb(results);
+    },
+    createFilter(queryString) {
+      return subjectList =>
+        subjectList.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
     },
   },
   created() {
-    this.getRecentLectures(8)
+    ph.getRecentLectures(8)
       .then((lectureNotes) => {
         const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
         const authorAttrs = ['objectId', 'username', 'avatarPath'];
         lectureNotes.forEach((l) => {
           const tempLecture = {};
 
-          lectureAttrs.forEach((lA) => {
-            tempLecture[lA] = l.get(lA);
-          });
+          lectureAttrs.forEach((lA) => { tempLecture[lA] = l.get(lA); });
           tempLecture.objectId = l.id;
 
-          authorAttrs.forEach((aA) => {
-            tempLecture.author[aA] = l.get('author').get(aA);
-          });
+          authorAttrs.forEach((aA) => { tempLecture.author[aA] = l.get('author').get(aA); });
 
           this.lectureNotes.push(tempLecture);
         });

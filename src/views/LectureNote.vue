@@ -97,6 +97,8 @@ import UserChip from '@/components/UserChip.vue';
 import DateText from '@/components/DateText.vue';
 import QualityThumbs from '@/components/QualityThumbs.vue';
 import store from '@/store';
+import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -132,38 +134,30 @@ export default {
   },
   methods: {
     getLectureNote(noteId) {
-      const LectureNote = Parse.Object.extend('LectureNote');
-      const lectureQuery = new Parse.Query(LectureNote);
-
-      lectureQuery.equalTo('objectId', noteId);
-      lectureQuery.include('author');
-
-      lectureQuery.first().then((result) => {
+      ph.getLectureNote(noteId).then((result) => {
         if (result) {
           const lectureFields = ['author', 'categories', 'filePath', 'title',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
-          lectureFields.forEach((f) => {
-            this.lectureNote[f] = result.get(f);
-          });
+          // Get fields of the lecture note
+          lectureFields.forEach((f) => { this.lectureNote[f] = result.get(f); });
           this.lectureNote.objectId = result.id;
-
+          // Sanitize
           if (this.lectureNote.categories === undefined) { this.lectureNote.categories = ['']; }
           if (this.lectureNote.upVoters === undefined) { this.lectureNote.upVoters = []; }
           if (this.lectureNote.downVoters === undefined) { this.lectureNote.downVoters = []; }
-          this.chosenVote = this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
 
           if (this.userId) {
             this.chosenVote =
-              this.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters);
+              ut.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters, this.userId);
           }
-
+          // Get fields from the lecture note's author
           const authorFields = ['username', 'avatarPath'];
           authorFields.forEach((f) => {
             this.lectureNote.author[f] = result.get('author').get(f);
           });
 
           if (this.userId) {
-            this.isRemotelyFaved(this.$route.params.noteId)
+            ph.isRemotelyFaved(this.$route.params.noteId, this.userId)
               .then((favStatus) => {
                 this.isFaved = favStatus;
                 this.foundLecture = true;
@@ -180,37 +174,18 @@ export default {
         }
       }); // TODO: Add catch
     },
-    async isRemotelyFaved(noteId) {
-      const favStatusQuery = new Parse.Query(Parse.User);
-      favStatusQuery.equalTo('objectId', this.userId);
-      const user = await favStatusQuery.first();
-      // TODO: Change find to first
-      const favedNotes = user.get('favedNotes');
-      return favedNotes.includes(noteId);
-    },
     toggleFav(noteId) {
-      if (this.isFaved) {
-        Parse.User.current().remove('favedNotes', noteId);
-      } else {
-        Parse.User.current().addUnique('favedNotes', noteId);
-      }
+      if (this.isFaved) Parse.User.current().remove('favedNotes', noteId);
+      else Parse.User.current().addUnique('favedNotes', noteId);
       Parse.User.current().save()
         .then(() => {
           this.isFaved = !this.isFaved;
           return true;
         })
         .catch((e) => {
-          this.$alert(e.message, 'เกิดข้อผิดพลาด', {
-            confirmButtonText: 'OK',
-          });
+          this.$alert(e.message, 'เกิดข้อผิดพลาด', { confirmButtonText: 'OK' });
           return false;
         });
-    },
-    findMyVote(upVoters, downVoters) {
-      // Find which vote the user did take
-      if (upVoters.includes(this.userId)) return 'up';
-      else if (downVoters.includes(this.userId)) return 'down';
-      return '';
     },
   },
   created() {

@@ -71,6 +71,7 @@
 import 'dropzone/dist/dropzone.css';
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import store from '@/store';
+import ph from '@/helpers/parseHelper';
 
 const Dropzone = require('dropzone');
 const Parse = require('parse/dist/parse.min');
@@ -95,16 +96,6 @@ export default {
         filePath: '',
         thumbnailPath: '',
       },
-      /* tagOptions: [{
-        value: 'ไทย',
-        label: 'ไทย',
-      }, {
-        value: 'สังคม',
-        label: 'สังคม',
-      }, {
-        value: 'อังกฤษ',
-        label: 'อังกฤษ',
-      }], */
       subjectOptions: [{
         value: 'มัธยมต้น',
         label: 'มัธยมต้น',
@@ -148,18 +139,7 @@ export default {
         if (valid) {
           this.loading = true;
           this.isSubmitBtnClickable = false;
-
-          const Lecture = Parse.Object.extend('LectureNote');
-          const note = new Lecture();
-          const authorPointer = new Parse.User().set('objectId', Parse.User.current().id);
-
-          const fields = Object.keys(this.formData);
-          fields.forEach((f) => {
-            note.set(f, this.formData[f]);
-          });
-          note.set('author', authorPointer);
-
-          note.save()
+          ph.saveLectureNote(this.formData, Parse.User.current().id)
             .then((returnedNote) => {
               this.$router.push(`/note/${returnedNote.id}/`);
               this.loading = false;
