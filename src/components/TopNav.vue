@@ -7,7 +7,7 @@
         <i class="el-icon-search"></i>
       </el-menu-item>
 
-      <el-menu-item index="/saved" v-if="isLoggedIn">
+      <el-menu-item index="/favourite" v-if="isLoggedIn">
         <i class="el-icon-star-on"></i>
       </el-menu-item>
 

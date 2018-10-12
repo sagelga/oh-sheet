@@ -48,5 +48,10 @@ export default new Router({
       name: 'profile',
       component: () => import('./views/Profile.vue'),
     },
+    {
+      path: '/favourite',
+      name: 'favourite',
+      component: () => import('./views/Favourite.vue'),
+    },
   ],
 });
