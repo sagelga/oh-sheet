@@ -3,7 +3,7 @@
     <div class="side-margin">
       <el-row :gutter="20">
         <el-col :xs="24" :md="12">
-          <h1>เพิ่ม Lecture Note</h1>
+          <h1>เพิ่มโน้ตเลคเชอร์</h1>
           <el-form :model="formData" :rules="formRules" ref="lectureForm">
             <el-form-item label="ชื่อโน้ต" prop="title">
               <el-input
@@ -11,30 +11,25 @@
                   size="large">
               </el-input>
             </el-form-item>
-            <el-form-item label="หมวดหมู่" prop="categories">
-              <el-cascader
-                  class="category-cascader"
-                  expand-trigger="hover"
-                  :options="subjectOptions"
-                  v-model="formData.categories"
-                  prop="categories">
-              </el-cascader>
-            </el-form-item>
-            <!--p align="left">แท็ก</p>
-            <el-select
-                    class="option"
-                    v-model="lectureTag"
-                    multiple
-                    filterable
-                    allow-create
-                    default-first-option>
-                <el-option
-                        v-for="item in tagOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+            <el-form-item label="ระดับชั้น" prop="levelId">
+              <el-select v-model="formData.levelId" placeholder="ระดับชั้น" style="width: 100%">
+                <el-option v-for="level in levelList"
+                           :key="level.key" :label="level.value" :value="level.key">
                 </el-option>
-            </el-select-->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="วิชา" prop="categoryId">
+              <el-autocomplete :trigger-on-focus="false"
+                               :fetch-suggestions="findCategorySuggestions"
+                               placeholder="วิชา"
+                               style="width: 100%"
+                               @select="handleCategorySelect"
+                               v-model="formData.category">
+                <template slot-scope="{ item }">
+                  <div class="value">{{ item.englishName }}</div>
+                </template>
+              </el-autocomplete>
+            </el-form-item>
             <el-form-item label="คำอธิบาย" prop="description">
               <el-input v-model="formData.description"
                         size="large"
@@ -62,9 +57,6 @@
 </template>
 
 <style scoped>
-.category-cascader {
-  width: 100%;
-}
 </style>
 
 <script>
@@ -92,48 +84,40 @@ export default {
       formData: {
         description: '',
         title: '',
-        categories: '',
+        levelId: '',
+        category: '',
+        categoryId: '',
         filePath: '',
         thumbnailPath: '',
       },
-      subjectOptions: [{
-        value: 'มัธยมต้น',
-        label: 'มัธยมต้น',
-        children: [{
-          value: 'คณิตศาสตร์',
-          label: 'คณิตศาสตร์',
-        }, {
-          value: 'ภาษาไทย',
-          label: 'ภาษาไทย',
-        }],
-      }, {
-        value: 'มัธยมปลาย',
-        label: 'มัธยมปลาย',
-        children: [{
-          value: 'เคมี',
-          label: 'เคมี',
-        }, {
-          value: 'ฟิสิกส์',
-          label: 'ฟิสิกส์',
-        }, {
-          value: 'ชีววิทยา',
-          label: 'ชีววิทยา',
-        }],
-      }, {
-        value: 'อุดมศึกษา',
-        label: 'อุดมศึกษา',
-      }],
+      levelList: this.$store.state.levelList,
+      categoryList: this.$store.state.categoryList,
       formRules: {
         title: [
           { required: true, message: 'กรุณากรอกชื่อ' },
         ],
-        categories: [
-          { required: true, message: 'กรุณาเลือกหมวดหมู่' },
+        levelId: [
+          { required: true, message: 'กรุณาเลือกระดับชั้น' },
+        ],
+        categoryId: [
+          { required: true, message: 'กรุณาเลือกวิชา' },
         ],
       },
     };
   },
   methods: {
+    findCategorySuggestions(queryString, cb) {
+      const results = queryString ?
+        this.categoryList.filter(this.createFilter(queryString)) : this.categoryList;
+      cb(results);
+    },
+    createFilter(queryString) {
+      return categoryList =>
+        categoryList.englishName.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+    },
+    handleCategorySelect(item) {
+      this.formData.categoryId = item.objectId;
+    },
     saveLecture() {
       this.$refs.lectureForm.validate((valid) => {
         if (valid) {

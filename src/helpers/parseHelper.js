@@ -7,10 +7,13 @@ Parse.serverURL = store.state.parseCred.serverUrl;
 
 const ph = {};
 
+const LectureNote = Parse.Object.extend('LectureNote');
+const LectureCategory = Parse.Object.extend('LectureCategory');
+const LectureLevel = Parse.Object.extend('LectureLevel');
+
 ph.getRecentLectures = async (n) => {
   // Get n recent lectures
   // Returns Array<LectureNote>
-  const LectureNote = Parse.Object.extend('LectureNote');
   const query = new Parse.Query(LectureNote);
   query.include('author');
   query.limit(n);
@@ -20,10 +23,11 @@ ph.getRecentLectures = async (n) => {
 
 ph.getLectureNote = async (noteId) => {
   // Returns LectureNote
-  const LectureNote = Parse.Object.extend('LectureNote');
   const lectureQuery = new Parse.Query(LectureNote);
   lectureQuery.equalTo('objectId', noteId);
   lectureQuery.include('author');
+  // TODO: Add categories relation
+  // TODO: Add levels relation
   const lectureNote = await lectureQuery.first();
   return lectureNote;
 };
@@ -36,23 +40,51 @@ ph.getUserProfile = async (username) => {
 };
 
 ph.getLecturesOfUserPointer = async (user) => {
-  const LectureNote = Parse.Object.extend('LectureNote');
   const query = new Parse.Query(LectureNote);
   query.equalTo('author', user);
   const lectureNotes = await query.find();
   return lectureNotes;
 };
 
+ph.getLectureCategories = async () => {
+  const query = new Parse.Query(LectureCategory);
+  return query.find();
+};
+
+ph.searchForLectures = async (title, levelId, categoryId) => {
+  const query = new Parse.Query(LectureNote);
+  if (title) query.fullText('title', title);
+  if (levelId) {
+    const level = new LectureLevel();
+    level.id = levelId;
+    query.equalTo('levels', level);
+  }
+  if (categoryId) {
+    const category = new LectureCategory();
+    category.id = categoryId;
+    query.equalTo('categories', category);
+  }
+  query.include('author');
+  return query.find();
+};
+
 ph.saveLectureNote = async (data, userId) => {
-  const Lecture = Parse.Object.extend('LectureNote');
-  const note = new Lecture();
+  const note = new LectureNote();
   const authorPointer = new Parse.User().set('objectId', userId);
+  const excludedFields = ['levelId', 'category', 'categoryId'];
 
   const fields = Object.keys(data);
   fields.forEach((f) => {
-    note.set(f, data[f]);
+    if (!excludedFields.includes(f)) note.set(f, data[f]);
   });
   note.set('author', authorPointer);
+
+  const level = new LectureLevel();
+  level.id = data.levelId;
+  note.relation('levels').add(level);
+  const category = new LectureCategory();
+  category.id = data.categoryId;
+  note.relation('categories').add(category);
 
   return note.save();
 };

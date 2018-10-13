@@ -7,16 +7,16 @@ util.findMyVote = (upVoters, downVoters, userId) => {
   return '';
 };
 
-util.getLectureNoteWithAttrs = (lecture, attrs) => {
+util.getObjWithAttrs = (obj, attrs) => {
   // Returns LectureNote with desired attributes
-  const newLecture = {};
+  const newObj = {};
   attrs.forEach((a) => {
-    newLecture[a] = lecture.get(a);
+    newObj[a] = obj.get(a);
   });
   if (attrs.includes('objectId') || attrs.includes('id')) {
-    newLecture.objectId = lecture.id;
+    newObj.objectId = obj.id;
   }
-  return newLecture;
+  return newObj;
 };
 
 export default util;

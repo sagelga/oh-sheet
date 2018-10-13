@@ -5,10 +5,10 @@
         <h1>ค้นหาและแบ่งปันโน้ตเลคเชอร์</h1>
         <el-row :gutter="20" class="search-box-wrapper">
           <el-col :xs="24">
-            <el-input v-model="searchQueries.keyword" placeholder="หัวข้อ"></el-input>
+            <el-input v-model="searchParam.title" placeholder="หัวข้อ"></el-input>
           </el-col>
           <el-col :xs="24" :md="12">
-            <el-select v-model="searchQueries.level" placeholder="ระดับชั้น">
+            <el-select v-model="searchParam.levelId" placeholder="ระดับชั้น">
               <el-option v-for="level in levelList"
                          :key="level.key" :label="level.value" :value="level.key">
               </el-option>
@@ -16,10 +16,21 @@
           </el-col>
           <el-col :xs="24" :md="12">
             <el-autocomplete :trigger-on-focus="false"
-                             :fetch-suggestions="findSubjectSuggestions"
+                             :fetch-suggestions="findCategorySuggestions"
                              placeholder="วิชา"
-                             v-model="searchQueries.tag">
+                             @select="handleCategorySelect"
+                             v-model="searchParam.subject">
+              <template slot-scope="{ item }">
+                <div class="value">{{ item.englishName }}</div>
+              </template>
             </el-autocomplete>
+          </el-col>
+          <el-col :span="24">
+            <el-button round
+                       v-show="searchParam.title || searchParam.levelId || searchParam.categoryId"
+                   @click="search(searchParam.title, searchParam.levelId, searchParam.categoryId)">
+              ค้นหา
+            </el-button>
           </el-col>
         </el-row>
       </div>
@@ -27,7 +38,8 @@
     <!-- <hr id="home-divider"> -->
     <BoxedContainer class="bottom-gap home-section">
       <div class="side-margin">
-        <h1>โน้ตเลคเชอร์ล่าสุด</h1>
+        <h1 v-show="showRecent">โน้ตเลคเชอร์ล่าสุด</h1>
+        <h1 v-show="!showRecent">ผลการค้นหา</h1>
         <el-row :gutter="20">
           <el-col v-for="lecture in lectureNotes"
                   :key="lecture.objectId"
@@ -43,11 +55,12 @@
 <style lang="sass">
 .home-hero
   text-align: center
-  padding-top: 6em
-  padding-bottom: calc(6em - 20px)
+  padding-top: 5em
+  padding-bottom: 5em
   background: url('/img/home-banner-1.png') bottom/cover no-repeat
   h1
     color: #fff
+    text-shadow: 0 0 10px rgba(0,0,0,0.4)
   .search-box-wrapper
     margin-right: auto !important
     margin-left: auto !important
@@ -56,7 +69,6 @@
     width: 100%
   .el-input
     font-size: 1.2em
-  .el-autocomplete, .el-input
     margin-bottom: 20px
 hr#home-divider
   margin: 2em 0
@@ -73,39 +85,51 @@ div.home-section
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import LectureNoteCard from '@/components/LectureNoteCard.vue';
 import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
 
 export default {
   name: 'home',
   components: { BoxedContainer, LectureNoteCard },
   data() {
     return {
-      searchQueries: {
-        keyword: '',
-        tag: '',
-        level: '',
+      searchParam: {
+        title: '',
+        subject: '',
+        levelId: '',
+        categoryId: '',
       },
-      levelList: [
-        { value: 'มัธยมต้น', key: 'lowerSecondary' },
-        { value: 'มัธยมปลาย', key: 'upperSecondary' },
-        { value: 'ปริญญาตรี', key: 'bachelor' },
-      ],
-      subjectList: [
-        { value: 'Software Engineering' },
-        { value: 'Management Information System' },
-        { value: 'Requirement Engineering' },
-      ],
+      levelList: this.$store.state.levelList,
+      categoryList: this.$store.state.categoryList,
       lectureNotes: [],
+      showRecent: true,
     };
   },
   methods: {
-    findSubjectSuggestions(queryString, cb) {
+    findCategorySuggestions(queryString, cb) {
       const results = queryString ?
-        this.subjectList.filter(this.createFilter(queryString)) : this.subjectList;
+        this.categoryList.filter(this.createFilter(queryString)) : this.categoryList;
       cb(results);
     },
     createFilter(queryString) {
-      return subjectList =>
-        subjectList.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+      return categoryList =>
+        categoryList.englishName.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+    },
+    handleCategorySelect(item) {
+      this.searchParam.categoryId = item.objectId;
+    },
+    search(title, levelId, categoryId) {
+      this.showRecent = false;
+      this.lectureNotes = [];
+      ph.searchForLectures(title, levelId, categoryId)
+        .then((lectures) => {
+          const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
+          const authorAttrs = ['objectId', 'username', 'avatarPath'];
+          lectures.forEach((l) => {
+            const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
+            tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
+            this.lectureNotes.push(tempLecture);
+          });
+        });
     },
   },
   created() {
@@ -114,15 +138,20 @@ export default {
         const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
         const authorAttrs = ['objectId', 'username', 'avatarPath'];
         lectureNotes.forEach((l) => {
-          const tempLecture = {};
-
-          lectureAttrs.forEach((lA) => { tempLecture[lA] = l.get(lA); });
-          tempLecture.objectId = l.id;
-
-          authorAttrs.forEach((aA) => { tempLecture.author[aA] = l.get('author').get(aA); });
-
+          const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
+          tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
           this.lectureNotes.push(tempLecture);
         });
+      });
+    ph.getLectureCategories()
+      .then((categories) => {
+        const tempCategories = [];
+        const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
+        categories.forEach((c) => {
+          tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
+        });
+        this.$store.commit('updateCategoryList', tempCategories);
+        this.categoryList = this.$store.state.categoryList;
       });
   },
 };
