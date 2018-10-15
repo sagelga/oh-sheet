@@ -19,7 +19,7 @@
                              :fetch-suggestions="findCategorySuggestions"
                              placeholder="วิชา"
                              @select="handleCategorySelect"
-                             v-model="searchParam.subject">
+                             v-model="searchParam.category">
               <template slot-scope="{ item }">
                 <div class="value">{{ item.englishName }}</div>
               </template>
@@ -40,13 +40,23 @@
       <div class="side-margin">
         <h1 v-show="showRecent">โน้ตเลคเชอร์ล่าสุด</h1>
         <h1 v-show="!showRecent">ผลการค้นหา</h1>
-        <el-row :gutter="20">
-          <el-col v-for="lecture in lectureNotes"
-                  :key="lecture.objectId"
-                  :xs="24" :sm="8" :md="6">
-            <LectureNoteCard :author="lecture.author" :lectureNote="lecture" />
-          </el-col>
-        </el-row>
+        <div class="query-label-wrap" v-show="!showRecent">
+          <el-tag type="info" v-if="searchedParam.title">{{ searchedParam.title }}</el-tag>
+          <el-tag type="info" v-if="searchedParam.category">{{ searchedParam.category }}</el-tag>
+          <el-tag type="info" v-if="searchedParam.level">{{ searchedParam.level }}</el-tag>
+        </div>
+        <div v-loading="loading">
+          <h3 v-show="!loading && !showRecent && lectureNotes.length === 0">
+            ไม่พบโน้ตเลคเชอร์ที่ต้องการ
+          </h3>
+          <el-row :gutter="20">
+            <el-col v-for="lecture in lectureNotes"
+                    :key="lecture.objectId"
+                    :xs="24" :sm="8" :md="6">
+              <LectureNoteCard :author="lecture.author" :lectureNote="lecture" />
+            </el-col>
+          </el-row>
+        </div>
       </div>
     </BoxedContainer>
   </div>
@@ -79,6 +89,10 @@ hr#home-divider
 div.home-section
   padding-top: 2em
   padding-bottom: 2em
+div.query-label-wrap
+  margin-bottom: 1.5em
+  .el-tag
+    margin-right: 1em
 </style>
 
 <script>
@@ -94,7 +108,7 @@ export default {
     return {
       searchParam: {
         title: '',
-        subject: '',
+        category: '',
         levelId: '',
         categoryId: '',
       },
@@ -102,6 +116,12 @@ export default {
       categoryList: this.$store.state.categoryList,
       lectureNotes: [],
       showRecent: true,
+      loading: true,
+      searchedParam: {
+        title: '',
+        category: '',
+        level: '',
+      },
     };
   },
   methods: {
@@ -118,6 +138,7 @@ export default {
       this.searchParam.categoryId = item.objectId;
     },
     search(title, levelId, categoryId) {
+      this.loading = true;
       this.showRecent = false;
       this.lectureNotes = [];
       ph.searchForLectures(title, levelId, categoryId)
@@ -129,7 +150,11 @@ export default {
             tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
             this.lectureNotes.push(tempLecture);
           });
+          this.loading = false;
         });
+      this.searchedParam.title = this.searchParam.title;
+      this.searchedParam.level = this.levelList[this.searchParam.levelId].value;
+      this.searchedParam.category = this.searchParam.category;
     },
   },
   created() {
@@ -142,6 +167,7 @@ export default {
           tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
           this.lectureNotes.push(tempLecture);
         });
+        this.loading = false;
       });
     ph.getLectureCategories()
       .then((categories) => {
