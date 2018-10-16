@@ -27,7 +27,8 @@
           </el-col>
           <el-col :span="24">
             <el-button round
-                       v-show="searchParam.title || searchParam.levelId || searchParam.categoryId"
+                       icon="el-icon-search"
+                       :disabled="!isSearchButtonEnabled"
                    @click="search(searchParam.title, searchParam.levelId, searchParam.categoryId)">
               ค้นหา
             </el-button>
@@ -64,10 +65,11 @@
 
 <style lang="sass">
 .home-hero
-  text-align: center
   padding-top: 5em
   padding-bottom: 5em
   background: url('/img/home-banner-1.png') bottom/cover no-repeat
+  text-align: center
+  transition: height .4s
   h1
     color: #fff
     text-shadow: 0 0 10px rgba(0,0,0,0.4)
@@ -123,6 +125,14 @@ export default {
         level: '',
       },
     };
+  },
+  computed: {
+    isSearchButtonEnabled() {
+      if (this.searchParam.title || this.searchParam.levelId || this.searchParam.categoryId) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     findCategorySuggestions(queryString, cb) {
