@@ -112,7 +112,6 @@ ph.updateLoginStreak = async (user) => {
         achm.maxLoginStreak = achm.loginStreak.length;
       } else if (!ut.isASameDayAsB(today, lastDay)) {
         achm.loginStreak = [today];
-        achm.maxLoginStreak = 1;
       }
     } else {
       achm.loginStreak = [today];
