@@ -3,11 +3,12 @@
     <div class="profile-meta">
       <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
       <h1>{{ user.username }}</h1>
-      <img src="/img/avatar.png" style="display:inline-block" width="50" height="50">
-      <img src="/img/avatar.png" style="display:inline-block" width="50" height="50">
-      <img src="/img/avatar.png" style="display:inline-block" width="50" height="50">
-      <img src="/img/avatar.png" style="display:inline-block" width="50" height="50">
-      <img src="/img/avatar.png" style="display:inline-block" width="50" height="50">
+      <div class="achievements" v-if="!loadingProfile">
+        <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 7 วัน" placement="bottom"
+                    v-if="user.achievements.maxLoginStreak >= 7">
+          <img src="/img/reward_badge/7days.jpg">
+        </el-tooltip>
+      </div>
     </div>
     <el-row :gutter="20" v-loading="loadingLectureNotes">
       <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId">
@@ -25,6 +26,13 @@
   img.avatar
     width: 128px
     height: 128px
+  .achievements
+    img
+      display: inline-block
+      width: 36px
+      border-radius: 4px
+      &:not(:last-child)
+        margin-right: 1em
 </style>
 
 <script>
@@ -45,7 +53,7 @@ export default {
   data() {
     return {
       user: {},
-      userFields: ['avatarPath', 'username', 'createdAt'],
+      userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
       loadingProfile: true,
       loadingLectureNotes: true,
