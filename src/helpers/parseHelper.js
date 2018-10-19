@@ -1,4 +1,5 @@
 import store from '@/store';
+import ut from './util';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -96,6 +97,30 @@ ph.isRemotelyFaved = async (noteId, userId) => {
   const user = await favStatusQuery.first();
   const favedNotes = user.get('favedNotes');
   return favedNotes.includes(noteId);
+};
+
+ph.updateLoginStreak = async (user) => {
+  // Should only be called when a User is present
+  await user.fetch().then((fetchedUser) => {
+    const achm = fetchedUser.get('achievements');
+    const today = new Date();
+    if (achm.loginStreak !== undefined && achm.loginStreak.length !== 0) {
+      const lastDayStr = achm.loginStreak[achm.loginStreak.length - 1];
+      const lastDay = ut.dateStrToObj(lastDayStr);
+      if (ut.isATomorrowOfB(today, lastDay)) {
+        achm.loginStreak.push(today);
+        achm.maxLoginStreak = achm.loginStreak.length;
+      } else if (!ut.isASameDayAsB(today, lastDay)) {
+        achm.loginStreak = [today];
+        achm.maxLoginStreak = 1;
+      }
+    } else {
+      achm.loginStreak = [today];
+      achm.maxLoginStreak = 1;
+    }
+    fetchedUser.set('achievements', achm);
+    return fetchedUser.save();
+  });
 };
 
 export default ph;

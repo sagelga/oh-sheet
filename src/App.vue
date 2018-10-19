@@ -54,6 +54,7 @@ a
 <script>
 import store from '@/store';
 import TopNav from '@/components/TopNav.vue';
+import ph from '@/helpers/parseHelper';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -67,6 +68,7 @@ export default {
   mounted() {
     if (Parse.User.current()) {
       this.$store.commit('loggedIn', true);
+      ph.updateLoginStreak(Parse.User.current());
     }
   },
 };
