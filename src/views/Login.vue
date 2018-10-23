@@ -39,12 +39,13 @@
 </template>
 
 <script>
-import router from '../router';
+import router from '@/router';
+import store from '@/store';
 
 const Parse = require('parse/dist/parse.min');
 
-Parse.initialize('A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP', 'UaRg8CWpNhY9WbkDk93Ki6LQZ7ssnQfVRMXYyRJr');
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   name: 'Login',
@@ -60,16 +61,15 @@ export default {
   methods: {
     logInUser(usr, pwd) {
       this.loading = true;
-      const that = this;
       this.error = '';
       Parse.User.logIn(usr, pwd)
         .then(() => {
-          that.$parent.loggedIn = true;
-          that.loading = false;
+          this.$store.commit('loggedIn', true);
+          this.loading = false;
           router.push('/');
-        }, (error) => {
-          that.loading = false;
-          that.error = error.message;
+        }, (e) => {
+          this.loading = false;
+          this.error = e.message;
         });
     },
   },

@@ -70,10 +70,9 @@ export default {
         email: eml,
         password: pwd,
       })
-        .then((response) => {
+        .then(() => {
           this.successfullySignedUp = true;
           this.loading = false;
-          console.log(response);
         }, (error) => {
           this.errorOnSignUp = error.message;
           this.loading = false;
