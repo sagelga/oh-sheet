@@ -83,9 +83,12 @@ ph.saveLectureNote = async (data, userId) => {
   const level = new LectureLevel();
   level.id = data.levelId;
   note.relation('levels').add(level);
-  const category = new LectureCategory();
-  category.id = data.categoryId;
-  note.relation('categories').add(category);
+
+  data.categoryId.forEach((c) => {
+    const category = new LectureCategory();
+    category.id = c;
+    note.relation('categories').add(category);
+  });
 
   return note.save();
 };
@@ -120,6 +123,12 @@ ph.updateLoginStreak = async (user) => {
     fetchedUser.set('achievements', achm);
     return fetchedUser.save();
   });
+};
+
+ph.createLectureCategory = async (name) => {
+  const category = new LectureCategory();
+  category.set({ englishName: name, value: name });
+  return category.save();
 };
 
 export default ph;

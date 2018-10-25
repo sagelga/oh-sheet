@@ -18,17 +18,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="วิชา" prop="categoryId">
-              <el-autocomplete :trigger-on-focus="false"
-                               :fetch-suggestions="findCategorySuggestions"
-                               placeholder="วิชา"
-                               style="width: 100%"
-                               @select="handleCategorySelect"
-                               v-model="formData.category">
-                <template slot-scope="{ item }">
-                  <div class="value">{{ item.englishName }}</div>
-                </template>
-              </el-autocomplete>
+            <el-form-item label="วิชา" prop="category">
+              <el-select v-model="formData.category" filterable multiple allow-create
+                         style="width: 100%">
+                <el-option v-for="c in categoryList" :key="c.objectId" :label="c.englishName"
+                           :value="c.objectId"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="คำอธิบาย" prop="description">
               <el-input v-model="formData.description"
@@ -64,6 +59,7 @@ import 'dropzone/dist/dropzone.css';
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import store from '@/store';
 import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
 
 const Dropzone = require('dropzone');
 const Parse = require('parse/dist/parse.min');
@@ -85,13 +81,13 @@ export default {
         description: '',
         title: '',
         levelId: '',
-        category: '',
-        categoryId: '',
+        category: [],
+        categoryId: [],
         filePath: '',
         thumbnailPath: '',
       },
       levelList: this.$store.state.levelList,
-      categoryList: this.$store.state.categoryList,
+      categoryList: [],
       formRules: {
         title: [
           { required: true, message: 'กรุณากรอกชื่อ' },
@@ -99,11 +95,21 @@ export default {
         levelId: [
           { required: true, message: 'กรุณาเลือกระดับชั้น' },
         ],
-        categoryId: [
+        category: [
           { required: true, message: 'กรุณาเลือกวิชา' },
         ],
       },
     };
+  },
+  computed: {
+    store_categoryList() {
+      return this.$store.state.categoryList;
+    },
+  },
+  watch: {
+    store_categoryList() {
+      this.categoryList = this.store_categoryList;
+    },
   },
   methods: {
     findCategorySuggestions(queryString, cb) {
@@ -115,14 +121,26 @@ export default {
       return categoryList =>
         categoryList.englishName.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
     },
-    handleCategorySelect(item) {
-      this.formData.categoryId = item.objectId;
-    },
     saveLecture() {
-      this.$refs.lectureForm.validate((valid) => {
+      this.$refs.lectureForm.validate(async (valid) => {
         if (valid) {
           this.loading = true;
           this.isSubmitBtnClickable = false;
+          this.formData.categoryId = [];
+
+          // Array of currently-available categories' ID
+          const currentCat = this.categoryList.map(c => c.objectId);
+          // Update categoryId with chosen categories (that are already available)
+          const tempChosen = this.formData.category.filter(c => currentCat.includes(c));
+          // Find user-created categories (the ones that don't exist yet)
+          const newCategories = ut.getNewCategory(this.formData.category, this.categoryList);
+          for (let i = 0; i < newCategories.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            const tempNewCat = await ph.createLectureCategory(newCategories[i]);
+            tempChosen.push(tempNewCat.id);
+          }
+          tempChosen.forEach(i => this.formData.categoryId.push(i));
+
           ph.saveLectureNote(this.formData, Parse.User.current().id)
             .then((returnedNote) => {
               this.$router.push(`/note/${returnedNote.id}/`);
@@ -141,6 +159,7 @@ export default {
     },
   },
   mounted() {
+    this.categoryList = this.store_categoryList;
     Dropzone.autoDiscover = false;
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {
       url: store.state.endpoints.uploadHandler.concat('/upload-lecture-notes'),

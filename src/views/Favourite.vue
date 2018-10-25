@@ -71,8 +71,7 @@ export default {
               temp[lecAttrs] = item.get(lecAttrs);
             });
             authorAttrs.forEach((authAttrs) => {
-              temp[authAttrs] = item.get('author')
-                .get(authAttrs);
+              temp.author[authAttrs] = item.get('author').get(authAttrs);
             });
             temp.objectId = item.id;
             this.lectureNote.push(temp);

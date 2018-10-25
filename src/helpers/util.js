@@ -44,4 +44,10 @@ util.dateStrToObj = (dateStr) => {
   return new Date(y, m - 1, d);
 };
 
+util.getNewCategory = (formCatList, storeCatList) => {
+  // Find newly created lecture category that are not on Parse yet
+  const currentCat = storeCatList.map(c => c.objectId);
+  return formCatList.filter(c => !currentCat.includes(c));
+};
+
 export default util;

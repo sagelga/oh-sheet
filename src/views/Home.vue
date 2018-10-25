@@ -115,7 +115,7 @@ export default {
         categoryId: '',
       },
       levelList: this.$store.state.levelList,
-      categoryList: this.$store.state.categoryList,
+      categoryList: [],
       lectureNotes: [],
       showRecent: true,
       loading: true,
@@ -127,11 +127,19 @@ export default {
     };
   },
   computed: {
+    store_categoryList() {
+      return this.$store.state.categoryList;
+    },
     isSearchButtonEnabled() {
       if (this.searchParam.title || this.searchParam.levelId || this.searchParam.categoryId) {
         return true;
       }
       return false;
+    },
+  },
+  watch: {
+    store_categoryList() {
+      this.categoryList = this.store_categoryList;
     },
   },
   methods: {
@@ -179,16 +187,9 @@ export default {
         });
         this.loading = false;
       });
-    ph.getLectureCategories()
-      .then((categories) => {
-        const tempCategories = [];
-        const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
-        categories.forEach((c) => {
-          tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
-        });
-        this.$store.commit('updateCategoryList', tempCategories);
-        this.categoryList = this.$store.state.categoryList;
-      });
+  },
+  mounted() {
+    this.categoryList = this.store_categoryList;
   },
 };
 </script>

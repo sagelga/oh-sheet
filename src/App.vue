@@ -55,6 +55,7 @@ a
 import store from '@/store';
 import TopNav from '@/components/TopNav.vue';
 import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -69,6 +70,15 @@ export default {
     if (Parse.User.current()) {
       this.$store.commit('loggedIn', true);
       ph.updateLoginStreak(Parse.User.current());
+      ph.getLectureCategories()
+        .then((categories) => {
+          const tempCategories = [];
+          const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
+          categories.forEach((c) => {
+            tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
+          });
+          this.$store.commit('updateCategoryList', tempCategories);
+        });
     }
   },
 };
