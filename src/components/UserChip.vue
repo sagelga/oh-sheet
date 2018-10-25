@@ -1,7 +1,7 @@
 <template>
   <div class="user-chip">
     <router-link :to="'/profile/' + user.username">
-      <img src="/img/avatar.png" :alt="user.username">
+      <img :src="avatarPath" :alt="user.username">
       {{ user.username }}
     </router-link>
   </div>
@@ -24,6 +24,12 @@ export default {
   name: 'UserChip',
   props: {
     user: Object,
+  },
+  computed: {
+    avatarPath() {
+      // TODO: When avatar upload completes, prepend Spaces url to avatarPath
+      return this.user.avatarPath ? this.user.avatarPath : '/img/avatar.png';
+    },
   },
 };
 </script>
