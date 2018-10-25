@@ -22,19 +22,31 @@
                     type="password">
           </el-input>
         </el-form-item>
-        <!--Remember Password-->
-        <!--el-form-item>
-          <el-checkbox v-model="rememberPassword">จำฉันไว้</el-checkbox>
-        </el-form-item-->
         <!--Sign In / Sign Up Button-->
         <div style="margin-top: 1.25em">
           <el-button id="login-btn" type="primary" round @click="logInUser(username, password)">
             เข้าสู่ระบบ
           </el-button>
-          <el-button type="text" style="margin-right: 2em">ลืมรหัสผ่าน</el-button>
+          <el-button type="text" style="margin-right: 2em" @click="resetPwdDialogVisible = true">
+            ลืมรหัสผ่าน</el-button>
         </div>
       </el-form>
     </el-card>
+    <el-dialog title="รีเซ็ตรหัสผ่าน" :visible.sync="resetPwdDialogVisible" id="reset-dialog">
+      <el-alert title="กรุณาตรวจสอบอีเมลเพื่อรีเซ็ตรหัสผ่าน" type="success"
+                v-if="resetSucceed && !resetLoading"></el-alert>
+      <el-alert :title="resetFailText" type="error"
+                v-if="!resetSucceed && !resetLoading && resetFailText"></el-alert>
+      <el-form>
+        <el-form-item label="กรอกอีเมลที่ต้องการรีเซ็ตรหัสผ่าน">
+          <el-input v-model="resetPwdEmail" size="large" type="email" id="reset-input"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetPwdDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="resetPwd(resetPwdEmail)" id="reset-btn">รีเซ็ต</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -56,6 +68,11 @@ export default {
       rememberPassword: false,
       error: '',
       loading: false,
+      resetPwdEmail: '',
+      resetPwdDialogVisible: false,
+      resetSucceed: false,
+      resetLoading: false,
+      resetFailText: '',
     };
   },
   methods: {
@@ -72,11 +89,32 @@ export default {
           this.error = e.message;
         });
     },
+    resetPwd(email) {
+      this.resetLoading = true;
+      Parse.User.requestPasswordReset(email)
+        .then(() => {
+          this.resetSucceed = true;
+          this.resetLoading = false;
+        })
+        .catch((err) => {
+          this.resetSucceed = false;
+          this.resetLoading = false;
+          this.resetFailText = err.message;
+        });
+    },
   },
   mounted() {
     document.getElementById('login-form').addEventListener('keyup', (e) => {
       e.preventDefault();
-      if (e.keyCode === 13) document.getElementById('login-btn').click();
+      if (e.keyCode === 13 && document.activeElement.id !== 'reset-input') {
+        document.getElementById('login-btn').click();
+      }
+    });
+    document.getElementById('reset-dialog').addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (e.keyCode === 13 && document.activeElement.id === 'reset-input') {
+        document.getElementById('reset-btn').click();
+      }
     });
   },
 };
