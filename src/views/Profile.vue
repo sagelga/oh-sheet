@@ -3,7 +3,7 @@
     <div class="profile-meta">
       <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
       <h1>{{ user.username }}</h1>
-      <div class="achievements" v-if="!loadingProfile">
+      <div class="achievements" v-if="!loadingProfile && user.achievements">
         <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 7 วัน" placement="bottom"
                     v-if="user.achievements.maxLoginStreak >= 7">
           <img src="/img/reward_badge/7days.jpg">
