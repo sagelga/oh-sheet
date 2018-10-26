@@ -85,10 +85,6 @@
 .pdf-viewer
   width: 100%
   height: 70vh
-.lecture-not-found
-  width: 100%
-  max-width: 360px
-  margin-top: 2em
 </style>
 
 <script>
