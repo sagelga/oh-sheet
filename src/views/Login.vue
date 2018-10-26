@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import router from '@/router';
 import store from '@/store';
 
 const Parse = require('parse/dist/parse.min');
@@ -83,7 +82,7 @@ export default {
         .then(() => {
           this.$store.commit('loggedIn', true);
           this.loading = false;
-          router.push('/');
+          this.$router.push('/');
         }, (e) => {
           this.loading = false;
           this.error = e.message;
