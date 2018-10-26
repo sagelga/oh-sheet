@@ -18,7 +18,7 @@
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
-        <template slot="title"><i class="el-icon-setting"></i></template>
+        <template slot="title"><i class="material-icons">person</i></template>
         <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
@@ -60,6 +60,8 @@
         margin-left: 1em
       @media screen and (max-width: 640px)
         display: none
+    .material-icons
+      font-size: 20px
 </style>
 
 <script>
