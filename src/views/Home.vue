@@ -5,7 +5,8 @@
         <h1>ค้นหาและแบ่งปันโน้ตเลคเชอร์</h1>
         <el-row :gutter="20" class="search-box-wrapper">
           <el-col :xs="24">
-            <el-input v-model="searchParam.title" placeholder="หัวข้อ"></el-input>
+            <el-input v-model="searchParam.title" placeholder="หัวข้อ"
+                      id="home-title-input"></el-input>
           </el-col>
           <el-col :xs="24" :md="12">
             <el-select v-model="searchParam.levelId" placeholder="ระดับชั้น">
@@ -171,22 +172,28 @@ export default {
           this.loading = false;
         });
       this.searchedParam.title = this.searchParam.title;
-      this.searchedParam.level = this.levelList[this.searchParam.levelId].value;
+      this.searchedParam.level = this.searchParam.levelId ? this.levelList[this.searchParam.levelId].value : '';
       this.searchedParam.category = this.searchParam.category;
     },
   },
   created() {
-    ph.getRecentLectures(8)
-      .then((lectureNotes) => {
-        const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
-        const authorAttrs = ['objectId', 'username', 'avatarPath'];
-        lectureNotes.forEach((l) => {
-          const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
-          tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
-          this.lectureNotes.push(tempLecture);
+    if (this.$store.state.topSearchInput === '') {
+      ph.getRecentLectures(8)
+        .then((lectureNotes) => {
+          const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
+          const authorAttrs = ['objectId', 'username', 'avatarPath'];
+          lectureNotes.forEach((l) => {
+            const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
+            tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
+            this.lectureNotes.push(tempLecture);
+          });
+          this.loading = false;
         });
-        this.loading = false;
-      });
+    } else {
+      this.searchParam.title = this.$store.state.topSearchInput;
+      this.search(this.searchParam.title, this.searchParam.levelId, this.searchParam.categoryId);
+      this.$store.commit('updateTopSearchInput', '');
+    }
   },
   mounted() {
     this.categoryList = this.store_categoryList;

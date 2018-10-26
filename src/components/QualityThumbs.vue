@@ -3,7 +3,7 @@
 
     <el-button type="text" style="margin-right: 0.5em" @click="submitVoteUp"
                 :class="{ chosen: chosenVote === 'up', disabled: userId == null }">
-      <span class="material-icons" >thumb_up</span>
+      <span class="material-icons">thumb_up</span>
       {{ voteUps || 0 }}
     </el-button>
 

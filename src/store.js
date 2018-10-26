@@ -23,6 +23,7 @@ const store = new Puex({
       V6k5aayDKl: { value: 'ปริญญาตรี', key: 'V6k5aayDKl' },
     },
     categoryList: [],
+    topSearchInput: '',
   },
   mutations: {
     loggedIn(state, logged) {
@@ -30,6 +31,9 @@ const store = new Puex({
     },
     updateCategoryList(state, data) {
       state.categoryList = data;
+    },
+    updateTopSearchInput(state, data) {
+      state.topSearchInput = data;
     },
   },
 });

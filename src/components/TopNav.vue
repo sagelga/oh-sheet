@@ -3,6 +3,8 @@
     <el-menu :default-active="defaultActive" mode="horizontal"
              :router="true" class="main-nav">
 
+      <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
+
       <el-menu-item index="/">
         <i class="el-icon-search"></i>
       </el-menu-item>
@@ -16,7 +18,7 @@
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
-        <template slot="title"><i class="el-icon-setting"></i></template>
+        <template slot="title"><i class="material-icons">person</i></template>
         <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
@@ -48,6 +50,18 @@
       display: inline-block
     & > .el-submenu#topnav-more i.el-submenu__icon-arrow
       display: none
+    .el-input
+      display: inline-block
+      position: absolute
+      left: 0
+      max-width: 300px
+      margin-top: 10px
+      @media screen and (max-width: 1140px)
+        margin-left: 1em
+      @media screen and (max-width: 640px)
+        display: none
+    .material-icons
+      font-size: 20px
 </style>
 
 <script>
@@ -67,6 +81,7 @@ export default {
   data() {
     return {
       defaultActive: '/',
+      topSearchInput: '',
     };
   },
   computed: {
@@ -84,6 +99,22 @@ export default {
           this.$store.commit('loggedIn', false);
         });
     },
+    submitSearch(text) {
+      this.$store.commit('updateTopSearchInput', text);
+      this.$router.push('/');
+    },
+  },
+  mounted() {
+    document.getElementById('top-search').addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (e.keyCode === 13) {
+        this.submitSearch(this.topSearchInput);
+        this.topSearchInput = '';
+      }
+    });
+    document.getElementById('top-search').addEventListener('click', () => {
+      if (this.$router.currentRoute.path === '/') document.getElementById('home-title-input').focus();
+    });
   },
 };
 </script>
