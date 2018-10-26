@@ -49,6 +49,10 @@ a
   border-radius: 4px
   &:hover
     border-color: #c0c4cc !important
+.lecture-not-found
+  width: 100%
+  max-width: 360px
+  margin-top: 2em
 </style>
 
 <script>

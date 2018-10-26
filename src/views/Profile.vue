@@ -11,6 +11,10 @@
       </div>
     </div>
     <el-row :gutter="20" v-loading="loadingLectureNotes">
+      <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
+        <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
+        <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
+      </div>
       <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId">
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
@@ -26,6 +30,8 @@
   img.avatar
     width: 128px
     height: 128px
+    border-radius: 50%
+    box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
   .achievements
     img
       display: inline-block

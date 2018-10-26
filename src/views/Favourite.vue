@@ -1,7 +1,11 @@
 <template>
   <BoxedContainer class="top-gap bottom-gap">
-    <div class="side-margin">
+    <div class="side-margin" v-loading="loading">
       <h1>รายการโน้ตที่ชื่นชอบ</h1>
+      <div v-show="!loading && lectureNote.length === 0" style="text-align: center">
+        <h3>ยังไม่ได้ติดดาวโน้ตเลคเชอร์ใดๆ</h3>
+        <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
+      </div>
       <el-row :gutter="20">
         <el-col v-for="lecture in lectureNote"
                 :key="lecture.objectId"
@@ -36,6 +40,7 @@ export default {
       userId: Parse.User.current() ? Parse.User.current().id : null,
       favouriteList: [],
       lectureNote: [],
+      loading: true,
     };
   },
   computed: {
@@ -76,6 +81,8 @@ export default {
             temp.objectId = item.id;
             this.lectureNote.push(temp);
           });
+
+          this.loading = false;
         });
     },
   },
