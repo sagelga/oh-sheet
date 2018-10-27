@@ -34,15 +34,18 @@
                 </span>
               </el-tooltip>
               <hr>
-              <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
-                <span class="material-icons">report</span>
-                รายงานเนื้อหาไม่เหมาะสม
-              </el-button>
-              <br>
-              <!--router-link to="./edit/">
-                <span class="material-icons">edit</span>
-                แก้ไข
-              </router-link-->
+              <div v-if="isLoggedIn && lectureNote.author.id === userId">
+                <el-button type="text" style="font-size: 1em" @click="edit">
+                  <span class="material-icons">edit</span>
+                  แก้ไข
+                </el-button>
+              </div>
+              <div>
+                <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
+                  <span class="material-icons">report</span>
+                  รายงานเนื้อหาไม่เหมาะสม
+                </el-button>
+              </div>
             </el-card>
           </el-col>
         </el-row>
@@ -182,6 +185,11 @@ export default {
           this.$alert(e.message, 'เกิดข้อผิดพลาด', { confirmButtonText: 'OK' });
           return false;
         });
+    },
+    edit() {
+      if (this.isLoggedIn && this.userId === this.lectureNote.author.id) {
+        this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
+      }
     },
   },
   created() {
