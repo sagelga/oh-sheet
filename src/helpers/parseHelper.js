@@ -99,14 +99,16 @@ ph.isRemotelyFaved = async (noteId, userId) => {
   favStatusQuery.equalTo('objectId', userId);
   const user = await favStatusQuery.first();
   const favedNotes = user.get('favedNotes');
+  if (favedNotes === undefined) return false;
   return favedNotes.includes(noteId);
 };
 
 ph.updateLoginStreak = async (user) => {
   // Should only be called when a User is present
   await user.fetch().then((fetchedUser) => {
-    const achm = fetchedUser.get('achievements');
+    let achm = fetchedUser.get('achievements');
     const today = new Date();
+    if (achm === undefined) achm = {};
     if (achm.loginStreak !== undefined && achm.loginStreak.length !== 0) {
       const lastDayStr = achm.loginStreak[achm.loginStreak.length - 1];
       const lastDay = ut.dateStrToObj(lastDayStr);
