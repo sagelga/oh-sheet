@@ -65,14 +65,14 @@
                 v-for="item in reportOptions"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.label">
             </el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
-        <el-button type="primary" @click="reportDialogVisible = false">ส่ง</el-button>
+        <el-button type="primary" @click="submitReport">ส่ง</el-button>
       </span>
     </el-dialog>
   </BoxedContainer>
@@ -224,6 +224,20 @@ export default {
         title: this.lectureNote.title,
         url: this.$router.currentRoute.fullPath,
       });
+    },
+    submitReport() {
+      ph.submitLectureReport(this.lectureNote.objectId, this.reportReason)
+        .then(() => {
+          this.$message({
+            message: 'ส่งรายงานเรียบร้อย',
+            type: 'success',
+          });
+          this.reportDialogVisible = false;
+        }).catch((err) => {
+          this.$message.error({
+            message: err.message,
+          });
+        });
     },
   },
   created() {

@@ -11,6 +11,7 @@ const ph = {};
 const LectureNote = Parse.Object.extend('LectureNote');
 const LectureCategory = Parse.Object.extend('LectureCategory');
 const LectureLevel = Parse.Object.extend('LectureLevel');
+const LectureReport = Parse.Object.extend('LectureReport');
 
 ph.getRecentLectures = async (n) => {
   // Get n recent lectures
@@ -131,6 +132,12 @@ ph.createLectureCategory = async (name) => {
   const category = new LectureCategory();
   category.set({ englishName: name, value: name });
   return category.save();
+};
+
+ph.submitLectureReport = async (noteId, reason) => {
+  const lecture = new LectureNote().set('id', noteId);
+  const report = new LectureReport().set({ lectureNote: lecture, reason });
+  return report.save();
 };
 
 export default ph;
