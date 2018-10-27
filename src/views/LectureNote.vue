@@ -34,6 +34,12 @@
                 </span>
               </el-tooltip>
               <hr>
+              <div v-show="supportShare">
+                <el-button type="text" style="font-size: 1em" @click="share">
+                  <span class="material-icons">share</span>
+                  แชร์
+                </el-button>
+              </div>
               <div v-if="isLoggedIn && lectureNote.author.id === userId">
                 <el-button type="text" style="font-size: 1em" @click="edit">
                   <span class="material-icons">edit</span>
@@ -130,6 +136,10 @@ export default {
     pdfUrl() {
       return `${store.state.endpoints.objectStorage}/${this.lectureNote.filePath}`;
     },
+    supportShare() {
+      if (navigator.share) return true;
+      return false;
+    },
   },
   methods: {
     getLectureNote(noteId) {
@@ -190,6 +200,12 @@ export default {
       if (this.isLoggedIn && this.userId === this.lectureNote.author.id) {
         this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
       }
+    },
+    share() {
+      navigator.share({
+        title: this.lectureNote.title,
+        url: this.$router.currentRoute.fullPath,
+      });
     },
   },
   created() {
