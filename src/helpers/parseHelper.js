@@ -33,6 +33,10 @@ ph.getLectureNote = async (noteId) => {
   return lectureNote;
 };
 
+ph.getFavedLectures = async (userId) => {
+  // const query =
+};
+
 ph.getUserProfile = async (username) => {
   const query = new Parse.Query(Parse.User);
   query.equalTo('username', username);

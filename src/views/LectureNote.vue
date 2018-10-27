@@ -171,8 +171,10 @@ export default {
       }); // TODO: Add catch
     },
     toggleFav(noteId) {
-      if (this.isFaved) Parse.User.current().remove('favedNotes', noteId);
-      else Parse.User.current().addUnique('favedNotes', noteId);
+      const LectureNote = Parse.Object.extend('LectureNote');
+      const lecture = new LectureNote().set('id', noteId);
+      if (this.isFaved) Parse.User.current().remove('favedNotes', lecture);
+      else Parse.User.current().add('favedNotes', lecture);
       Parse.User.current().save()
         .then(() => {
           this.isFaved = !this.isFaved;
