@@ -57,8 +57,20 @@
         </el-row>
       </div>
     </div>
-    <el-dialog :visible.sync="reportDialogVisible" width="30%">
-      <span>ต้องการส่งรายงานความไม่เหมาะสมหรือไม่</span>
+    <el-dialog :visible.sync="reportDialogVisible"
+               width="30%" title="รายงานความไม่เหมาะสม" id="report-dialog">
+      <el-form>
+        <el-form-item label="เลือกเหตุผล">
+          <el-select v-model="reportReason" style="width: 100%;">
+            <el-option
+                v-for="item in reportOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary" @click="reportDialogVisible = false">ส่ง</el-button>
@@ -94,6 +106,9 @@
 .pdf-viewer
   width: 100%
   height: 70vh
+#report-dialog
+  .el-dialog__body
+    padding-top: 15px
 </style>
 
 <script>
@@ -127,6 +142,10 @@ export default {
       isFaved: false,
       chosenVote: '',
       userId: Parse.User.current() ? Parse.User.current().id : null,
+      reportReason: '',
+      reportOptions: [
+        { value: '1', label: 'เนื้อหาเก่า' }, { value: '2', label: 'เนื้อหาผิด' }, { value: '3', label: 'ไม่ใช่สรุปบทเรียน' },
+      ],
     };
   },
   computed: {
