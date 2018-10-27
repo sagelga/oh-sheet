@@ -23,6 +23,8 @@
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import LectureNoteCard from '@/components/LectureNoteCard.vue';
 import store from '@/store';
+import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -48,46 +50,18 @@ export default {
       return this.$store.state.loggedIn;
     },
   },
-  methods: {
-    async getFavLectures() {
-      const favLecture = Parse.Object.extend('User');
-      const query = new Parse.Query(favLecture);
-      query.equalTo('objectId', this.userId);
-      const lectureNotes = await query.find();
-      const lectureQuery = new Parse.Query(Parse.Object.extend('LectureNote'));
-
-      lectureNotes[0].get('favedNotes')
-        .forEach((element) => {
-          lectureQuery.equalTo('objectId', element);
-          lectureQuery.include('author');
-          this.favouriteList.push(element);
-        });
-      lectureQuery.include('author');
-      lectureQuery.containedIn('objectId', this.favouriteList);
-      lectureQuery.find()
-        .then((results) => {
-          const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
-          const authorAttrs = ['objectId', 'username', 'avatarPath'];
-
-          results.forEach((item) => {
-            const temp = {};
-
-            lectureAttrs.forEach((lecAttrs) => {
-              temp[lecAttrs] = item.get(lecAttrs);
-            });
-            authorAttrs.forEach((authAttrs) => {
-              temp.author[authAttrs] = item.get('author').get(authAttrs);
-            });
-            temp.objectId = item.id;
-            this.lectureNote.push(temp);
-          });
-
-          this.loading = false;
-        });
-    },
-  },
   created() {
-    this.getFavLectures();
+    ph.getFavedLectures(this.userId)
+      .then((lectureNotes) => {
+        const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
+        const authorAttrs = ['objectId', 'username', 'avatarPath'];
+        lectureNotes.forEach((l) => {
+          const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
+          tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
+          this.lectureNote.push(tempLecture);
+        });
+        this.loading = false;
+      });
   },
 };
 </script>
