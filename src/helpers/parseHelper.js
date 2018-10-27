@@ -108,7 +108,11 @@ ph.isRemotelyFaved = async (noteId, userId) => {
   const user = await favStatusQuery.first();
   const favedNotes = user.get('favedNotes');
   if (favedNotes === undefined) return false;
-  return favedNotes.includes(noteId);
+  const favedNoteIds = [];
+  favedNotes.forEach((n) => {
+    favedNoteIds.push(n.id);
+  });
+  return favedNoteIds.includes(noteId);
 };
 
 ph.updateLoginStreak = async (user) => {
