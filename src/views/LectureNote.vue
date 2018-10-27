@@ -57,8 +57,7 @@
         </el-row>
       </div>
     </div>
-    <el-dialog :visible.sync="reportDialogVisible"
-               width="30%" title="รายงานความไม่เหมาะสม" id="report-dialog">
+    <el-dialog :visible.sync="reportDialogVisible" title="รายงานความไม่เหมาะสม" id="report-dialog">
       <el-form>
         <el-form-item label="เลือกเหตุผล">
           <el-select v-model="reportReason" style="width: 100%;">
