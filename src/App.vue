@@ -53,6 +53,12 @@ a
   width: 100%
   max-width: 360px
   margin-top: 2em
+.el-dialog
+  width: 100%
+  max-width: 400px
+  @media screen and (max-width: 360px)
+    height: 100vh
+    margin-top: 0 !important
 </style>
 
 <script>
