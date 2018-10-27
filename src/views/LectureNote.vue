@@ -159,7 +159,7 @@ export default {
                 this.foundLecture = true;
                 this.loading = false;
               })
-              .catch(() => {});
+              .catch((err) => { console.log(err); });
           } else {
             this.foundLecture = true;
             this.loading = false;
