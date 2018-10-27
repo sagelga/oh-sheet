@@ -34,7 +34,11 @@ ph.getLectureNote = async (noteId) => {
 };
 
 ph.getFavedLectures = async (userId) => {
-  // const query =
+  const query = new Parse.Query(Parse.User);
+  query.equalTo('objectId', userId);
+  query.include('favedNotes');
+  const user = await query.first();
+  return user.get('favedNotes');
 };
 
 ph.getUserProfile = async (username) => {
