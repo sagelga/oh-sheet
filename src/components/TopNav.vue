@@ -6,26 +6,32 @@
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
       <el-menu-item index="/">
-        <i class="el-icon-search"></i>
-      </el-menu-item>
-
-      <el-menu-item index="/favourite/" v-if="isLoggedIn">
-        <i class="el-icon-star-on"></i>
+        <span class="material-icons">explore</span>
+        สำรวจ
       </el-menu-item>
 
       <el-menu-item index="/upload/" v-if="isLoggedIn">
-        <i class="el-icon-upload"></i>
+        <span class="material-icons">cloud_upload</span> 
+        อัปโหลด
+      </el-menu-item>
+
+      <el-menu-item index="/favourite/" v-if="isLoggedIn">
+        <span class="material-icons">star</span> 
+        ติดดาว
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
-        <template slot="title"><i class="material-icons">person</i></template>
-        <el-menu-item :index="'/profile/' + username + '/'">โปรไฟล์ของฉัน</el-menu-item>
-        <el-menu-item index="/manage-reports">จัดการเนื้อหาไม่เหมาะสม</el-menu-item>
+        <template slot="title">
+          <span class="material-icons">account_circle</span> 
+          {{ username }}
+        </template>
+        <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
+        <el-menu-item index="/manage-reports/">จัดการเนื้อหาไม่เหมาะสม</el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 
       <el-menu-item index="/login/" v-if="!isLoggedIn">
-        เข้าสู่ระบบ/สมัครสมาชิก
+        เข้าสู่ระบบ / สมัครบัญชีใหม่
       </el-menu-item>
 
     </el-menu>
