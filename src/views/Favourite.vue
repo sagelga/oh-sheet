@@ -1,12 +1,12 @@
 <template>
   <BoxedContainer class="top-gap bottom-gap">
-    <div class="side-margin" v-loading="loading">
+    <div class="side-margin">
       <h1>รายการโน้ตที่ชื่นชอบ</h1>
       <div v-show="!loading && lectureNote.length === 0" style="text-align: center">
         <h3>ยังไม่ได้ติดดาวโน้ตเลคเชอร์ใดๆ</h3>
         <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
       </div>
-      <el-row :gutter="20">
+      <el-row :gutter="20" v-loading="loading" >
         <el-col v-for="lecture in lectureNote"
                 :key="lecture.objectId"
                 :xs="24" :sm="8" :md="6">
