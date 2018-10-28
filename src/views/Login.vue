@@ -52,6 +52,7 @@
 
 <script>
 import store from '@/store';
+import ph from '@/helpers/parseHelper';
 
 const Parse = require('parse/dist/parse.min');
 
