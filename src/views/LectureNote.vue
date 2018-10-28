@@ -4,7 +4,7 @@
       <div class="side-margin" v-if="!loading">
         <el-row v-if="!foundLecture">
           <el-col :xs="24" style="text-align: center;">
-            <h1>ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h1>
+            <h2 style="margin: 2em auto">ไม่พบโน้ตเลคเชอร์ที่ต้องการ</h2>
             <img src="/img/undraw_empty_xct9.svg" alt="not found" class="lecture-not-found">
           </el-col>
         </el-row>

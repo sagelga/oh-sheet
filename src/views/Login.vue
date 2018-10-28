@@ -82,6 +82,7 @@ export default {
         .then(() => {
           this.$store.commit('loggedIn', true);
           this.loading = false;
+          // TODO: If 'redirect' parameter present, follow redirect
           this.$router.push('/');
           // TODO: Update moderator status check
         }, (e) => {

@@ -50,9 +50,12 @@ a
   &:hover
     border-color: #c0c4cc !important
 .lecture-not-found
+  display: block
   width: 100%
   max-width: 360px
   margin-top: 2em
+  margin-left: auto
+  margin-right: auto
 .el-dialog
   width: 100%
   max-width: 400px

@@ -62,6 +62,11 @@ const router = new Router({
       component: () => import('./views/ReportList.vue'),
       meta: { isModerator: true },
     },
+    {
+      path: '/not-found',
+      name: 'notFound',
+      component: () => import('./views/NotFound.vue'),
+    },
   ],
 });
 
@@ -74,7 +79,7 @@ router.beforeEach((to, from, next) => {
       });
     } else { next(); }
   } else if (to.matched.some(record => record.meta.isModerator)) {
-    if (!store.state.roles.mod) next({ path: '/forbidden/' });
+    if (!store.state.roles.mod) next({ path: '/not-found/' });
     else next();
   } else {
     next();
