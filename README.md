@@ -57,15 +57,9 @@ npm run build
 
 ## Links
 ### Issue Tracker + Agile Board
-เราใช้ YouTrack เพื่อจัดการ Issue และทำ Agile โดยสามารถเข้าไปดูได้ที่ [http://youtrack.kumakumamon.me/agiles/](http://youtrack.kumakumamon.me/agiles/)
+เราใช้ YouTrack เพื่อจัดการ Issue และทำ Agile โดยสามารถเข้าไปดูได้ที่ [http://kumakumamon.me/agiles/](http://kumakumamon.me/agiles/)
 
 สำหรับเพื่อนๆ หรือ อาจารย์ที่ต้องการเข้าไปดูงาน ก็สามารถ login ด้วย guest credetial ได้ โดยการกด Login > Log in as guest
-
-### Documentation
-We use [GitHub Wiki](https://github.com/IRIS-KMITL/se-y61-project-my-little-pony/wiki) to documents all the API calls and other stuff that you may need to know.
-
-### Notes
-We use [Dropbox Paper](https://paper.dropbox.com/doc/Team-Pony-Notes--AMIJDaViQyVW09cDNZXEI8nbAg-PlOpOdkh9KS0o61vw9bVc) to keep on how we should do work and many other wild ideas.
 
 ## Team Members ทีมงานคุณภาพ
 We are team My Little Pony (Team #17) from IT KMITL
