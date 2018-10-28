@@ -87,7 +87,6 @@ export default {
             .catch();
           // TODO: If 'redirect' parameter present, follow redirect
           this.$router.push('/');
-          // TODO: Update moderator status check
         }, (e) => {
           this.loading = false;
           this.error = e.message;
