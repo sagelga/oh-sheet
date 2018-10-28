@@ -99,6 +99,14 @@ ph.saveLectureNote = async (data, userId) => {
     note.relation('categories').add(category);
   });
 
+  const noteACL = new Parse.ACL();
+  noteACL.setRoleWriteAccess('moderator', true);
+  noteACL.setPublicWriteAccess(false);
+  noteACL.setPublicReadAccess(true);
+  noteACL.setWriteAccess(userId, true);
+
+  note.setACL(noteACL);
+
   return note.save();
 };
 
