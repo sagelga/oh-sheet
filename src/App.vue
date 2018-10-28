@@ -80,6 +80,9 @@ export default {
     if (Parse.User.current()) {
       this.$store.commit('loggedIn', true);
       ph.updateLoginStreak(Parse.User.current());
+      ph.isUserInRole(Parse.User.current().id, 'moderator')
+        .then(() => { this.$store.commit('updateRoleMod', true); })
+        .catch();
       ph.getLectureCategories()
         .then((categories) => {
           const tempCategories = [];

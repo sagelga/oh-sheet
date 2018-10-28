@@ -7,6 +7,9 @@ Vue.use(Puex);
 const store = new Puex({
   state: {
     loggedIn: false,
+    roles: {
+      mod: false,
+    },
     parseCred: {
       note: 'These are public keys. No need to be excited.',
       appId: 'A7gOtAmlXetuUbCejDVjEPiyMJpR4ET9TSjDHiqP',
@@ -34,6 +37,9 @@ const store = new Puex({
     },
     updateTopSearchInput(state, data) {
       state.topSearchInput = data;
+    },
+    updateRoleMod(state, data) {
+      state.roles.mod = data;
     },
   },
 });
