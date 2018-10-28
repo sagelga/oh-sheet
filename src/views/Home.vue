@@ -51,7 +51,7 @@
           <h3 v-show="!loading && !showRecent && lectureNotes.length === 0">
             ไม่พบโน้ตเลคเชอร์ที่ต้องการ
           </h3>
-          <el-row :gutter="20">
+          <el-row :gutter="20" style="display: flex; flex-wrap: wrap;">
             <el-col v-for="lecture in lectureNotes"
                     :key="lecture.objectId"
                     :xs="24" :sm="8" :md="6">
@@ -178,7 +178,7 @@ export default {
   },
   created() {
     if (this.$store.state.topSearchInput === '') {
-      ph.getRecentLectures(8)
+      ph.getRecentLectures(4 * 3)
         .then((lectureNotes) => {
           const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
           const authorAttrs = ['objectId', 'username', 'avatarPath'];

@@ -18,6 +18,7 @@ ph.getRecentLectures = async (n) => {
   // Returns Array<LectureNote>
   const query = new Parse.Query(LectureNote);
   query.include('author');
+  query.descending('createdAt');
   query.limit(n);
   const lectureNotes = await query.find();
   return lectureNotes;
