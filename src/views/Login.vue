@@ -83,6 +83,7 @@ export default {
           this.$store.commit('loggedIn', true);
           this.loading = false;
           this.$router.push('/');
+          // TODO: Update moderator status check
         }, (e) => {
           this.loading = false;
           this.error = e.message;
