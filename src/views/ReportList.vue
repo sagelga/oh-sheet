@@ -3,7 +3,7 @@
     <div class="side-margin">
       <h1>จัดการรายงานเนื้อหา</h1>
       <p>รายการโน้ตเลคเชอร์ที่ได้รับรายงานความไม่เหมาะสม</p>
-      <el-table :data="tableData" style="width: 100%" v-loading="loading">
+      <el-table :data="tableData" style="margin-top: 3.5em" v-loading="loading">
         <el-table-column prop="lectureNote.title" label="โน้ตเลคเชอร์"></el-table-column>
         <el-table-column prop="reason" label="สาเหตุ"></el-table-column>
         <el-table-column fixed="right" label="ตัวเลือก" width="130">
