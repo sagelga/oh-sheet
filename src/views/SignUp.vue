@@ -3,7 +3,7 @@
     <el-card>
       <div slot="header">
         <span>สมัครสมาชิก</span>
-        <router-link class="card-title-link" to="/login/">เข้าสู่ระบบ</router-link>
+        <router-link class="card-title-link" to="/login/">มีบัญชีแล้ว? เข้าสู่ระบบ</router-link>
       </div>
       <el-alert title="กรุณากรอกให้ครบทุกช่อง" type="error" v-show="hasBlankField"></el-alert>
       <el-alert :title="errorOnSignUp" type="error" v-show="errorOnSignUp"></el-alert>
@@ -18,7 +18,7 @@
         <el-form-item label="รหัสผ่าน">
           <el-input type="password" v-model="fields.password"></el-input>
         </el-form-item>
-        <el-form-item label="ชื่อที่ใช้แสดง">
+        <el-form-item label="ชื่อผู้ใช้งาน">
           <el-input type="text" v-model="fields.username"></el-input>
         </el-form-item>
         <el-button id="signup-btn" type="primary" round @click="checkBlankFields"

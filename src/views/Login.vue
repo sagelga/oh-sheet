@@ -3,11 +3,11 @@
     <el-card>
       <div slot="header" class="clearfix">
         <span>เข้าสู่ระบบ</span>
-        <router-link class="card-title-link" to="/signup/">สมัครสมาชิก</router-link>
+        <router-link class="card-title-link" to="/signup/">ผู้ใช้งานใหม่? สมัครที่นี่</router-link>
       </div>
       <el-alert :title="error" type="error" v-show="error"></el-alert>
       <el-form id="login-form" v-loading="loading">
-        <el-form-item label="ชื่อผู้ใช้"><!--Username input-->
+        <el-form-item label="ชื่อผู้ใช้งาน"><!--Username input-->
           <el-input v-model="username"
                     class="inputTextLogin"
                     auto-complete="on"
