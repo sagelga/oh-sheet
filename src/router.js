@@ -53,5 +53,10 @@ export default new Router({
       name: 'favourite',
       component: () => import('./views/Favourite.vue'),
     },
+    {
+      path: '/manage-reports',
+      name: 'reportList',
+      component: () => import('./views/ReportList.vue'),
+    },
   ],
 });
