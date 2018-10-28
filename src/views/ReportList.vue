@@ -3,7 +3,7 @@
     <div class="side-margin">
       <h1>จัดการรายงานเนื้อหา</h1>
       <p>รายการโน้ตเลคเชอร์ที่ได้รับรายงานความไม่เหมาะสม</p>
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" style="width: 100%" v-loading="loading">
         <el-table-column prop="lectureNote.title" label="โน้ตเลคเชอร์"></el-table-column>
         <el-table-column prop="reason" label="สาเหตุ"></el-table-column>
         <el-table-column fixed="right" label="ตัวเลือก" width="130">
@@ -12,7 +12,8 @@
               <el-button @click="view(scope.$index)" circle icon="el-icon-edit"></el-button>
             </el-tooltip>
             <el-tooltip content="ลบรายงาน" placement="bottom">
-              <el-button circle icon="el-icon-delete"></el-button>
+              <el-button @click="deleteReport(scope.$index)" circle
+                         icon="el-icon-delete"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -26,17 +27,24 @@
 
 <script>
 import BoxedContainer from '@/components/BoxedContainer.vue';
+import ph from '@/helpers/parseHelper';
+import ut from '@/helpers/util';
+import store from '@/store';
+
+const Parse = require('parse/dist/parse.min');
+
+Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
+Parse.serverURL = store.state.parseCred.serverUrl;
+
+const LectureReport = Parse.Object.extend('LectureReport');
 
 export default {
   name: 'ReportList',
   components: { BoxedContainer },
   data() {
     return {
-      tableData: [
-        { lectureNote: { title: 'lel 1', objectId: 'a2xKluB' }, reason: 'เนื้อหาเก่า' },
-        { lectureNote: { title: 'lel 2', objectId: '9dLfocs' }, reason: 'เนื้อหาเก่า' },
-        { lectureNote: { title: 'lel 3', objectId: 'vmS8fmv' }, reason: 'เนื้อหาเก่า' },
-      ],
+      tableData: [],
+      loading: true,
     };
   },
   methods: {
@@ -44,6 +52,32 @@ export default {
       const noteId = this.tableData[index].lectureNote.objectId;
       this.$router.push(`/note/${noteId}/`);
     },
+    deleteReport(index) {
+      const reportId = this.tableData[index].objectId;
+      const report = new LectureReport().set('id', reportId);
+      report.destroy().then(() => {
+        this.tableData.splice(index);
+        this.$message({
+          type: 'success',
+          message: 'ลบรายงานเรียบร้อย',
+        });
+      }).catch((err) => {
+        this.$message.error(err.message);
+      });
+    },
+  },
+  mounted() {
+    ph.getLectureReports().then((reports) => {
+      console.log(reports);
+      const reportAttr = ['id', 'reason', 'lectureNote'];
+      const lecAttr = ['id', 'title'];
+      reports.forEach((r) => {
+        const temp = ut.getObjWithAttrs(r, reportAttr);
+        temp.lectureNote = ut.getObjWithAttrs(temp.lectureNote, lecAttr);
+        this.tableData.push(temp);
+      });
+      this.loading = false;
+    });
   },
 };
 </script>

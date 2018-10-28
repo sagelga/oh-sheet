@@ -152,4 +152,10 @@ ph.submitLectureReport = async (noteId, reason) => {
   return report.save();
 };
 
+ph.getLectureReports = async () => {
+  const query = new Parse.Query(LectureReport);
+  query.include('lectureNote');
+  return query.find();
+};
+
 export default ph;
