@@ -11,22 +11,24 @@
       </el-menu-item>
 
       <el-menu-item index="/upload/" v-if="isLoggedIn">
-        <span class="material-icons">cloud_upload</span> 
+        <span class="material-icons">cloud_upload</span>
         อัปโหลด
       </el-menu-item>
 
       <el-menu-item index="/favourite/" v-if="isLoggedIn">
-        <span class="material-icons">star</span> 
+        <span class="material-icons">star</span>
         ติดดาว
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title">
-          <span class="material-icons">account_circle</span> 
+          <span class="material-icons">account_circle</span>
           {{ username }}
         </template>
         <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
-        <el-menu-item index="/manage-reports/">จัดการเนื้อหาไม่เหมาะสม</el-menu-item>
+        <el-menu-item index="/manage-reports/" v-if="isModerator">
+          จัดการเนื้อหาไม่เหมาะสม
+        </el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 
