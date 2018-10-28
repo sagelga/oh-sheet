@@ -109,6 +109,7 @@ export default {
       Parse.User.logOut()
         .then(() => {
           this.$store.commit('loggedIn', false);
+          this.$store.commit('updateRoleMod', false);
         });
     },
     submitSearch(text) {
