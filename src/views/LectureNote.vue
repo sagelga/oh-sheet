@@ -15,9 +15,12 @@
           <el-col :xs="24" :md="7">
             <el-card class="note-meta-card">
               <h1>{{ lectureNote.title }}</h1>
-              <h2>
-                <router-link to="">{{ lectureNote.categories[0] }}</router-link>
-              </h2>
+              <div v-if="lectureNote.categories.length > 0">
+                <ul v-if="lectureNote.categories.length > 1">
+                  <li v-for="c in lectureNote.categories" :key="c.value">{{ c.englishName }}</li>
+                </ul>
+                <div v-else>{{ lectureNote.categories[0].englishName }}</div>
+              </div>
               <DateText :dateObj="lectureNote.updatedAt"/>
               <UserChip :user="lectureNote.author" />
               <QualityThumbs :voteUp="lectureNote.voteUp"
@@ -81,9 +84,13 @@
 <style lang="sass">
 .note-meta-card
   position: relative
+  margin-bottom: 5em
   h1
     font-size: 1em
     margin-bottom: 0.3rem
+    @media screen and (min-width: 992px)
+      width: 90%
+      clear: both
   h2
     font-size: 1em
     font-weight: normal
@@ -96,6 +103,8 @@
     right: 0.7em
     top: 0.7em
     cursor: pointer
+  ul
+    padding-left: 1em
   hr
     border: 0
     height: 0
@@ -163,25 +172,25 @@ export default {
     getLectureNote(noteId) {
       ph.getLectureNote(noteId).then((result) => {
         if (result) {
-          const lectureFields = ['author', 'categories', 'filePath', 'title',
+          const lectureAttrs = ['id', 'author', 'categories', 'filePath', 'title',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
-          // Get fields of the lecture note
-          lectureFields.forEach((f) => { this.lectureNote[f] = result.get(f); });
-          this.lectureNote.objectId = result.id;
+          const authorAttrs = ['username', 'avatarPath'];
+          const catAttrs = ['objectId', 'englishName'];
+          this.lectureNote = ut.getObjWithAttrs(result, lectureAttrs);
+          this.lectureNote.author = ut.getObjWithAttrs(result.get('author'), authorAttrs);
+          this.lectureNote.categories = [];
+
+          if (result.get('categories') !== undefined) {
+            result.get('categories')
+              .forEach((c) => {
+                const tempCat = ut.getObjWithAttrs(c, catAttrs);
+                this.lectureNote.categories.push(tempCat);
+              });
+          }
+
           // Sanitize
-          if (this.lectureNote.categories === undefined) { this.lectureNote.categories = ['']; }
           if (this.lectureNote.upVoters === undefined) { this.lectureNote.upVoters = []; }
           if (this.lectureNote.downVoters === undefined) { this.lectureNote.downVoters = []; }
-
-          if (this.userId) {
-            this.chosenVote =
-              ut.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters, this.userId);
-          }
-          // Get fields from the lecture note's author
-          const authorFields = ['username', 'avatarPath'];
-          authorFields.forEach((f) => {
-            this.lectureNote.author[f] = result.get('author').get(f);
-          });
 
           if (this.userId) {
             ph.isRemotelyFaved(this.$route.params.noteId, this.userId)
@@ -191,6 +200,8 @@ export default {
                 this.loading = false;
               })
               .catch((err) => { console.log(err); });
+            this.chosenVote =
+              ut.findMyVote(this.lectureNote.upVoters, this.lectureNote.downVoters, this.userId);
           } else {
             this.foundLecture = true;
             this.loading = false;

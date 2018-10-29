@@ -90,8 +90,8 @@ ph.saveLectureNote = async (data, userId) => {
   });
   note.set('author', authorPointer);
 
-  // const level = new LectureLevel().set('objectId', data.levelId);
-  // note.addUnique('levels', level);
+  const level = new LectureLevel().set('objectId', data.levelId);
+  note.addUnique('levels', level);
 
   data.categoryId.forEach((c) => {
     const category = new LectureCategory().set('objectId', c);
