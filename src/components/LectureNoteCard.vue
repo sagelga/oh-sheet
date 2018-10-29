@@ -24,7 +24,9 @@ export default {
   },
   computed: {
     categories() {
-      if (this.lectureNote.categories) return this.lectureNote.categories[0];
+      if (this.lectureNote.categories.length > 0) {
+        return this.lectureNote.categories[0].englishName;
+      }
       return '';
     },
     thumbnailUrl() {

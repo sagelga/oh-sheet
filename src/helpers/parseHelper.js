@@ -90,14 +90,12 @@ ph.saveLectureNote = async (data, userId) => {
   });
   note.set('author', authorPointer);
 
-  const level = new LectureLevel();
-  level.id = data.levelId;
-  note.relation('levels').add(level);
+  // const level = new LectureLevel().set('objectId', data.levelId);
+  // note.addUnique('levels', level);
 
   data.categoryId.forEach((c) => {
-    const category = new LectureCategory();
-    category.id = c;
-    note.relation('categories').add(category);
+    const category = new LectureCategory().set('objectId', c);
+    note.addUnique('categories', category);
   });
 
   const noteACL = new Parse.ACL();
@@ -105,7 +103,6 @@ ph.saveLectureNote = async (data, userId) => {
   noteACL.setPublicWriteAccess(false);
   noteACL.setPublicReadAccess(true);
   noteACL.setWriteAccess(userId, true);
-
   note.setACL(noteACL);
 
   return note.save();

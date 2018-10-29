@@ -180,11 +180,20 @@ export default {
     if (this.$store.state.topSearchInput === '') {
       ph.getRecentLectures(4 * 3)
         .then((lectureNotes) => {
-          const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];
+          const lectureAttrs = ['objectId', 'title', 'thumbnailPath', 'author'];
           const authorAttrs = ['objectId', 'username', 'avatarPath'];
+          const catAttrs = ['objectId', 'englishName'];
           lectureNotes.forEach((l) => {
             const tempLecture = ut.getObjWithAttrs(l, lectureAttrs);
             tempLecture.author = ut.getObjWithAttrs(tempLecture.author, authorAttrs);
+            tempLecture.categories = [];
+            if (l.get('categories') !== undefined) {
+              l.get('categories')
+                .forEach((c) => {
+                  const tempCat = ut.getObjWithAttrs(c, catAttrs);
+                  tempLecture.categories.push(tempCat);
+                });
+            }
             this.lectureNotes.push(tempLecture);
           });
           this.loading = false;
