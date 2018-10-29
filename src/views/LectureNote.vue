@@ -84,9 +84,13 @@
 <style lang="sass">
 .note-meta-card
   position: relative
+  margin-bottom: 5em
   h1
     font-size: 1em
     margin-bottom: 0.3rem
+    @media screen and (min-width: 992px)
+      width: 90%
+      clear: both
   h2
     font-size: 1em
     font-weight: normal
@@ -99,6 +103,8 @@
     right: 0.7em
     top: 0.7em
     cursor: pointer
+  ul
+    padding-left: 1em
   hr
     border: 0
     height: 0
