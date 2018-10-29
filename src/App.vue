@@ -2,6 +2,7 @@
   <div id="app">
     <TopNav ref="topNav"></TopNav>
     <router-view/>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -69,6 +70,7 @@ import store from '@/store';
 import TopNav from '@/components/TopNav.vue';
 import ph from '@/helpers/parseHelper';
 import ut from '@/helpers/util';
+import Footer from '@/components/Footer.vue';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -77,7 +79,7 @@ Parse.serverURL = store.state.parseCred.serverUrl;
 
 export default {
   components: {
-    TopNav,
+    TopNav, Footer,
   },
   mounted() {
     if (Parse.User.current()) {
