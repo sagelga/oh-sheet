@@ -206,6 +206,7 @@ export default {
   },
   mounted() {
     document.title = 'Explore | Oh Sheet!';
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/';
     this.categoryList = this.store_categoryList;
   },
 };

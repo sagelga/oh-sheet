@@ -84,6 +84,7 @@ export default {
             this.loadingLectureNotes = false;
           });
         document.title = `${this.user.username} | Oh Sheet!`;
+        this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = `/profile/${this.user.username}/`;
       });
   },
 };

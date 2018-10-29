@@ -258,6 +258,7 @@ export default {
   },
   created() {
     this.getLectureNote(this.$route.params.noteId);
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/';
   },
 };
 </script>

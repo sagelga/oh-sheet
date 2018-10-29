@@ -160,6 +160,7 @@ export default {
   },
   mounted() {
     document.title = 'Edit Lecture | Oh Sheet!';
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/upload/';
     this.categoryList = this.store_categoryList;
     Dropzone.autoDiscover = false;
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {

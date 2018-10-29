@@ -63,6 +63,7 @@ export default {
         });
         this.loading = false;
       });
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/favourites/';
   },
 };
 </script>
