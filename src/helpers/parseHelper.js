@@ -18,6 +18,7 @@ ph.getRecentLectures = async (n) => {
   // Returns Array<LectureNote>
   const query = new Parse.Query(LectureNote);
   query.include('author');
+  query.descending('createdAt');
   query.limit(n);
   const lectureNotes = await query.find();
   return lectureNotes;
@@ -98,6 +99,14 @@ ph.saveLectureNote = async (data, userId) => {
     category.id = c;
     note.relation('categories').add(category);
   });
+
+  const noteACL = new Parse.ACL();
+  noteACL.setRoleWriteAccess('moderator', true);
+  noteACL.setPublicWriteAccess(false);
+  noteACL.setPublicReadAccess(true);
+  noteACL.setWriteAccess(userId, true);
+
+  note.setACL(noteACL);
 
   return note.save();
 };
