@@ -43,7 +43,7 @@
                   แชร์
                 </el-button>
               </div>
-              <div v-if="isLoggedIn && lectureNote.author.id === userId">
+              <div v-if="isLoggedIn && lectureNote.author.id === userId || isModerator">
                 <el-button type="text" style="font-size: 1em" @click="edit">
                   <span class="material-icons">edit</span>
                   แก้ไข
@@ -160,6 +160,9 @@ export default {
     isLoggedIn() {
       return this.$store.state.loggedIn;
     },
+    isModerator() {
+      return this.$store.state.roles.mod;
+    },
     pdfUrl() {
       return `${store.state.endpoints.objectStorage}/${this.lectureNote.filePath}`;
     },
@@ -231,7 +234,7 @@ export default {
         });
     },
     edit() {
-      if (this.isLoggedIn && this.userId === this.lectureNote.author.id) {
+      if (this.isLoggedIn && (this.userId === this.lectureNote.author.id || this.isModerator)) {
         this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
       }
     },
