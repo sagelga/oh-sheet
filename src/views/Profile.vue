@@ -1,7 +1,12 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
+      <div class="profile-pic" @click="changeAvatarDialogVisible = true">
+        <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
+          <div class="edit">
+            <i class="material-icons" style="position: absolute">edit</i>
+          </div>
+      </div>
       <h1>{{ user.username }}</h1>
       <div class="achievements" v-if="!loadingProfile && user.achievements">
         <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 7 วัน" placement="bottom"
@@ -19,26 +24,56 @@
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
+
+    <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="submitReport">ส่ง</el-button>
+      </span>
+    </el-dialog>
+
   </BoxedContainer>
 </template>
 
 <style scoped lang="sass">
 .profile-meta
+  opacity: 1
   max-width: 300px
   margin: 0 auto 2em
   text-align: center
   img.avatar
+    position: relative
     width: 128px
     height: 128px
     border-radius: 50%
     box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
-  .achievements
-    img
+    transition: .5s ease
+  .achievements img
       display: inline-block
       width: 36px
       border-radius: 4px
       &:not(:last-child)
         margin-right: 1em
+.profile-pic
+  position: relative
+  width: 128px
+  text-align: center
+  margin: 0 auto
+.profile-pic:hover img
+  cursor: pointer
+  display: inline-block
+  opacity: 0.6
+.profile-pic:hover .edit
+  display: inline-block
+  opacity: 1
+.edit
+  transition: .5s ease
+  padding-top: 5px
+  padding-right: 5px
+  position: absolute
+  right: 0
+  top: 0
+  opacity: 0
 </style>
 
 <script>
@@ -64,6 +99,7 @@ export default {
       loadingProfile: true,
       loadingLectureNotes: true,
       foundProfile: false,
+      changeAvatarDialogVisible: false,
     };
   },
   created() {
