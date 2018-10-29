@@ -68,6 +68,7 @@ export default {
   },
   mounted() {
     document.title = 'Reports | Oh Sheet!';
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/manage-reports/';
     ph.getLectureReports().then((reports) => {
       const reportAttr = ['id', 'reason', 'lectureNote'];
       const lecAttr = ['id', 'title'];

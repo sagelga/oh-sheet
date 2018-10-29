@@ -1,7 +1,7 @@
 <template>
   <BoxedContainer class="main-nav-container">
     <el-menu :default-active="defaultActive" mode="horizontal"
-             :router="true" class="main-nav">
+             :router="true" class="main-nav" ref="topNavMenu">
 
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
@@ -26,7 +26,7 @@
           {{ username }}
           <el-badge value="mod" type="primary" v-if="isModerator"/>
         </template>
-        <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
+        <el-menu-item :index="'/profile/' + username + '/'">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="/manage-reports/" v-if="isModerator">
           จัดการเนื้อหาไม่เหมาะสม
         </el-menu-item>
