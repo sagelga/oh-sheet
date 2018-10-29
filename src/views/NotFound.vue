@@ -13,6 +13,9 @@ import BoxedContainer from '@/components/BoxedContainer.vue';
 export default {
   name: 'NotFound',
   components: { BoxedContainer },
+  mounted() {
+    document.title = 'Not Found | Oh Sheet!';
+  },
 };
 </script>
 

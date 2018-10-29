@@ -80,6 +80,7 @@ export default {
     },
   },
   mounted() {
+    document.title = 'Sign Up | Oh Sheet!';
     document.getElementById('signup-form').addEventListener('keyup', (e) => {
       e.preventDefault();
       if (e.keyCode === 13) document.getElementById('signup-btn').click();

@@ -51,6 +51,7 @@ export default {
     },
   },
   created() {
+    document.title = 'Favourites | Oh Sheet!';
     ph.getFavedLectures(this.userId)
       .then((lectureNotes) => {
         const lectureAttrs = ['objectId', 'title', 'categories', 'thumbnailPath', 'author'];

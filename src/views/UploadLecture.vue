@@ -159,6 +159,7 @@ export default {
     },
   },
   mounted() {
+    document.title = 'Edit Lecture | Oh Sheet!';
     this.categoryList = this.store_categoryList;
     Dropzone.autoDiscover = false;
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {

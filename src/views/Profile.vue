@@ -83,6 +83,7 @@ export default {
             });
             this.loadingLectureNotes = false;
           });
+        document.title = `${this.user.username} | Oh Sheet!`;
       });
   },
 };
