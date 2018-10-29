@@ -43,7 +43,7 @@
                   แชร์
                 </el-button>
               </div>
-              <div v-if="isLoggedIn && lectureNote.author.id === userId || isModerator">
+              <div v-if="canEdit">
                 <el-button type="text" style="font-size: 1em" @click="edit">
                   <span class="material-icons">edit</span>
                   แก้ไข
@@ -163,6 +163,10 @@ export default {
     isModerator() {
       return this.$store.state.roles.mod;
     },
+    canEdit() {
+      return this.isLoggedIn &&
+        (this.lectureNote.author.objectId === this.userId || this.isModerator);
+    },
     pdfUrl() {
       return `${store.state.endpoints.objectStorage}/${this.lectureNote.filePath}`;
     },
@@ -177,7 +181,7 @@ export default {
         if (result) {
           const lectureAttrs = ['id', 'author', 'categories', 'filePath', 'title',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
-          const authorAttrs = ['username', 'avatarPath'];
+          const authorAttrs = ['id', 'username', 'avatarPath'];
           const catAttrs = ['objectId', 'englishName'];
           this.lectureNote = ut.getObjWithAttrs(result, lectureAttrs);
           this.lectureNote.author = ut.getObjWithAttrs(result.get('author'), authorAttrs);
@@ -234,9 +238,7 @@ export default {
         });
     },
     edit() {
-      if (this.isLoggedIn && (this.userId === this.lectureNote.author.id || this.isModerator)) {
-        this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
-      }
+      if (this.canEdit) this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
     },
     share() {
       navigator.share({
