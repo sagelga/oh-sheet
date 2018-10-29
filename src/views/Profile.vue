@@ -26,8 +26,16 @@
     </el-row>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
+      <div>
+        <div>อัปโหลดรูปภาพ
+          <input type="file" @change="previewImage" accept="image/*">
+        </div>
+        <div style="position: relative" v-if="imageData.length > 0">
+          <img class="preview" :src="imageData">
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
+        <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary" @click="submitReport">ส่ง</el-button>
       </span>
     </el-dialog>
@@ -74,6 +82,13 @@
   right: 0
   top: 0
   opacity: 0
+.preview
+  width: 128px
+  height: 128px
+  display: block
+  margin: 0 auto
+  padding: 20px
+  object-fit: cover
 </style>
 
 <script>
@@ -100,7 +115,20 @@ export default {
       loadingLectureNotes: true,
       foundProfile: false,
       changeAvatarDialogVisible: false,
+      imageData: '',
     };
+  },
+  methods: {
+    previewImage(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageData = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
   },
   created() {
     ph.getUserProfile(this.$route.params.username)
