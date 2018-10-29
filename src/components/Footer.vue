@@ -1,6 +1,7 @@
 <template>
 	<Boxedcontainer>
 		<h1>Allahu akbar</h1>
+		<img src="img/Oh_sheet_logo_for_footer">
 	</Boxedcontainer>
 </template>
 <script>
