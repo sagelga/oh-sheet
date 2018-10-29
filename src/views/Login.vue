@@ -52,6 +52,7 @@
 
 <script>
 import store from '@/store';
+import ph from '@/helpers/parseHelper';
 
 const Parse = require('parse/dist/parse.min');
 
@@ -82,6 +83,10 @@ export default {
         .then(() => {
           this.$store.commit('loggedIn', true);
           this.loading = false;
+          ph.isUserInRole(Parse.User.current().id, 'moderator')
+            .then(() => { this.$store.commit('updateRoleMod', true); })
+            .catch();
+          // TODO: If 'redirect' parameter present, follow redirect
           this.$router.push('/');
         }, (e) => {
           this.loading = false;

@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Home from '@/views/Home.vue';
+import store from '@/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -32,6 +33,7 @@ export default new Router({
       path: '/upload',
       name: 'uploadLecture',
       component: () => import('./views/UploadLecture.vue'),
+      meta: { isLoggedIn: true },
     },
     {
       path: '/signup',
@@ -52,11 +54,36 @@ export default new Router({
       path: '/favourite',
       name: 'favourite',
       component: () => import('./views/Favourite.vue'),
+      meta: { isLoggedIn: true },
     },
     {
       path: '/manage-reports',
       name: 'reportList',
       component: () => import('./views/ReportList.vue'),
+      meta: { isModerator: true },
+    },
+    {
+      path: '/not-found',
+      name: 'notFound',
+      component: () => import('./views/NotFound.vue'),
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.isLoggedIn)) {
+    if (!store.state.loggedIn) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    } else { next(); }
+  } else if (to.matched.some(record => record.meta.isModerator)) {
+    if (!store.state.roles.mod) next({ path: '/not-found/' });
+    else next();
+  } else {
+    next();
+  }
+});
+
+export default router;

@@ -158,4 +158,12 @@ ph.getLectureReports = async () => {
   return query.find();
 };
 
+ph.isUserInRole = async (userId, roleName) => {
+  const roleQuery = new Parse.Query(Parse.Role);
+  roleQuery.equalTo('name', roleName);
+  const role = await roleQuery.first();
+  const userQuery = role.getUsers().query();
+  return userQuery.get(userId);
+};
+
 export default ph;

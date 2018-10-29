@@ -10,26 +10,29 @@
         สำรวจ
       </el-menu-item>
 
-      <el-menu-item index="/upload" v-if="isLoggedIn">
-        <span class="material-icons">cloud_upload</span> 
+      <el-menu-item index="/upload/" v-if="isLoggedIn">
+        <span class="material-icons">cloud_upload</span>
         อัปโหลด
       </el-menu-item>
 
-      <el-menu-item index="/favourite" v-if="isLoggedIn">
-        <span class="material-icons">star</span> 
+      <el-menu-item index="/favourite/" v-if="isLoggedIn">
+        <span class="material-icons">star</span>
         ติดดาว
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title">
-          <span class="material-icons">account_circle</span> 
+          <span class="material-icons">account_circle</span>
           {{ username }}
         </template>
         <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
+        <el-menu-item index="/manage-reports/" v-if="isModerator">
+          จัดการเนื้อหาไม่เหมาะสม
+        </el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
 
-      <el-menu-item index="/login" v-if="!isLoggedIn">
+      <el-menu-item index="/login/" v-if="!isLoggedIn">
         เข้าสู่ระบบ / สมัครบัญชีใหม่
       </el-menu-item>
 
@@ -97,12 +100,16 @@ export default {
     username() {
       return Parse.User.current().get('username');
     },
+    isModerator() {
+      return this.$store.state.roles.mod;
+    },
   },
   methods: {
     logOutUser() {
       Parse.User.logOut()
         .then(() => {
           this.$store.commit('loggedIn', false);
+          this.$store.commit('updateRoleMod', false);
         });
     },
     submitSearch(text) {

@@ -68,7 +68,6 @@ export default {
   },
   mounted() {
     ph.getLectureReports().then((reports) => {
-      console.log(reports);
       const reportAttr = ['id', 'reason', 'lectureNote'];
       const lecAttr = ['id', 'title'];
       reports.forEach((r) => {
