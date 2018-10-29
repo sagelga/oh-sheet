@@ -67,6 +67,7 @@ export default {
     },
   },
   mounted() {
+    document.title = 'Reports | Oh Sheet!';
     ph.getLectureReports().then((reports) => {
       const reportAttr = ['id', 'reason', 'lectureNote'];
       const lecAttr = ['id', 'title'];

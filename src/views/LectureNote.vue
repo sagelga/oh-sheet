@@ -188,6 +188,8 @@ export default {
               });
           }
 
+          document.title = `${this.lectureNote.title} | Oh Sheet!`;
+
           // Sanitize
           if (this.lectureNote.upVoters === undefined) { this.lectureNote.upVoters = []; }
           if (this.lectureNote.downVoters === undefined) { this.lectureNote.downVoters = []; }
@@ -209,6 +211,7 @@ export default {
         } else {
           this.foundLecture = false;
           this.loading = false;
+          document.title = 'Lecture Not Found | Oh Sheet!';
         }
       }); // TODO: Add catch
     },

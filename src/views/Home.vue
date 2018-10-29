@@ -205,6 +205,7 @@ export default {
     }
   },
   mounted() {
+    document.title = 'Explore | Oh Sheet!';
     this.categoryList = this.store_categoryList;
   },
 };
