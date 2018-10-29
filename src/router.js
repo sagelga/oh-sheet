@@ -25,6 +25,11 @@ const router = new Router({
       component: () => import('./views/LectureNote.vue'),
     },
     {
+      path: '/note/:noteId/:action',
+      name: 'lectureNoteAction',
+      component: () => import('./views/UploadLecture.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue'),
