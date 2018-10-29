@@ -24,6 +24,7 @@
         <template slot="title">
           <span class="material-icons">account_circle</span>
           {{ username }}
+          <el-badge value="mod" type="primary" v-if="isModerator"/>
         </template>
         <el-menu-item :index="'/profile/' + username">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="/manage-reports/" v-if="isModerator">
@@ -41,36 +42,39 @@
 </template>
 
 <style lang="sass">
-  .main-nav-container
-    position: fixed
-    width: 100%
-    max-width: 100%
-    z-index: 2000
-    & + div:not(.top-gap)
-      padding-top: 61px
-  .main-nav
-    margin-left: auto
-    margin-right: auto
-    max-width: 1100px
-    text-align: right
-    box-shadow: 0 10px 10px -8px rgba(0, 0, 0, 0.2)
-    & > .el-menu-item, & > .el-submenu
-      float: none
-      display: inline-block
-    & > .el-submenu#topnav-more i.el-submenu__icon-arrow
+.main-nav-container
+  position: fixed
+  width: 100%
+  max-width: 100%
+  z-index: 2000
+  & + div:not(.top-gap)
+    padding-top: 61px
+.main-nav
+  margin-left: auto
+  margin-right: auto
+  max-width: 1100px
+  text-align: right
+  box-shadow: 0 10px 10px -8px rgba(0, 0, 0, 0.2)
+  & > .el-menu-item, & > .el-submenu
+    float: none
+    display: inline-block
+  & > .el-submenu#topnav-more i.el-submenu__icon-arrow
+    display: none
+  .el-input
+    display: inline-block
+    position: absolute
+    left: 0
+    max-width: 300px
+    margin-top: 10px
+    @media screen and (max-width: 1140px)
+      margin-left: 1em
+    @media screen and (max-width: 640px)
       display: none
-    .el-input
-      display: inline-block
-      position: absolute
-      left: 0
-      max-width: 300px
-      margin-top: 10px
-      @media screen and (max-width: 1140px)
-        margin-left: 1em
-      @media screen and (max-width: 640px)
-        display: none
-    .material-icons
-      font-size: 20px
+  .material-icons
+    font-size: 20px
+  .el-badge
+    top: 3px
+    margin-left: 3px
 </style>
 
 <script>
