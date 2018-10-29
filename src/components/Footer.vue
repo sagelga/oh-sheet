@@ -1,11 +1,9 @@
 <template>
-  
     <div class="body">
       <img src="/img/Oh_sheet_logo_for_footer_crop.JPG" class="logo" align="top">
       <a href="www.google.com" class="link"><h3>ไปเยอรมัน</h3></a>
       <h1>"เห็นเธอที่เยอรมัน"</h1>
     </div>
-  
 </template>
 
 <style>
