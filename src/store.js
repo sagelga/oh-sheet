@@ -7,6 +7,7 @@ Vue.use(Puex);
 const store = new Puex({
   state: {
     loggedIn: false,
+    username: undefined,
     roles: {
       mod: false,
     },
@@ -40,6 +41,9 @@ const store = new Puex({
     },
     updateRoleMod(state, data) {
       state.roles.mod = data;
+    },
+    updateUsername(state, data) {
+      state.username = data;
     },
   },
 });

@@ -82,6 +82,7 @@ export default {
   mounted() {
     if (Parse.User.current()) {
       this.$store.commit('loggedIn', true);
+      this.$store.commit('updateUsername', Parse.User.current().get('username'));
       ph.updateLoginStreak(Parse.User.current());
       ph.isUserInRole(Parse.User.current().id, 'moderator')
         .then(() => { this.$store.commit('updateRoleMod', true); })
