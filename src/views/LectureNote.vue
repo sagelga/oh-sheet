@@ -49,6 +49,9 @@
                   แก้ไข
                 </el-button>
               </div>
+                <el-button type="text" style="font-size: 1em" @click="deleteLecture" v-if="canEdit">
+                    o ลบ
+                </el-button>
               <div>
                 <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
                   <span class="material-icons">report</span>
@@ -239,6 +242,17 @@ export default {
     },
     edit() {
       if (this.canEdit) this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
+    },
+    deleteLecture() {
+      const LectureNote = Parse.Object.extend('LectureNote');
+      const lecture = new LectureNote().set('id', this.lectureNote.objectId);
+      const retVal = confirm('ยืนยันการลบโน้ตเลคเชอร์?');
+      if (retVal == true) {
+        lecture.destroy();
+        alert('ลบโน้ตเลคเชอร์แล้ว!! กรุณากด F5 เพื่อตรวจสอบ')
+        return true;
+      }
+      return false;
     },
     share() {
       navigator.share({
