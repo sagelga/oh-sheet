@@ -6,15 +6,13 @@
     </div>
 </template>
 
-<style>
+<style scoped>
   .logo {
     height: 50px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
-  }
-  .container {
   }
   .body {
     background-color: #3c3c3c;
