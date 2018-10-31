@@ -79,6 +79,7 @@ export default {
       loading: false,
       orgFormData: {},
       formData: {
+        objectId: '',
         description: '',
         title: '',
         levelId: '',
@@ -158,13 +159,55 @@ export default {
         return false;
       });
     },
+    getLectureNote(noteId) {
+      ph.getLectureNote(noteId).then((result) => {
+        if (result) {
+          const lectureAttrs = ['id', 'categories', 'filePath', 'title', 'levels', 'description'];
+          const lvlAttrs = ['id'];
+          const catAttrs = ['id', 'value'];
+          this.orgFormData = ut.getObjWithAttrs(result, lectureAttrs);
+          this.orgFormData.categories = [];
+          this.orgFormData.levels = [];
+          if (result.get('categories') !== undefined) {
+            result.get('categories')
+              .forEach((c) => {
+                const tempCat = ut.getObjWithAttrs(c, catAttrs);
+                this.orgFormData.categories.push(tempCat);
+              });
+          }
+          if (result.get('levels') !== undefined) {
+            result.get('levels')
+              .forEach((l) => {
+                const tempLvl = ut.getObjWithAttrs(l, lvlAttrs);
+                this.orgFormData.levels.push(tempLvl);
+              });
+          }
+          this.loading = false;
+          this.copyOrgToFormData();
+          this.isSubmitBtnClickable = true;
+        } else {
+          // show a dialog and then push to home page
+          this.loading = false;
+        }
+      }); // TODO: Add catch
+    },
+    copyOrgToFormData() {
+      const lectureAttrs = ['filePath', 'title', 'description'];
+      lectureAttrs.forEach((a) => { this.formData[a] = this.orgFormData[a]; });
+      this.formData.objectId = this.orgFormData.objectId;
+      this.formData.levelId = this.orgFormData.levels[0].objectId;
+      this.orgFormData.categories.forEach((c) => {
+        this.formData.categoryId.push(c.objectId);
+        this.formData.category.push(c.objectId);
+      });
+    },
   },
   created() {
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/upload/';
     this.categoryList = this.store_categoryList;
     if (this.$router.currentRoute.params.action === 'edit') {
       this.action = 'แก้ไข';
-      // pull data into this.orgFormData
+      this.getLectureNote(this.$route.params.noteId);
       // copy this.orgFormData to this.formData
     }
   },

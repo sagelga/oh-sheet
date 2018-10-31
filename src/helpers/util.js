@@ -11,11 +11,9 @@ util.getObjWithAttrs = (obj, attrs) => {
   // Returns LectureNote with desired attributes
   const newObj = {};
   attrs.forEach((a) => {
-    newObj[a] = obj.get(a);
+    if (a !== 'id' && a !== 'objectId') newObj[a] = obj.get(a);
+    else newObj.objectId = obj.id;
   });
-  if (attrs.includes('objectId') || attrs.includes('id')) {
-    newObj.objectId = obj.id;
-  }
   return newObj;
 };
 
