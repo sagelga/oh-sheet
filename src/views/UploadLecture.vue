@@ -35,6 +35,9 @@
             </el-form-item>
             <div>
               <label class="el-form-item__label" style="float: none;">อัปโหลดไฟล์ PDF</label>
+              <el-alert title="ตอนนี้มีไฟล์อยู่แล้ว แต่หากต้องการเปลี่ยนให้ลากไฟล์มาใหม่ได้เลย"
+                        type="warning" :closable="false" show-icon
+                        v-show="formData.objectId"></el-alert>
             </div>
             <div id="my-awesome-dropzone" class="dropzone"></div>
           </el-form>
