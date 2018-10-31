@@ -48,6 +48,10 @@
                   <span class="material-icons">edit</span>
                   แก้ไข
                 </el-button>
+                <el-button type="text" style="font-size: 1em" @click="deleteDialogVisible = true">
+                  <span class="material-icons">delete</span>
+                  ลบ
+                </el-button>
               </div>
               <div>
                 <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
@@ -76,6 +80,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary" @click="submitReport">ส่ง</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="deleteDialogVisible" title="ลบโน้ตเลคเชอร์" id="delete-dialog">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="deleteLecture">ลบ</el-button>
       </span>
     </el-dialog>
   </BoxedContainer>
@@ -144,6 +154,7 @@ export default {
   data() {
     return {
       reportDialogVisible: false,
+      deleteDialogVisible: false,
       lectureNote: {},
       loading: true,
       foundLecture: false,
@@ -239,6 +250,18 @@ export default {
     },
     edit() {
       if (this.canEdit) this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
+    },
+    deleteLecture() {
+      if (this.canEdit) {
+        ph.deleteLectureNote(this.lectureNote.objectId)
+          .then(() => {
+            this.$message({ message: 'ลบโน้ตเลคเชอร์เรียบร้อย', type: 'success' });
+            this.$router.push('/');
+          }).catch((err) => {
+            this.$message.error(err.message);
+            this.deleteDialogVisible = false;
+          });
+      }
     },
     share() {
       navigator.share({

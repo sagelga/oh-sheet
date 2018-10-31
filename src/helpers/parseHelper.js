@@ -108,6 +108,11 @@ ph.saveLectureNote = async (data, userId) => {
   return note.save();
 };
 
+ph.deleteLectureNote = async (noteId) => {
+  const lecture = new LectureNote().set('id', noteId);
+  return lecture.destroy();
+};
+
 ph.isRemotelyFaved = async (noteId, userId) => {
   // Returns Boolean
   const favStatusQuery = new Parse.Query(Parse.User);
