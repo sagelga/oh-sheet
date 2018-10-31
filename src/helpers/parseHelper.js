@@ -29,6 +29,7 @@ ph.getLectureNote = async (noteId) => {
   const lectureQuery = new Parse.Query(LectureNote);
   lectureQuery.equalTo('objectId', noteId);
   lectureQuery.include('author');
+  lectureQuery.include('levels');
   // TODO: Add categories relation
   // TODO: Add levels relation
   const lectureNote = await lectureQuery.first();
@@ -88,7 +89,11 @@ ph.saveLectureNote = async (data, userId) => {
   fields.forEach((f) => {
     if (!excludedFields.includes(f)) note.set(f, data[f]);
   });
-  note.set('author', authorPointer);
+
+  // If user is editing LectureNote, set its id
+  if (data.objectId) note.set('id', data.objectId);
+  // If LectureNote is new, set author (else don't do it to prevent overwrite)
+  if (data.objectId === '') note.set('author', authorPointer);
 
   const level = new LectureLevel().set('objectId', data.levelId);
   note.addUnique('levels', level);
