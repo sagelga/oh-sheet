@@ -48,10 +48,10 @@
                   <span class="material-icons">edit</span>
                   แก้ไข
                 </el-button>
-              </div>
-                <el-button type="text" style="font-size: 1em" @click="deleteLecture" v-if="canEdit">
-                    o ลบ
+                <el-button type="text" style="font-size: 1em" @click="deleteDialogVisible = true">
+                  ลบ
                 </el-button>
+              </div>
               <div>
                 <el-button type="text" style="font-size: 1em" @click="reportDialogVisible = true">
                   <span class="material-icons">report</span>
@@ -79,6 +79,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary" @click="submitReport">ส่ง</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="deleteDialogVisible" title="ลบโน้ตเลคเชอร์" id="delete-dialog">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="deleteLecture">ลบ</el-button>
       </span>
     </el-dialog>
   </BoxedContainer>
@@ -147,6 +153,7 @@ export default {
   data() {
     return {
       reportDialogVisible: false,
+      deleteDialogVisible: false,
       lectureNote: {},
       loading: true,
       foundLecture: false,
@@ -244,15 +251,16 @@ export default {
       if (this.canEdit) this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
     },
     deleteLecture() {
-      const LectureNote = Parse.Object.extend('LectureNote');
-      const lecture = new LectureNote().set('id', this.lectureNote.objectId);
-      const retVal = confirm('ยืนยันการลบโน้ตเลคเชอร์?');
-      if (retVal == true) {
-        lecture.destroy();
-        alert('ลบโน้ตเลคเชอร์แล้ว!! กรุณากด F5 เพื่อตรวจสอบ')
-        return true;
+      if (this.canEdit) {
+        ph.deleteLectureNote(this.lectureNote.objectId)
+          .then(() => {
+            this.$message({ message: 'ลบโน้ตเลคเชอร์เรียบร้อย', type: 'success' });
+            this.$router.push('/');
+          }).catch((err) => {
+            this.$message.error(err.message);
+            this.deleteDialogVisible = false;
+          });
       }
-      return false;
     },
     share() {
       navigator.share({
