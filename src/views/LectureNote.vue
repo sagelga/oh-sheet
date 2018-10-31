@@ -49,6 +49,7 @@
                   แก้ไข
                 </el-button>
                 <el-button type="text" style="font-size: 1em" @click="deleteDialogVisible = true">
+                  <span class="material-icons">delete</span>
                   ลบ
                 </el-button>
               </div>
