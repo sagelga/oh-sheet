@@ -82,10 +82,12 @@ export default {
       Parse.User.logIn(usr, pwd)
         .then(() => {
           this.$store.commit('loggedIn', true);
-          this.loading = false;
           ph.isUserInRole(Parse.User.current().id, 'moderator')
             .then(() => { this.$store.commit('updateRoleMod', true); })
             .catch();
+          this.loading = false;
+          console.log('Log in as ' + Parse.User.current().get('username'));
+          this.$store.commit('updateUsername', Parse.User.current().get('username'));
           // TODO: If 'redirect' parameter present, follow redirect
           this.$router.push('/');
         }, (e) => {

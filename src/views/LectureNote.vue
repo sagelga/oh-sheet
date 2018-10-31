@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap" >
+  <BoxedContainer class="top-gap bottom-gap">
     <div v-loading="loading">
       <div class="side-margin" v-if="!loading">
         <el-row v-if="!foundLecture">
@@ -43,10 +43,14 @@
                   แชร์
                 </el-button>
               </div>
-              <div v-if="isLoggedIn && lectureNote.author.id === userId || isModerator">
+              <div v-if="canEdit">
                 <el-button type="text" style="font-size: 1em" @click="edit">
                   <span class="material-icons">edit</span>
                   แก้ไข
+                </el-button>
+                <el-button type="text" style="font-size: 1em" @click="deleteDialogVisible = true">
+                  <span class="material-icons">delete</span>
+                  ลบ
                 </el-button>
               </div>
               <div>
@@ -76,6 +80,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="reportDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary" @click="submitReport">ส่ง</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="deleteDialogVisible" title="ลบโน้ตเลคเชอร์" id="delete-dialog">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary" @click="deleteLecture">ลบ</el-button>
       </span>
     </el-dialog>
   </BoxedContainer>
@@ -144,6 +154,7 @@ export default {
   data() {
     return {
       reportDialogVisible: false,
+      deleteDialogVisible: false,
       lectureNote: {},
       loading: true,
       foundLecture: false,
@@ -163,6 +174,10 @@ export default {
     isModerator() {
       return this.$store.state.roles.mod;
     },
+    canEdit() {
+      return this.isLoggedIn &&
+        (this.lectureNote.author.objectId === this.userId || this.isModerator);
+    },
     pdfUrl() {
       return `${store.state.endpoints.objectStorage}/${this.lectureNote.filePath}`;
     },
@@ -177,7 +192,7 @@ export default {
         if (result) {
           const lectureAttrs = ['id', 'author', 'categories', 'filePath', 'title',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
-          const authorAttrs = ['username', 'avatarPath'];
+          const authorAttrs = ['id', 'username', 'avatarPath'];
           const catAttrs = ['objectId', 'englishName'];
           this.lectureNote = ut.getObjWithAttrs(result, lectureAttrs);
           this.lectureNote.author = ut.getObjWithAttrs(result.get('author'), authorAttrs);
@@ -234,8 +249,18 @@ export default {
         });
     },
     edit() {
-      if (this.isLoggedIn && (this.userId === this.lectureNote.author.id || this.isModerator)) {
-        this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
+      if (this.canEdit) this.$router.push(`/note/${this.lectureNote.objectId}/edit/`);
+    },
+    deleteLecture() {
+      if (this.canEdit) {
+        ph.deleteLectureNote(this.lectureNote.objectId)
+          .then(() => {
+            this.$message({ message: 'ลบโน้ตเลคเชอร์เรียบร้อย', type: 'success' });
+            this.$router.push('/');
+          }).catch((err) => {
+            this.$message.error(err.message);
+            this.deleteDialogVisible = false;
+          });
       }
     },
     share() {

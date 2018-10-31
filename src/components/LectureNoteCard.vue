@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/note/' + lectureNote.objectId">
+  <router-link :to="'/note/' + lectureNote.objectId + '/'">
     <el-card :body-style="{padding: '0px'}" style="margin-bottom: 1em;" shadow="hover">
       <img :src="thumbnailUrl" :alt="lectureNote.title">
       <div style="padding: 1em;">

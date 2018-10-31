@@ -102,7 +102,7 @@ export default {
       return this.$store.state.loggedIn;
     },
     username() {
-      return Parse.User.current().get('username');
+      return this.$store.state.username;
     },
     isModerator() {
       return this.$store.state.roles.mod;
@@ -114,6 +114,7 @@ export default {
         .then(() => {
           this.$store.commit('loggedIn', false);
           this.$store.commit('updateRoleMod', false);
+          this.$store.commit('updateUsername', undefined);
         });
     },
     submitSearch(text) {
