@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :xs="24" :md="12">
           <h1>{{ action }}โน้ตเลคเชอร์</h1>
-          <el-form :model="formData" :rules="formRules" ref="lectureForm">
+          <el-form :model="formData" :rules="formRules" ref="lectureForm" v-loading="loading">
             <el-form-item label="ชื่อโน้ต" prop="title">
               <el-input
                   v-model="formData.title"
@@ -80,7 +80,7 @@ export default {
     return {
       action: 'เพิ่ม',
       isSubmitBtnClickable: false,
-      loading: false,
+      loading: true,
       orgFormData: {},
       formData: {
         objectId: '',
@@ -202,11 +202,13 @@ export default {
       const lectureAttrs = ['filePath', 'title', 'description'];
       lectureAttrs.forEach((a) => { this.formData[a] = this.orgFormData[a]; });
       this.formData.objectId = this.orgFormData.objectId;
-      this.formData.levelId = this.orgFormData.levels[0].objectId;
       this.orgFormData.categories.forEach((c) => {
         this.formData.categoryId.push(c.objectId);
         this.formData.category.push(c.objectId);
       });
+      if (this.orgFormData.levels[0] !== undefined || this.orgFormData.levels.length !== 0) {
+        this.formData.levelId = this.orgFormData.levels[0].objectId;
+      }
     },
   },
   created() {
@@ -216,6 +218,8 @@ export default {
       this.action = 'แก้ไข';
       this.getLectureNote(this.$route.params.noteId);
       // copy this.orgFormData to this.formData
+    } else {
+      this.loading = false;
     }
   },
   mounted() {
