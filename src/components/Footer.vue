@@ -2,7 +2,7 @@
     <div class="body">
       <img src="/img/Oh_sheet_logo_for_footer_crop.JPG" class="logo" align="top">
       <a href="www.google.com" class="link"><p>ไปเยอรมัน</p></a>
-      <p1>"เห็นเธอที่เยอรมัน"</p1>
+      <p>"เห็นเธอที่เยอรมัน"</p>
     </div>
 </template>
 

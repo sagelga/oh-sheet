@@ -161,6 +161,7 @@ export default {
   },
   created() {
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/upload/';
+    this.categoryList = this.store_categoryList;
     if (this.$router.currentRoute.params.action === 'edit') {
       this.action = 'แก้ไข';
       // pull data into this.orgFormData
@@ -169,8 +170,10 @@ export default {
   },
   mounted() {
     document.title = 'Edit Lecture | Oh Sheet!';
-    this.categoryList = this.store_categoryList;
     Dropzone.autoDiscover = false;
+    if (document.getElementsByClassName('dz-hidden-input').length > 0) {
+      document.getElementsByClassName('dz-hidden-input')[0].remove();
+    }
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {
       url: store.state.endpoints.uploadHandler.concat('/upload-lecture-notes'),
       paramName: 'upload',
