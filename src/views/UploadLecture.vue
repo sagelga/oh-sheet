@@ -42,8 +42,9 @@
             <el-button type="primary"
                        @click="saveLecture()"
                        :disabled="!isSubmitBtnClickable">
-              อัปโหลด
+              บันทึก
             </el-button>
+            <el-button v-if="formData.objectId" @click="cancelEdit">ยกเลิก</el-button>
           </div>
         </el-col>
       </el-row>
@@ -122,6 +123,9 @@ export default {
     createFilter(queryString) {
       return categoryList =>
         categoryList.englishName.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+    },
+    cancelEdit() {
+      this.$router.push('../');
     },
     saveLecture() {
       this.$refs.lectureForm.validate(async (valid) => {
