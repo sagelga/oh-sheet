@@ -1,11 +1,11 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" @click="changeAvatarDialogVisible = true">
-        <img :src="user.avatarPath || '/img/avatar.png'" :alt="user.username" class="avatar">
-          <div class="edit">
-            <i class="material-icons" style="position: absolute">edit</i>
-          </div>
+      <div class="profile-pic" @click="avatarDialogToggle()">
+        <img :src="showAvatar() || '/img/avatar.png'" :alt="user.username" class="avatar">
+        <div class="edit">
+          <i class="material-icons" style="position: absolute">edit</i>
+        </div>
       </div>
       <h1>{{ user.username }}</h1>
       <div class="achievements" v-if="!loadingProfile && user.achievements">
@@ -26,78 +26,74 @@
     </el-row>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
-      <div>
+      <div style="max-width: 500px">
         <div>อัปโหลดรูปภาพ
-          <input type="file" @change="previewImage" accept="image/*">
-        </div>
-        <div style="position: relative" v-if="imageData.length > 0">
-          <img class="preview" :src="imageData">
+          <el-form ref="updateAvatarForm">
+            <div id="avatar-dropzone" class="dropzone"></div>
+          </el-form>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
-        <el-button type="primary" @click="submitReport">ส่ง</el-button>
-      </span>
+          <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
+          <el-button type="primary"
+                     :disabled="!isSubmitBtnClickable"
+                     @click="uploadAvatar()">อัปโหลด</el-button>
+        </span>
     </el-dialog>
 
   </BoxedContainer>
 </template>
 
 <style scoped lang="sass">
-.profile-meta
-  opacity: 1
-  max-width: 300px
-  margin: 0 auto 2em
-  text-align: center
-  img.avatar
-    position: relative
-    width: 128px
-    height: 128px
-    border-radius: 50%
-    box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
-    transition: .5s ease
-  .achievements img
+  .profile-meta
+    opacity: 1
+    max-width: 300px
+    margin: 0 auto 2em
+    text-align: center
+    img.avatar
+      position: relative
+      width: 128px
+      height: 128px
+      border-radius: 50%
+      box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
+      transition: .5s ease
+    .achievements img
       display: inline-block
       width: 36px
       border-radius: 4px
       &:not(:last-child)
         margin-right: 1em
-.profile-pic
-  position: relative
-  width: 128px
-  text-align: center
-  margin: 0 auto
-.profile-pic:hover img
-  cursor: pointer
-  display: inline-block
-  opacity: 0.6
-.profile-pic:hover .edit
-  display: inline-block
-  opacity: 1
-.edit
-  transition: .5s ease
-  padding-top: 5px
-  padding-right: 5px
-  position: absolute
-  right: 0
-  top: 0
-  opacity: 0
-.preview
-  width: 128px
-  height: 128px
-  display: block
-  margin: 0 auto
-  padding: 20px
-  object-fit: cover
+  .profile-pic
+    position: relative
+    width: 128px
+    text-align: center
+    margin: 0 auto
+  .profile-pic:hover img
+    cursor: pointer
+    display: inline-block
+    opacity: 0.6
+  .profile-pic:hover .edit
+    display: inline-block
+    opacity: 1
+  .edit
+    transition: .5s ease
+    padding-top: 5px
+    padding-right: 5px
+    position: absolute
+    right: 0
+    top: 0
+    opacity: 0
 </style>
 
 <script>
+import 'dropzone/dist/dropzone.css';
 import store from '@/store';
 import BoxedContainer from '@/components/BoxedContainer.vue';
 import LectureNoteCard from '@/components/LectureNoteCard.vue';
 import ph from '@/helpers/parseHelper';
 import ut from '@/helpers/util';
 
+const Dropzone = require('dropzone');
 const Parse = require('parse/dist/parse.min');
 
 Parse.initialize(store.state.parseCred.appId, store.state.parseCred.jsKey);
@@ -108,6 +104,8 @@ export default {
   components: { LectureNoteCard, BoxedContainer },
   data() {
     return {
+      loading: true,
+      isSubmitBtnClickable: false,
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
@@ -115,19 +113,41 @@ export default {
       loadingLectureNotes: true,
       foundProfile: false,
       changeAvatarDialogVisible: false,
-      imageData: '',
+      newAvatar: '/img/avatar.png',
     };
   },
   methods: {
-    previewImage(event) {
-      const input = event.target;
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.imageData = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
+    showAvatar() {
+      return `${store.state.endpoints.objectStorage}/${Parse.User.current().get('avatarPath')}`;
+    },
+    avatarDialogToggle() {
+      this.changeAvatarDialogVisible = true;
+      Dropzone.autoDiscover = false;
+      if (document.getElementsByClassName('dz-hidden-input').length > 0) {
+        document.getElementsByClassName('dz-hidden-input')[0].remove();
       }
+      const myDropzone = new Dropzone('div#avatar-dropzone', {
+        url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
+        paramName: 'upload',
+        maxFiles: 1,
+        maxFilesize: 5, // MB
+        headers: {
+          'Cache-Control': '',
+          'X-Requested-With': '',
+        },
+      });
+      myDropzone.on('success', (f, r) => {
+        if (r.status === 200) {
+          this.newAvatar = r.message.filePath;
+          console.log(this.newAvatar);
+          this.isSubmitBtnClickable = true;
+        }
+      });
+    },
+    uploadAvatar() {
+      Parse.User.current().set('avatarPath', this.newAvatar);
+      Parse.User.current().save();
+      this.changeAvatarDialogVisible = false;
     },
   },
   created() {

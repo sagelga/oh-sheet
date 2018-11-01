@@ -86,7 +86,6 @@ export default {
             .then(() => { this.$store.commit('updateRoleMod', true); })
             .catch();
           this.loading = false;
-          console.log('Log in as ' + Parse.User.current().get('username'));
           this.$store.commit('updateUsername', Parse.User.current().get('username'));
           // TODO: If 'redirect' parameter present, follow redirect
           this.$router.push('/');
