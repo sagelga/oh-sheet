@@ -2,7 +2,7 @@
   <BoxedContainer class="main-nav-container">
     <el-menu :default-active="defaultActive" mode="horizontal"
              :router="true" class="main-nav" ref="topNavMenu">
-
+      <img v-bind:src="'/img/O_for_favi_and_topnav.jpg'" align="left" class="logo">
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
       <el-menu-item index="/">
@@ -42,6 +42,8 @@
 </template>
 
 <style lang="sass">
+.logo
+  margin-right: 40px
 .main-nav-container
   position: fixed
   width: 100%
@@ -75,6 +77,7 @@
   .el-badge
     top: 3px
     margin-left: 3px
+
 </style>
 
 <script>
