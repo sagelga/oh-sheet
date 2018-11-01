@@ -1,11 +1,17 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" @click="avatarDialogToggle()">
-        <img :src="showAvatar() || '/img/avatar.png'" :alt="user.username" class="avatar">
+      <div class="profile-pic"
+           @click="avatarDialogToggle()"
+           v-if="user.objectId === userId">
+        <img :src="showAvatar()" :alt="user.username" class="avatar">
         <div class="edit">
           <i class="material-icons" style="position: absolute">edit</i>
         </div>
+      </div>
+      <div class="profile-pic"
+           v-else>
+        <img :src="showAvatar()" :alt="user.username" class="avatar">
       </div>
       <h1>{{ user.username }}</h1>
       <div class="achievements" v-if="!loadingProfile && user.achievements">
@@ -106,6 +112,7 @@ export default {
     return {
       loading: true,
       isSubmitBtnClickable: false,
+      userId: Parse.User.current() ? Parse.User.current().id : null,
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
@@ -118,7 +125,10 @@ export default {
   },
   methods: {
     showAvatar() {
-      return `${store.state.endpoints.objectStorage}/${Parse.User.current().get('avatarPath')}`;
+      if (this.user.avatarPath != null) {
+        return `${store.state.endpoints.objectStorage}/${this.user.avatarPath}`;
+      }
+      return '/img/avatar.png';
     },
     avatarDialogToggle() {
       this.changeAvatarDialogVisible = true;
