@@ -2,7 +2,9 @@
   <BoxedContainer class="main-nav-container">
     <el-menu :default-active="defaultActive" mode="horizontal"
              :router="true" class="main-nav" ref="topNavMenu">
-      <img v-bind:src="'/img/O_for_favi_and_topnav.jpg'" align="left" class="logo">
+      <el-logo>
+        <img v-bind:src="'/img/O_for_favi_and_topnav.jpg'" align="left" class="logo">
+      </el-logo>
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
       <el-menu-item index="/">
@@ -42,8 +44,9 @@
 </template>
 
 <style lang="sass">
-.logo
-  margin-right: 40px
+.el-logo
+  position: static
+  display: block
 .main-nav-container
   position: fixed
   width: 100%
@@ -64,10 +67,11 @@
     display: none
   .el-input
     display: inline-block
-    position: absolute
+    position: relative
     left: 0
     max-width: 300px
     margin-top: 10px
+    margin-right: 120px
     @media screen and (max-width: 1140px)
       margin-left: 1em
     @media screen and (max-width: 640px)
