@@ -2,35 +2,33 @@
   <BoxedContainer class="main-nav-container">
     <el-menu :default-active="defaultActive" mode="horizontal"
              :router="true" class="main-nav" ref="topNavMenu">
-      <el-logo>
-        <img v-bind:src="'/img/O_for_favi_and_topnav.jpg'" align="left" class="logo">
-      </el-logo>
+      <img src="/img/O_for_favi_and_topnav.jpg" class="logo">
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
       <el-menu-item index="/">
         <span class="material-icons">explore</span>
-        สำรวจ
+        <span class="menu-text">สำรวจ</span>
       </el-menu-item>
 
       <el-menu-item index="/upload/" v-if="isLoggedIn">
         <span class="material-icons">cloud_upload</span>
-        อัปโหลด
+        <span class="menu-text">อัปโหลด</span>
       </el-menu-item>
 
       <el-menu-item index="/favourite/" v-if="isLoggedIn">
         <span class="material-icons">star</span>
-        ติดดาว
+        <span class="menu-text">ติดดาว</span>
       </el-menu-item>
 
       <el-submenu id="topnav-more" index="#" v-if="isLoggedIn">
         <template slot="title">
           <span class="material-icons">account_circle</span>
-          {{ username }}
+          <span class="menu-text">{{ username }}</span>
           <el-badge value="mod" type="primary" v-if="isModerator"/>
         </template>
         <el-menu-item :index="'/profile/' + username + '/'">โปรไฟล์ของฉัน</el-menu-item>
         <el-menu-item index="/manage-reports/" v-if="isModerator">
-          จัดการเนื้อหาไม่เหมาะสม
+          <span class="menu-text">จัดการเนื้อหาไม่เหมาะสม</span>
         </el-menu-item>
         <el-menu-item index="#" @click="logOutUser()">ออกจากระบบ</el-menu-item>
       </el-submenu>
@@ -44,9 +42,6 @@
 </template>
 
 <style lang="sass">
-.el-logo
-  position: static
-  display: block
 .main-nav-container
   position: fixed
   width: 100%
@@ -65,23 +60,30 @@
     display: inline-block
   & > .el-submenu#topnav-more i.el-submenu__icon-arrow
     display: none
+  img.logo
+    display: inline-block
+    position: absolute
+    left: 0
+    height: 55px
   .el-input
     display: inline-block
-    position: relative
-    left: 0
+    position: absolute
+    left: 60px
     max-width: 300px
     margin-top: 10px
-    margin-right: 120px
     @media screen and (max-width: 1140px)
       margin-left: 1em
-    @media screen and (max-width: 640px)
+    @media screen and (max-width: 857px)
       display: none
   .material-icons
     font-size: 20px
+  .menu-text
+    padding-left: 0.3em
+    @media screen and (max-width: 525px)
+      display: none
   .el-badge
     top: 3px
     margin-left: 3px
-
 </style>
 
 <script>
