@@ -169,7 +169,8 @@ export default {
     getLectureNote(noteId) {
       ph.getLectureNote(noteId).then((result) => {
         if (result) {
-          const lectureAttrs = ['id', 'categories', 'filePath', 'title', 'levels', 'description'];
+          const lectureAttrs = ['id', 'categories', 'filePath', 'thumbnailPath',
+            'title', 'levels', 'description'];
           const lvlAttrs = ['id'];
           const catAttrs = ['id', 'value'];
           this.orgFormData = ut.getObjWithAttrs(result, lectureAttrs);
@@ -199,7 +200,7 @@ export default {
       }); // TODO: Add catch
     },
     copyOrgToFormData() {
-      const lectureAttrs = ['filePath', 'title', 'description'];
+      const lectureAttrs = ['filePath', 'thumbnailPath', 'title', 'description'];
       lectureAttrs.forEach((a) => { this.formData[a] = this.orgFormData[a]; });
       this.formData.objectId = this.orgFormData.objectId;
       this.orgFormData.categories.forEach((c) => {
