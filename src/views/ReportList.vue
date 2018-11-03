@@ -74,7 +74,8 @@ export default {
       const lecAttr = ['id', 'title'];
       reports.forEach((r) => {
         const temp = ut.getObjWithAttrs(r, reportAttr);
-        temp.lectureNote = ut.getObjWithAttrs(temp.lectureNote, lecAttr);
+        // A bug from deleted (non-existing) LectureNote
+        // temp.lectureNote = ut.getObjWithAttrs(temp.lectureNote, lecAttr);
         this.tableData.push(temp);
       });
       this.loading = false;
