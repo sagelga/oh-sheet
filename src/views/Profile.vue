@@ -1,17 +1,11 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic"
-           @click="avatarDialogToggle()"
-           v-if="user.objectId === userId">
+      <div class="profile-pic" @click="avatarDialogToggle()">
         <img :src="showAvatar()" :alt="user.username" class="avatar">
         <div class="edit">
           <i class="material-icons" style="position: absolute">edit</i>
         </div>
-      </div>
-      <div class="profile-pic"
-           v-else>
-        <img :src="showAvatar()" :alt="user.username" class="avatar">
       </div>
       <h1>{{ user.username }}</h1>
       <div class="achievements" v-if="!loadingProfile && user.achievements">
@@ -38,7 +32,7 @@
           <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
           <el-button type="primary"
                      :disabled="!isSubmitBtnClickable"
-                     @click="uploadAvatar()">อัปโหลด</el-button>
+                     @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
 
@@ -120,7 +114,7 @@ export default {
   },
   methods: {
     showAvatar() {
-      if (this.user.avatarPath != null) {
+      if (this.user.avatarPath) {
         return `${store.state.endpoints.objectStorage}/${this.user.avatarPath}`;
       }
       return '/img/avatar.png';
@@ -154,6 +148,7 @@ export default {
       Parse.User.current().set('avatarPath', this.newAvatar);
       Parse.User.current().save().then(() => {
         this.changeAvatarDialogVisible = false;
+        // eslint-disable-next-line
         location.reload();
       });
     },
