@@ -21,7 +21,8 @@
         <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
         <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
       </div>
-      <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId">
+      <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
+              :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
