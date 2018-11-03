@@ -4,6 +4,7 @@
       <img :src="avatarPath" :alt="user.username">
       {{ user.username }}
     </router-link>
+    <!-- TODO: Display badges here -->
   </div>
 </template>
 
@@ -28,8 +29,7 @@ export default {
   },
   computed: {
     avatarPath() {
-      // TODO: When avatar upload completes, prepend Spaces url to avatarPath
-      if (this.user.avatarPath !== undefined) {
+      if (this.user.avatarPath) {
         return `${this.$store.state.endpoints.objectStorage}/${this.user.avatarPath}`;
       }
       return '/img/avatar.png';

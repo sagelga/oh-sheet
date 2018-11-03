@@ -65,21 +65,29 @@ export default {
         this.$message.error(err.message);
       });
     },
+    async getReports() {
+      ph.getLectureReports().then((reports) => {
+        const reportAttr = ['id', 'reason', 'lectureNote'];
+        const lecAttr = ['id', 'title'];
+        let hasDeletedReport = false;
+        reports.forEach((r) => {
+          if (r.get('lectureNote') !== undefined) {
+            const temp = ut.getObjWithAttrs(r, reportAttr);
+            temp.lectureNote = ut.getObjWithAttrs(temp.lectureNote, lecAttr);
+            this.tableData.push(temp);
+          } else {
+            r.destroy(() => { hasDeletedReport = true; });
+          }
+        });
+        if (hasDeletedReport) this.getReports();
+        else this.loading = false;
+      });
+    },
   },
-  mounted() {
+  created() {
+    this.getReports();
     document.title = 'Reports | Oh Sheet!';
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/manage-reports/';
-    ph.getLectureReports().then((reports) => {
-      const reportAttr = ['id', 'reason', 'lectureNote'];
-      const lecAttr = ['id', 'title'];
-      reports.forEach((r) => {
-        const temp = ut.getObjWithAttrs(r, reportAttr);
-        // A bug from deleted (non-existing) LectureNote
-        // temp.lectureNote = ut.getObjWithAttrs(temp.lectureNote, lecAttr);
-        this.tableData.push(temp);
-      });
-      this.loading = false;
-    });
   },
 };
 </script>
