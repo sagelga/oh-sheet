@@ -1,6 +1,6 @@
 <template>
   <div class="user-chip">
-    <router-link :to="'/profile/' + user.username">
+    <router-link :to="'/profile/' + user.username + '/'">
       <img :src="avatarPath" :alt="user.username">
       {{ user.username }}
     </router-link>
