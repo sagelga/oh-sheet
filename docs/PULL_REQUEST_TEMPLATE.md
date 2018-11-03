@@ -1,11 +1,9 @@
 # แบบฟอร์มส่ง Pull Request
 จากการส่ง Pull Request นี้
 
-Reference Link :<br>
-YouTrack : http://kumakumamon.me/issue/PONUN-
-
 ## เป้าหมายของการทำ PR นี้
-ระบุฟีเจอร์ หรือจุดที่ทำการแก้ไข
+ระบุฟีเจอร์ หรือ/และ จุดที่ทำการแก้ไข หรือ/และ จุดสังเกตว่ามีการเปลี่ยนแปลง<br>
+ไม่ต้องติ้กที่ช่อง จะเอาไว้เช็คงาน
 
 - [ ] เพื่ม / แก้ไข ฟังก์ชัน ABCDE
 - [ ] เพื่ม / แก้ไข ฟังก์ชัน ABCDE
@@ -20,4 +18,5 @@ NOTE:
 - [ ] เรารัน project นี้บนเครื่องของเราได้ ด้วยการทำ `npm run serve` หรือ `npm run build` แล้ว 1 ครั้ง
 
 NOTE TO DEVS :
-อย่าลืมไปกดเปลี่ยนสถานะ card เป็น `To Verify` ด้วยใน YouTrack
+อย่าลืมไปกดเปลี่ยนสถานะ card เป็น `To Verify` ด้วยใน YouTrack<br>
+YouTrack : http://kumakumamon.me/issue/PONUN- ตามด้วยเลขรหัส branch
