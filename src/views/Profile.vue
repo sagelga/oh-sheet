@@ -21,7 +21,8 @@
         </el-tooltip>
       </div>
     </div>
-    <el-row :gutter="20" v-loading="loadingLectureNotes">
+    <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
+            v-loading="loadingLectureNotes">
       <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
         <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
         <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
@@ -32,13 +33,7 @@
     </el-row>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
-      <div style="max-width: 500px">
-        <div>อัปโหลดรูปภาพ
-          <el-form ref="updateAvatarForm">
-            <div id="avatar-dropzone" class="dropzone"></div>
-          </el-form>
-        </div>
-      </div>
+      <div id="avatar-dropzone" class="dropzone"></div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
           <el-button type="primary"
@@ -132,35 +127,39 @@ export default {
     },
     avatarDialogToggle() {
       this.changeAvatarDialogVisible = true;
-      Dropzone.autoDiscover = false;
       if (document.getElementsByClassName('dz-hidden-input').length > 0) {
         document.getElementsByClassName('dz-hidden-input')[0].remove();
       }
-      const myDropzone = new Dropzone('div#avatar-dropzone', {
-        url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
-        paramName: 'upload',
-        maxFiles: 1,
-        maxFilesize: 5, // MB
-        headers: {
-          'Cache-Control': '',
-          'X-Requested-With': '',
-        },
-      });
-      myDropzone.on('success', (f, r) => {
-        if (r.status === 200) {
-          this.newAvatar = r.message.filePath;
-          console.log(this.newAvatar);
-          this.isSubmitBtnClickable = true;
-        }
-      });
+      setTimeout(() => {
+        const myDropzone = new Dropzone('div#avatar-dropzone', {
+          url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
+          paramName: 'upload',
+          maxFiles: 1,
+          maxFilesize: 5, // MB
+          headers: {
+            'Cache-Control': '',
+            'X-Requested-With': '',
+          },
+        });
+        myDropzone.on('success', (f, r) => {
+          if (r.status === 200) {
+            this.newAvatar = r.message.filePath;
+            console.log(this.newAvatar);
+            this.isSubmitBtnClickable = true;
+          }
+        });
+      }, 300);
     },
     uploadAvatar() {
       Parse.User.current().set('avatarPath', this.newAvatar);
-      Parse.User.current().save();
-      this.changeAvatarDialogVisible = false;
+      Parse.User.current().save().then(() => {
+        this.changeAvatarDialogVisible = false;
+        location.reload();
+      });
     },
   },
   created() {
+    Dropzone.autoDiscover = false;
     ph.getUserProfile(this.$route.params.username)
       .then((user) => {
         this.userFields.forEach((f) => {
