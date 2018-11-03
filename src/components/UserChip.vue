@@ -15,6 +15,7 @@
     width: 25px
     vertical-align: middle
     margin-right: 0.2em
+    border-radius: 50%
   span
     line-height: 1em
 </style>
