@@ -28,7 +28,10 @@ export default {
   computed: {
     avatarPath() {
       // TODO: When avatar upload completes, prepend Spaces url to avatarPath
-      return this.user.avatarPath ? this.user.avatarPath : '/img/avatar.png';
+      if (this.user.avatarPath !== undefined) {
+        return `${this.$store.state.endpoints.objectStorage}/${this.user.avatarPath}`;
+      }
+      return '/img/avatar.png';
     },
   },
 };
