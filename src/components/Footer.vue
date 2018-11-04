@@ -1,8 +1,8 @@
 <template>
     <div class="footer">
       <img src="/img/Oh_sheet_logo_for_footer_crop.JPG" class="logo" align="top">
-      <p id="quote"></p>
-      <p id="author"></p>
+      <p id="quote">{{ randomQuote.quote }}</p>
+      <p id="author">{{ randomQuote.author }}</p>
     </div>
 </template>
 
@@ -51,16 +51,12 @@ export default {
   components: {
     BoxedContainer,
   },
-  methods: {
+  computed: {
     randomQuote() {
       const randomValue = Math.floor(Math.random() * quote.length);
       const quoteRandom = quote[randomValue];
-      document.getElementById('quote').innerText = quoteRandom;
-      document.getElementById('author').innerText = author[randomValue];
+      return { quote: quoteRandom, author: author[randomValue] };
     },
-  },
-  mounted() {
-    this.randomQuote();
   },
 };
 </script>
