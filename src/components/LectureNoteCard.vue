@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/note/' + lectureNote.objectId + '/'">
-    <el-card :body-style="{padding: '0px'}" style="margin-bottom: 1em;" shadow="hover">
+    <el-card :body-style="{padding: '0px'}" shadow="hover">
       <img :src="thumbnailUrl" :alt="lectureNote.title">
       <div style="padding: 1em;">
         <h1>{{ lectureNote.title }}</h1>
@@ -46,4 +46,6 @@ h1
 span.meta
   display: block
   margin-bottom: 0.5em
+.el-card
+  height: 100%
 </style>
