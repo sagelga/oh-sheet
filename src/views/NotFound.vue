@@ -1,6 +1,7 @@
 <template>
   <BoxedContainer class="top-gap bottom-gap">
     <div class="side-margin">
+      <h1>Error</h1>
       <h2>ไม่พบหน้าดังกล่าว หรือคุณไม่มีสิทธิ์เข้าถึงหน้านี้</h2>
       <img src="/img/undraw_forgot_password_gi2d.svg" alt="not found" class="lecture-not-found">
     </div>

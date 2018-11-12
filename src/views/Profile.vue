@@ -19,10 +19,6 @@
         </el-tooltip>
       </div>
     </div>
-    <div v-show="hasNoLecture" class="side-margin" style="text-align: center">
-      <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
-      <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
-    </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
             v-loading="loadingLectureNotes">
       <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
@@ -44,7 +40,6 @@
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
-
   </BoxedContainer>
 </template>
 

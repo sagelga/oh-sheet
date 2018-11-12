@@ -69,7 +69,7 @@ export default {
         username: usr,
         email: eml,
         password: pwd,
-        achievements: { 'earlyBird': true },
+        achievements: { earlyBird: true },
       })
         .then(() => {
           this.successfullySignedUp = true;
