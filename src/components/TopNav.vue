@@ -2,7 +2,7 @@
   <BoxedContainer class="main-nav-container">
     <el-menu :default-active="defaultActive" mode="horizontal"
              :router="true" class="main-nav" ref="topNavMenu">
-      <img src="/img/O_for_favi_and_topnav.jpg" class="logo">
+        <a href="https://ohsheet.xyz"><img src="/img/O_for_favi_and_topnav.jpg" class="logo"></a>
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
 
       <el-menu-item index="/">
