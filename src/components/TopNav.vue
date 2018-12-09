@@ -1,9 +1,9 @@
 <template>
   <BoxedContainer class="main-nav-container">
-    <el-menu :default-active="defaultActive" mode="horizontal"
+    <el-menu :default-active="defaultActive"
              :router="true" class="main-nav" ref="topNavMenu">
         <a href="https://ohsheet.xyz"><img src="/img/O_for_favi_and_topnav.jpg" class="logo"></a>
-      <el-input prefix-icon="el-icon-search" v-model="topSearchInput" id="top-search"></el-input>
+      <el-input prefix-icon="el-icon-search" v-model="topSearchInput"></el-input>
 
       <el-menu-item index="/">
         <span class="material-icons">explore</span>
