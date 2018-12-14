@@ -1,8 +1,9 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" @click="avatarDialogToggle()">
-        <img :src="showAvatar()" :alt="user.username" class="avatar">
+      <div class="profile-pic" :class="{ 'clickable': canUpdateAvatar }">
+        <img :src="showAvatar()" :alt="user.username" class="avatar"
+             @click="avatarDialogToggle()" :class="{ 'clickable': canUpdateAvatar }">
         <div class="edit">
           <i class="material-icons" style="position: absolute">edit</i>
         </div>
@@ -56,6 +57,10 @@
       border-radius: 50%
       box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
       transition: .5s ease
+      &.clickable
+        cursor: pointer
+        &:hover
+          opacity: 0.6
     .achievements img
       display: inline-block
       width: 36px
@@ -67,21 +72,18 @@
     width: 128px
     text-align: center
     margin: 0 auto
-  .profile-pic:hover img
-    cursor: pointer
-    display: inline-block
-    opacity: 0.6
-  .profile-pic:hover .edit
-    display: inline-block
-    opacity: 1
-  .edit
-    transition: .5s ease
-    padding-top: 5px
-    padding-right: 5px
-    position: absolute
-    right: 0
-    top: 0
-    opacity: 0
+    &.clickable
+      &:hover .edit
+        display: inline-block
+        opacity: 1
+    .edit
+      transition: .5s ease
+      padding-top: 5px
+      padding-right: 5px
+      position: absolute
+      right: 0
+      top: 0
+      opacity: 0
 </style>
 
 <script>
@@ -114,6 +116,7 @@ export default {
       foundProfile: false,
       changeAvatarDialogVisible: false,
       newAvatar: '/img/avatar.png',
+      canUpdateAvatar: false,
     };
   },
   computed: {
