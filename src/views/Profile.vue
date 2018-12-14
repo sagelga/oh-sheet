@@ -163,6 +163,8 @@ export default {
     },
   },
   created() {
+    var count = 0;
+    var Lecturecount = 0;
     Dropzone.autoDiscover = false;
     ph.getUserProfile(this.$route.params.username)
       .then((user) => {
@@ -177,7 +179,10 @@ export default {
             lectureNotes.forEach((lec) => {
               const wantedAttrs = ['objectId', 'title', 'description', 'categories', 'thumbnailPath'];
               this.lectureNotes.push(ut.getObjWithAttrs(lec, wantedAttrs));
+              count = count + 1;
             });
+            Lecturecount = count;
+            // alert('count = ' + Lecturecount);
             this.loadingLectureNotes = false;
           });
         document.title = `${this.user.username} | Oh Sheet!`;
