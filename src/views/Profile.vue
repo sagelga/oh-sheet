@@ -134,29 +134,31 @@ export default {
       return '/img/avatar.png';
     },
     avatarDialogToggle() {
-      this.changeAvatarDialogVisible = true;
-      if (document.getElementsByClassName('dz-hidden-input').length > 0) {
-        document.getElementsByClassName('dz-hidden-input')[0].remove();
+      if (this.canUpdateAvatar) {
+        this.changeAvatarDialogVisible = true;
+        if (document.getElementsByClassName('dz-hidden-input').length > 0) {
+          document.getElementsByClassName('dz-hidden-input')[0].remove();
+        }
+        setTimeout(() => {
+          const myDropzone = new Dropzone('div#avatar-dropzone', {
+            url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
+            paramName: 'upload',
+            maxFiles: 1,
+            maxFilesize: 5, // MB
+            headers: {
+              'Cache-Control': '',
+              'X-Requested-With': '',
+            },
+          });
+          myDropzone.on('success', (f, r) => {
+            if (r.status === 200) {
+              this.newAvatar = r.message.filePath;
+              console.log(this.newAvatar);
+              this.isSubmitBtnClickable = true;
+            }
+          });
+        }, 300);
       }
-      setTimeout(() => {
-        const myDropzone = new Dropzone('div#avatar-dropzone', {
-          url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
-          paramName: 'upload',
-          maxFiles: 1,
-          maxFilesize: 5, // MB
-          headers: {
-            'Cache-Control': '',
-            'X-Requested-With': '',
-          },
-        });
-        myDropzone.on('success', (f, r) => {
-          if (r.status === 200) {
-            this.newAvatar = r.message.filePath;
-            console.log(this.newAvatar);
-            this.isSubmitBtnClickable = true;
-          }
-        });
-      }, 300);
     },
     uploadAvatar() {
       Parse.User.current().set('avatarPath', this.newAvatar);
