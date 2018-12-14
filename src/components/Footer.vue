@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-      <img src="/img/Oh_sheet_logo_for_footer_crop.JPG" class="logo" align="top">
+      <img src="/img/Oh_sheet_logo_for_footer_crop.jpg" class="logo" align="top">
       <p id="quote">{{ randomQuote.quote }}</p>
       <p id="author">{{ randomQuote.author }}</p>
     </div>
