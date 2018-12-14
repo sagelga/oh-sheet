@@ -1,8 +1,12 @@
 <template>
   <BoxedContainer class="main-nav-container">
-    <el-menu :default-active="defaultActive"
+    <el-menu :default-active="defaultActive" id="top-search"
              :router="true" class="main-nav" ref="topNavMenu">
-        <a href="https://ohsheet.xyz"><img src="/img/O_for_favi_and_topnav.jpg" class="logo"></a>
+
+      <a href="https://ohsheet.xyz">
+        <img src="/img/O_for_favi_and_topnav.jpg" class="logo">
+      </a>
+
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput"></el-input>
 
       <el-menu-item index="/">
@@ -53,8 +57,11 @@
   margin-left: auto
   margin-right: auto
   max-width: 1100px
+  padding-bottom: 3px
   text-align: right
   box-shadow: 0 10px 10px -8px rgba(0, 0, 0, 0.2)
+  border-right: none
+  border-bottom: solid 1px #e6e6e6
   & > .el-menu-item, & > .el-submenu
     float: none
     display: inline-block
