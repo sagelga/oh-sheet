@@ -1,6 +1,6 @@
 <template>
   <BoxedContainer class="main-nav-container">
-    <el-menu :default-active="defaultActive" id="top-search"
+    <el-menu :default-active="defaultActive" id="top-search" mode="horizontal"
              :router="true" class="main-nav" ref="topNavMenu">
 
       <router-link to="/">
