@@ -21,15 +21,15 @@
     </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
             v-loading="loadingLectureNotes">
-      <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
-        <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
-        <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
-      </div>
       <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
               :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
+    <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
+      <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
+      <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
+    </div>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
       <div id="avatar-dropzone" class="dropzone"></div>
