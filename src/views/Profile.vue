@@ -116,12 +116,14 @@ export default {
       foundProfile: false,
       changeAvatarDialogVisible: false,
       newAvatar: '/img/avatar.png',
-      canUpdateAvatar: false,
     };
   },
   computed: {
     hasNoLecture() {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
+    },
+    canUpdateAvatar() {
+      return Parse.User.current().getUsername() === this.$route.params.username;
     },
   },
   methods: {
