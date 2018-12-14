@@ -13,6 +13,10 @@
                     v-if="user.achievements.maxLoginStreak >= 7">
           <img src="/img/reward_badge/7days.jpg">
         </el-tooltip>
+        <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 1 เดือน" placement="bottom"
+                    v-if="user.achievements.maxLoginStreak >= 30">
+          <img src="/img/reward_badge/1month.jpg">
+        </el-tooltip>
         <el-tooltip effect="dark" content="Early Bird" placement="bottom"
                     v-if="user.achievements.earlyBird == true">
           <img src="/img/reward_badge/register.jpg">
