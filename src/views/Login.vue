@@ -112,6 +112,10 @@ export default {
   mounted() {
     document.title = 'Login | Oh Sheet!';
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/login/';
+    if (Parse.User.current() !== null) {
+      const nextPath = this.$route.query.redirect ? this.$route.query.redirect : '/';
+      this.$router.push(nextPath);
+    }
     document.getElementById('login-form').addEventListener('keyup', (e) => {
       e.preventDefault();
       if (e.keyCode === 13 && document.activeElement.id !== 'reset-input') {
