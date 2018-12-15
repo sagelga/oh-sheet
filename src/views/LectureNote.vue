@@ -21,6 +21,7 @@
                 </ul>
                 <div v-else>{{ lectureNote.categories[0].englishName }}</div>
               </div>
+              <p>{{ lectureNote.description }}</p>
               <DateText :dateObj="lectureNote.updatedAt"/>
               <UserChip :user="lectureNote.author" />
               <QualityThumbs :voteUp="lectureNote.voteUp"
@@ -190,7 +191,7 @@ export default {
     getLectureNote(noteId) {
       ph.getLectureNote(noteId).then((result) => {
         if (result) {
-          const lectureAttrs = ['id', 'author', 'categories', 'filePath', 'title',
+          const lectureAttrs = ['id', 'author', 'categories', 'filePath', 'title', 'description',
             'updatedAt', 'voteDown', 'voteUp', 'upVoters', 'downVoters'];
           const authorAttrs = ['id', 'username', 'avatarPath'];
           const catAttrs = ['objectId', 'englishName'];
