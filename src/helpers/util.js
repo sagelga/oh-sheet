@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 const util = {};
 
 util.findMyVote = (upVoters, downVoters, userId) => {
@@ -40,6 +41,19 @@ util.dateStrToObj = (dateStr) => {
   const m = parseInt(dateStr.slice(5, 7), 10);
   const d = parseInt(dateStr.slice(8, 10), 10);
   return new Date(y, m - 1, d);
+};
+
+util.dateObjToStr = (dateObj) => {
+  // Convert Date object to '2018-08-06'
+  const m = dateObj.getMonth() + 1;
+  const d = dateObj.getDate();
+  return `
+    ${dateObj.getFullYear()}
+    '-'
+    ${m < 10 ? '0' + m : m}
+    '-'
+    ${d < 10 ? '0' + d : d}
+  `;
 };
 
 util.getNewCategory = (formCatList, storeCatList) => {
