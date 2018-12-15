@@ -1,6 +1,6 @@
 <template>
   <div class="date-text">
-    {{ date }} {{ month }} {{ year }}
+    {{ dateStr }} {{ monthStr }} {{ yearStr }}
   </div>
 </template>
 
@@ -29,6 +29,17 @@ export default {
       this.date = this.dateObj.getDate();
       this.month = monthsTH[this.dateObj.getMonth()];
       this.year = this.dateObj.getFullYear();
+    },
+  },
+  computed: {
+    dateStr() {
+      return this.date || this.dateObj.getDate();
+    },
+    monthStr() {
+      return this.month || monthsTH[this.dateObj.getMonth()];
+    },
+    yearStr() {
+      return this.year || this.dateObj.getFullYear();
     },
   },
 };
