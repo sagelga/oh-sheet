@@ -14,6 +14,7 @@
   margin-bottom: 0.2em
   img
     width: 25px
+    height: 25px
     vertical-align: middle
     margin-right: 0.2em
     border-radius: 50%
