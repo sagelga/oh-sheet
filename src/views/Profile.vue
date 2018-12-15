@@ -18,6 +18,18 @@
                     v-if="user.achievements.maxLoginStreak >= 30">
           <img src="/img/reward_badge/1month.jpg">
         </el-tooltip>
+        <el-tooltip effect="dark" content="upload 20 times" placement="bottom"
+                    v-if="lectureNotes.length >= 20">
+          <img src="/img/reward_badge/20upload.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="upload 50 times" placement="bottom"
+                    v-if="lectureNotes.length >= 50">
+          <img src="/img/reward_badge/50upload.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="upload 100 times" placement="bottom"
+                    v-if="lectureNotes.length >= 100">
+          <img src="/img/reward_badge/100upload.jpg">
+        </el-tooltip>
         <el-tooltip effect="dark" content="Early Bird" placement="bottom"
                     v-if="user.achievements.earlyBird == true">
           <img src="/img/reward_badge/register.jpg">
@@ -111,7 +123,8 @@ export default {
     return {
       loading: true,
       isSubmitBtnClickable: false,
-      userId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUserId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUsername: Parse.User.current() ? Parse.User.current().getUsername() : null,
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
@@ -127,7 +140,7 @@ export default {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
     },
     canUpdateAvatar() {
-      return Parse.User.current().getUsername() === this.$route.params.username;
+      return this.loggedInUsername === this.$route.params.username;
     },
   },
   methods: {
