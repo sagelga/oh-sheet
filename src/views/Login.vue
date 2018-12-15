@@ -85,6 +85,7 @@ export default {
           ph.isUserInRole(Parse.User.current().id, 'moderator')
             .then(() => { this.$store.commit('updateRoleMod', true); })
             .catch();
+          ph.updateLoginStreak(Parse.User.current());
           this.loading = false;
           this.$store.commit('updateUsername', Parse.User.current().get('username'));
           // TODO: If 'redirect' parameter present, follow redirect
