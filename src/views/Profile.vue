@@ -1,8 +1,9 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" @click="avatarDialogToggle()">
-        <img :src="showAvatar()" :alt="user.username" class="avatar">
+      <div class="profile-pic" :class="{ 'clickable': canUpdateAvatar }">
+        <img :src="showAvatar()" :alt="user.username" class="avatar"
+             @click="avatarDialogToggle()" :class="{ 'clickable': canUpdateAvatar }">
         <div class="edit">
           <i class="material-icons" style="position: absolute">edit</i>
         </div>
@@ -25,15 +26,15 @@
     </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
             v-loading="loadingLectureNotes">
-      <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
-        <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
-        <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
-      </div>
       <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
               :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
+    <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
+      <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
+      <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
+    </div>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
       <div id="avatar-dropzone" class="dropzone"></div>
@@ -60,6 +61,10 @@
       border-radius: 50%
       box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
       transition: .5s ease
+      &.clickable
+        cursor: pointer
+        &:hover
+          opacity: 0.6
     .achievements img
       display: inline-block
       width: 36px
@@ -71,21 +76,18 @@
     width: 128px
     text-align: center
     margin: 0 auto
-  .profile-pic:hover img
-    cursor: pointer
-    display: inline-block
-    opacity: 0.6
-  .profile-pic:hover .edit
-    display: inline-block
-    opacity: 1
-  .edit
-    transition: .5s ease
-    padding-top: 5px
-    padding-right: 5px
-    position: absolute
-    right: 0
-    top: 0
-    opacity: 0
+    &.clickable
+      &:hover .edit
+        display: inline-block
+        opacity: 1
+    .edit
+      transition: .5s ease
+      padding-top: 5px
+      padding-right: 5px
+      position: absolute
+      right: 0
+      top: 0
+      opacity: 0
 </style>
 
 <script>
@@ -124,6 +126,9 @@ export default {
     hasNoLecture() {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
     },
+    canUpdateAvatar() {
+      return Parse.User.current().getUsername() === this.$route.params.username;
+    },
   },
   methods: {
     showAvatar() {
@@ -133,29 +138,31 @@ export default {
       return '/img/avatar.png';
     },
     avatarDialogToggle() {
-      this.changeAvatarDialogVisible = true;
-      if (document.getElementsByClassName('dz-hidden-input').length > 0) {
-        document.getElementsByClassName('dz-hidden-input')[0].remove();
+      if (this.canUpdateAvatar) {
+        this.changeAvatarDialogVisible = true;
+        if (document.getElementsByClassName('dz-hidden-input').length > 0) {
+          document.getElementsByClassName('dz-hidden-input')[0].remove();
+        }
+        setTimeout(() => {
+          const myDropzone = new Dropzone('div#avatar-dropzone', {
+            url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
+            paramName: 'upload',
+            maxFiles: 1,
+            maxFilesize: 5, // MB
+            headers: {
+              'Cache-Control': '',
+              'X-Requested-With': '',
+            },
+          });
+          myDropzone.on('success', (f, r) => {
+            if (r.status === 200) {
+              this.newAvatar = r.message.filePath;
+              console.log(this.newAvatar);
+              this.isSubmitBtnClickable = true;
+            }
+          });
+        }, 300);
       }
-      setTimeout(() => {
-        const myDropzone = new Dropzone('div#avatar-dropzone', {
-          url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
-          paramName: 'upload',
-          maxFiles: 1,
-          maxFilesize: 5, // MB
-          headers: {
-            'Cache-Control': '',
-            'X-Requested-With': '',
-          },
-        });
-        myDropzone.on('success', (f, r) => {
-          if (r.status === 200) {
-            this.newAvatar = r.message.filePath;
-            console.log(this.newAvatar);
-            this.isSubmitBtnClickable = true;
-          }
-        });
-      }, 300);
     },
     uploadAvatar() {
       Parse.User.current().set('avatarPath', this.newAvatar);
