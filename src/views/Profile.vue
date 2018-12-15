@@ -111,7 +111,8 @@ export default {
     return {
       loading: true,
       isSubmitBtnClickable: false,
-      userId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUserId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUsername: Parse.User.current() ? Parse.User.current().getUsername() : null,
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
@@ -127,7 +128,7 @@ export default {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
     },
     canUpdateAvatar() {
-      return Parse.User.current().getUsername() === this.$route.params.username;
+      return this.loggedInUsername === this.$route.params.username;
     },
   },
   methods: {
