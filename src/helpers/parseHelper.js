@@ -139,18 +139,21 @@ ph.updateLoginStreak = async (user) => {
   await user.fetch().then((fetchedUser) => {
     let achm = fetchedUser.get('achievements');
     const today = new Date();
+    const todayStr = ut.dateObjToStr(today);
+    // In case user has no achievements
     if (achm === undefined) achm = {};
+    // If user HAS loginStreak achievement
     if (achm.loginStreak !== undefined && achm.loginStreak.length !== 0) {
       const lastDayStr = achm.loginStreak[achm.loginStreak.length - 1];
       const lastDay = ut.dateStrToObj(lastDayStr);
       if (ut.isATomorrowOfB(today, lastDay)) {
-        achm.loginStreak.push(today);
+        achm.loginStreak.push(todayStr);
         achm.maxLoginStreak = achm.loginStreak.length;
       } else if (!ut.isASameDayAsB(today, lastDay)) {
-        achm.loginStreak = [today];
+        achm.loginStreak = [todayStr];
       }
     } else {
-      achm.loginStreak = [today];
+      achm.loginStreak = [todayStr];
       achm.maxLoginStreak = 1;
     }
     fetchedUser.set('achievements', achm);
