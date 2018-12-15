@@ -47,13 +47,9 @@ util.dateObjToStr = (dateObj) => {
   // Convert Date object to '2018-08-06'
   const m = dateObj.getMonth() + 1;
   const d = dateObj.getDate();
-  return `
-    ${dateObj.getFullYear()}
-    '-'
-    ${m < 10 ? '0' + m : m}
-    '-'
-    ${d < 10 ? '0' + d : d}
-  `;
+  const mStr = m < 10 ? '0' + m : m;
+  const dStr = d < 10 ? '0' + d : d;
+  return `${dateObj.getFullYear()}-${mStr}-${dStr}`;
 };
 
 util.getNewCategory = (formCatList, storeCatList) => {
