@@ -12,7 +12,6 @@ const LectureNote = Parse.Object.extend('LectureNote');
 const LectureCategory = Parse.Object.extend('LectureCategory');
 const LectureLevel = Parse.Object.extend('LectureLevel');
 const LectureReport = Parse.Object.extend('LectureReport');
-const LectureVote = Parse.Object.extend('LectureVote');
 
 ph.getRecentLectures = async (n) => {
   // Get n recent lectures
