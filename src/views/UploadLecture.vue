@@ -234,7 +234,7 @@ export default {
       url: store.state.endpoints.uploadHandler.concat('/upload-lecture-notes'),
       paramName: 'upload',
       maxFiles: 1,
-      maxFilesize: 5, // MB
+      maxFilesize: 10, // MB
       acceptedFiles: 'application/pdf',
       headers: {
         'Cache-Control': '',
