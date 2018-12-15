@@ -13,6 +13,18 @@
                     v-if="user.achievements.maxLoginStreak >= 7">
           <img src="/img/reward_badge/7days.jpg">
         </el-tooltip>
+        <el-tooltip effect="dark" content="upload 20 times" placement="bottom"
+                    v-if="lectureNotes.length >= 20">
+          <img src="/img/reward_badge/20upload.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="upload 50 times" placement="bottom"
+                    v-if="lectureNotes.length >= 50">
+          <img src="/img/reward_badge/50upload.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="upload 100 times" placement="bottom"
+                    v-if="lectureNotes.length >= 100">
+          <img src="/img/reward_badge/100upload.jpg">
+        </el-tooltip>
         <el-tooltip effect="dark" content="Early Bird" placement="bottom"
                     v-if="user.achievements.earlyBird == true">
           <img src="/img/reward_badge/register.jpg">
@@ -163,8 +175,6 @@ export default {
     },
   },
   created() {
-    var count = 0;
-    var Lecturecount = 0;
     Dropzone.autoDiscover = false;
     ph.getUserProfile(this.$route.params.username)
       .then((user) => {
@@ -179,10 +189,7 @@ export default {
             lectureNotes.forEach((lec) => {
               const wantedAttrs = ['objectId', 'title', 'description', 'categories', 'thumbnailPath'];
               this.lectureNotes.push(ut.getObjWithAttrs(lec, wantedAttrs));
-              count = count + 1;
             });
-            Lecturecount = count;
-            // alert('count = ' + Lecturecount);
             this.loadingLectureNotes = false;
           });
         document.title = `${this.user.username} | Oh Sheet!`;
