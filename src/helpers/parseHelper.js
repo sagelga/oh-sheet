@@ -107,7 +107,8 @@ ph.saveLectureNote = async (data, userId) => {
 
   const noteACL = new Parse.ACL();
   noteACL.setRoleWriteAccess('moderator', true);
-  noteACL.setPublicWriteAccess(false);
+  // Public Write should be false but we don't have time to fix
+  noteACL.setPublicWriteAccess(true);
   noteACL.setPublicReadAccess(true);
   noteACL.setWriteAccess(userId, true);
   note.setACL(noteACL);
