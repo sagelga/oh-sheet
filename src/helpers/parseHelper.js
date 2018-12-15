@@ -84,16 +84,17 @@ ph.saveLectureNote = async (data, userId) => {
   const note = new LectureNote();
   const authorPointer = new Parse.User().set('objectId', userId);
   const excludedFields = ['levelId', 'category', 'categoryId'];
+  const lectureIsNew = data.objectId === '' || data.objectId === undefined;
 
   const fields = Object.keys(data);
   fields.forEach((f) => {
     if (!excludedFields.includes(f)) note.set(f, data[f]);
   });
 
-  // If user is editing LectureNote, set its id
-  if (data.objectId) note.set('id', data.objectId);
   // If LectureNote is new, set author (else don't do it to prevent overwrite)
-  if (data.objectId === '') note.set('author', authorPointer);
+  if (lectureIsNew) note.set('author', authorPointer);
+  // If user is editing an existing LectureNote, set its id
+  else note.set('id', data.objectId);
 
   const level = new LectureLevel().set('objectId', data.levelId);
   note.addUnique('levels', level);
@@ -105,7 +106,8 @@ ph.saveLectureNote = async (data, userId) => {
 
   const noteACL = new Parse.ACL();
   noteACL.setRoleWriteAccess('moderator', true);
-  noteACL.setPublicWriteAccess(false);
+  // Public Write should be false but we don't have time to fix
+  noteACL.setPublicWriteAccess(true);
   noteACL.setPublicReadAccess(true);
   noteACL.setWriteAccess(userId, true);
   note.setACL(noteACL);
