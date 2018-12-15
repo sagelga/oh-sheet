@@ -12,6 +12,7 @@ const LectureNote = Parse.Object.extend('LectureNote');
 const LectureCategory = Parse.Object.extend('LectureCategory');
 const LectureLevel = Parse.Object.extend('LectureLevel');
 const LectureReport = Parse.Object.extend('LectureReport');
+const LectureVote = Parse.Object.extend('LectureVote');
 
 ph.getRecentLectures = async (n) => {
   // Get n recent lectures
@@ -84,16 +85,17 @@ ph.saveLectureNote = async (data, userId) => {
   const note = new LectureNote();
   const authorPointer = new Parse.User().set('objectId', userId);
   const excludedFields = ['levelId', 'category', 'categoryId'];
+  const lectureIsNew = data.objectId === '' || data.objectId === undefined;
 
   const fields = Object.keys(data);
   fields.forEach((f) => {
     if (!excludedFields.includes(f)) note.set(f, data[f]);
   });
 
-  // If user is editing LectureNote, set its id
-  if (data.objectId) note.set('id', data.objectId);
   // If LectureNote is new, set author (else don't do it to prevent overwrite)
-  if (data.objectId === '') note.set('author', authorPointer);
+  if (lectureIsNew) note.set('author', authorPointer);
+  // If user is editing an existing LectureNote, set its id
+  else note.set('id', data.objectId);
 
   const level = new LectureLevel().set('objectId', data.levelId);
   note.addUnique('levels', level);
