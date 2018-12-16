@@ -206,7 +206,6 @@ export default {
           myDropzone.on('success', (f, r) => {
             if (r.status === 200) {
               this.newAvatar = r.message.filePath;
-              console.log(this.newAvatar);
               this.isSubmitBtnClickable = true;
             }
           });
