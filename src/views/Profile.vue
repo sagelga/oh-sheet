@@ -62,14 +62,17 @@
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
-    <el-dialog :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
-      <div class="scroll-vertical">
-        <el-checkbox-group v-model="lectureIdsToPin">
-          <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
-            <el-checkbox :label="lec.title"></el-checkbox>
-          </div>
-        </el-checkbox-group>
-      </div>
+    <el-dialog class="pin-lecture-dialog"
+               :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
+      <el-checkbox-group v-model="lectureIdsToPin">
+        <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
+          <el-checkbox :label="lec.title"></el-checkbox>
+        </div>
+      </el-checkbox-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="pinLectureDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary">บันทึก</el-button>
+      </span>
     </el-dialog>
   </BoxedContainer>
 </template>
@@ -116,9 +119,6 @@
       right: 0
       top: 0
       opacity: 0
-  .scroll-vertical
-    overflow-y: auto
-    height: 100%
   .checkbox-wrap
     border-top: 1px solid #e6e6e6
     &:last-of-type
