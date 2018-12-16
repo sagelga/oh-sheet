@@ -60,9 +60,20 @@ a
 .el-dialog
   width: 100%
   max-width: 400px
-  @media screen and (max-width: 360px)
+  @media screen and (max-width: 414px)
     height: 100vh
     margin-top: 0 !important
+    display: flex
+    flex-direction: column
+    position: fixed
+    .el-dialog__body
+      flex: 1
+      overflow-y: auto
+.el-row.lecture-grid
+  display: flex
+  flex-wrap: wrap
+  &:before, &:after
+    content: normal
 </style>
 
 <script>

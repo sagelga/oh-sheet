@@ -1,10 +1,11 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" @click="avatarDialogToggle()">
+      <div class="profile-pic" :class="{ 'clickable': isViewingSelf }"
+           @click="avatarDialogToggle()">
         <img :src="showAvatar()" :alt="user.username" class="avatar">
         <div class="edit">
-          <i class="material-icons" style="position: absolute">edit</i>
+          <i class="material-icons">edit</i>
         </div>
       </div>
       <h1>{{ user.username }}</h1>
@@ -12,6 +13,10 @@
         <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 7 วัน" placement="bottom"
                     v-if="user.achievements.maxLoginStreak >= 7">
           <img src="/img/reward_badge/7days.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="ใช้งานติดต่อกัน 1 เดือน" placement="bottom"
+                    v-if="user.achievements.maxLoginStreak >= 30">
+          <img src="/img/reward_badge/1month.jpg">
         </el-tooltip>
         <el-tooltip effect="dark" content="upload 20 times" placement="bottom"
                     v-if="lectureNotes.length >= 20">
@@ -30,18 +35,25 @@
           <img src="/img/reward_badge/register.jpg">
         </el-tooltip>
       </div>
+      <!--div v-if="isViewingSelf">
+        <el-button round size="mini" @click="pinLectureDialogVisible = true">
+          ปักหมุดเลคเชอร์
+        </el-button>
+      </div-->
     </div>
-    <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
-            v-loading="loadingLectureNotes">
-      <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
+    <div class="side-margin">
+      <el-row :gutter="20" class="lecture-grid"
+              v-loading="loadingLectureNotes">
+        <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
+                :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
+          <LectureNoteCard :author="user" :lecture-note="lecture" />
+        </el-col>
+      </el-row>
+      <div v-if="hasNoLecture" style="text-align: center">
         <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
         <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
       </div>
-      <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
-              :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
-        <LectureNoteCard :author="user" :lecture-note="lecture" />
-      </el-col>
-    </el-row>
+    </div>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
       <div id="avatar-dropzone" class="dropzone"></div>
@@ -52,6 +64,18 @@
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
+    <!--el-dialog class="pin-lecture-dialog"
+               :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
+      <el-checkbox-group v-model="lectureIdsToPin" :max="2">
+        <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
+          <el-checkbox :label="lec.title"></el-checkbox>
+        </div>
+      </el-checkbox-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="pinLectureDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary">บันทึก</el-button>
+      </span>
+    </el-dialog-->
   </BoxedContainer>
 </template>
 
@@ -61,6 +85,26 @@
     max-width: 300px
     margin: 0 auto 2em
     text-align: center
+    .achievements
+      margin-bottom: 1em
+      img
+        display: inline-block
+        width: 36px
+        border-radius: 4px
+        &:not(:last-child)
+          margin-right: 1em
+  .profile-pic
+    position: relative
+    width: 128px
+    text-align: center
+    margin: 0 auto
+    &.clickable
+      cursor: pointer
+      &:hover
+        .edit
+          opacity: 1
+        img
+          opacity: 0.4
     img.avatar
       position: relative
       width: 128px
@@ -68,32 +112,28 @@
       border-radius: 50%
       box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
       transition: .5s ease
-    .achievements img
-      display: inline-block
-      width: 36px
-      border-radius: 4px
-      &:not(:last-child)
-        margin-right: 1em
-  .profile-pic
-    position: relative
-    width: 128px
-    text-align: center
-    margin: 0 auto
-  .profile-pic:hover img
-    cursor: pointer
-    display: inline-block
-    opacity: 0.6
-  .profile-pic:hover .edit
-    display: inline-block
-    opacity: 1
-  .edit
-    transition: .5s ease
-    padding-top: 5px
-    padding-right: 5px
-    position: absolute
-    right: 0
-    top: 0
-    opacity: 0
+    .edit
+      position: absolute
+      top: 52px
+      left: 52px
+      width: 24px
+      height: 24px
+      background-color: #409eff
+      border-radius: 15px
+      opacity: 0
+      transition: .5s ease
+      i
+        padding-left: 1px
+        padding-top: 2px
+        color: #fff
+  .checkbox-wrap
+    border-top: 1px solid #e6e6e6
+    &:last-of-type
+      border-bottom: 1px solid #e6e6e6
+    &:hover
+      background-color: #ecf5ff
+    .el-checkbox
+      padding: 0.6em
 </style>
 
 <script>
@@ -117,7 +157,8 @@ export default {
     return {
       loading: true,
       isSubmitBtnClickable: false,
-      userId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUserId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUsername: Parse.User.current() ? Parse.User.current().getUsername() : null,
       user: {},
       userFields: ['avatarPath', 'username', 'createdAt', 'achievements'],
       lectureNotes: [],
@@ -126,11 +167,16 @@ export default {
       foundProfile: false,
       changeAvatarDialogVisible: false,
       newAvatar: '/img/avatar.png',
+      pinLectureDialogVisible: false,
+      lectureIdsToPin: [],
     };
   },
   computed: {
     hasNoLecture() {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
+    },
+    isViewingSelf() {
+      return this.loggedInUsername === this.$route.params.username;
     },
   },
   methods: {
@@ -141,29 +187,30 @@ export default {
       return '/img/avatar.png';
     },
     avatarDialogToggle() {
-      this.changeAvatarDialogVisible = true;
-      if (document.getElementsByClassName('dz-hidden-input').length > 0) {
-        document.getElementsByClassName('dz-hidden-input')[0].remove();
+      if (this.isViewingSelf) {
+        this.changeAvatarDialogVisible = true;
+        if (document.getElementsByClassName('dz-hidden-input').length > 0) {
+          document.getElementsByClassName('dz-hidden-input')[0].remove();
+        }
+        setTimeout(() => {
+          const myDropzone = new Dropzone('div#avatar-dropzone', {
+            url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
+            paramName: 'upload',
+            maxFiles: 1,
+            maxFilesize: 5, // MB
+            headers: {
+              'Cache-Control': '',
+              'X-Requested-With': '',
+            },
+          });
+          myDropzone.on('success', (f, r) => {
+            if (r.status === 200) {
+              this.newAvatar = r.message.filePath;
+              this.isSubmitBtnClickable = true;
+            }
+          });
+        }, 300);
       }
-      setTimeout(() => {
-        const myDropzone = new Dropzone('div#avatar-dropzone', {
-          url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
-          paramName: 'upload',
-          maxFiles: 1,
-          maxFilesize: 5, // MB
-          headers: {
-            'Cache-Control': '',
-            'X-Requested-With': '',
-          },
-        });
-        myDropzone.on('success', (f, r) => {
-          if (r.status === 200) {
-            this.newAvatar = r.message.filePath;
-            console.log(this.newAvatar);
-            this.isSubmitBtnClickable = true;
-          }
-        });
-      }, 300);
     },
     uploadAvatar() {
       Parse.User.current().set('avatarPath', this.newAvatar);

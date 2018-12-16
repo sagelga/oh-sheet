@@ -65,7 +65,7 @@ const router = new Router({
       path: '/manage-reports',
       name: 'reportList',
       component: () => import('./views/ReportList.vue'),
-      meta: { isModerator: true },
+      meta: { isLoggedIn: true, isModerator: true },
     },
     {
       path: '/not-found',
@@ -83,12 +83,7 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath },
       });
     } else { next(); }
-  } else if (to.matched.some(record => record.meta.isModerator)) {
-    if (!store.state.roles.mod) next({ path: '/not-found/' });
-    else next();
-  } else {
-    next();
-  }
+  } else { next(); }
 });
 
 export default router;

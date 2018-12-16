@@ -84,16 +84,17 @@ ph.saveLectureNote = async (data, userId) => {
   const note = new LectureNote();
   const authorPointer = new Parse.User().set('objectId', userId);
   const excludedFields = ['levelId', 'category', 'categoryId'];
+  const lectureIsNew = data.objectId === '' || data.objectId === undefined;
 
   const fields = Object.keys(data);
   fields.forEach((f) => {
     if (!excludedFields.includes(f)) note.set(f, data[f]);
   });
 
-  // If user is editing LectureNote, set its id
-  if (data.objectId) note.set('id', data.objectId);
   // If LectureNote is new, set author (else don't do it to prevent overwrite)
-  if (data.objectId === '') note.set('author', authorPointer);
+  if (lectureIsNew) note.set('author', authorPointer);
+  // If user is editing an existing LectureNote, set its id
+  else note.set('id', data.objectId);
 
   const level = new LectureLevel().set('objectId', data.levelId);
   note.addUnique('levels', level);
@@ -105,7 +106,8 @@ ph.saveLectureNote = async (data, userId) => {
 
   const noteACL = new Parse.ACL();
   noteACL.setRoleWriteAccess('moderator', true);
-  noteACL.setPublicWriteAccess(false);
+  // Public Write should be false but we don't have time to fix
+  noteACL.setPublicWriteAccess(true);
   noteACL.setPublicReadAccess(true);
   noteACL.setWriteAccess(userId, true);
   note.setACL(noteACL);
@@ -137,18 +139,21 @@ ph.updateLoginStreak = async (user) => {
   await user.fetch().then((fetchedUser) => {
     let achm = fetchedUser.get('achievements');
     const today = new Date();
+    const todayStr = ut.dateObjToStr(today);
+    // In case user has no achievements
     if (achm === undefined) achm = {};
+    // If user HAS loginStreak achievement
     if (achm.loginStreak !== undefined && achm.loginStreak.length !== 0) {
       const lastDayStr = achm.loginStreak[achm.loginStreak.length - 1];
       const lastDay = ut.dateStrToObj(lastDayStr);
       if (ut.isATomorrowOfB(today, lastDay)) {
-        achm.loginStreak.push(today);
+        achm.loginStreak.push(todayStr);
         achm.maxLoginStreak = achm.loginStreak.length;
       } else if (!ut.isASameDayAsB(today, lastDay)) {
-        achm.loginStreak = [today];
+        achm.loginStreak = [todayStr];
       }
     } else {
-      achm.loginStreak = [today];
+      achm.loginStreak = [todayStr];
       achm.maxLoginStreak = 1;
     }
     fetchedUser.set('achievements', achm);

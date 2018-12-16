@@ -2,13 +2,13 @@
   <div class="quality-thumbs">
 
     <el-button type="text" style="margin-right: 0.5em" @click="submitVoteUp"
-                :class="{ chosen: chosenVote === 'up', disabled: userId == null }">
+                :class="{ chosen: chosenVote === 'up', disabled: loggedInUserId == null }">
       <span class="material-icons">thumb_up</span>
       {{ voteUps || 0 }}
     </el-button>
 
     <el-button type="text" @click="submitVoteDown"
-               :class="{ chosen: chosenVote === 'down', disabled: userId == null }">
+               :class="{ chosen: chosenVote === 'down', disabled: loggedInUserId == null }">
       <span class="material-icons" style="margin-right: 0.15em">thumb_down</span>
       {{ voteDowns || 0 }}
     </el-button>
@@ -56,12 +56,12 @@ export default {
       voteUps: this.voteUp,
       voteDowns: this.voteDown,
       chosenVote: this.chosen,
-      userId: Parse.User.current() ? Parse.User.current().id : null,
+      loggedInUserId: Parse.User.current() ? Parse.User.current().id : null,
     };
   },
   methods: {
     vote(upDown, lectureNote) {
-      if (this.userId) {
+      if (this.loggedInUserId) {
         let upVoters = lectureNote.get('upVoters');
         let dwVoters = lectureNote.get('downVoters');
         if (upVoters === undefined) upVoters = [];
@@ -69,19 +69,19 @@ export default {
         const voters = upDown === 'up' ? upVoters : dwVoters;
         const oppositeVoters = upDown === 'up' ? dwVoters : upVoters;
 
-        if (voters === [] || !voters.includes(this.userId)) {
+        if (voters === [] || !voters.includes(this.loggedInUserId)) {
           lectureNote.increment(upDown === 'up' ? 'voteUp' : 'voteDown');
-          lectureNote.add(upDown === 'up' ? 'upVoters' : 'downVoters', this.userId);
-          if (oppositeVoters.includes(this.userId)) {
+          lectureNote.add(upDown === 'up' ? 'upVoters' : 'downVoters', this.loggedInUserId);
+          if (oppositeVoters.includes(this.loggedInUserId)) {
             lectureNote.increment(upDown === 'up' ? 'voteDown' : 'voteUp', -1);
-            lectureNote.remove(upDown === 'up' ? 'downVoters' : 'upVoters', this.userId);
+            lectureNote.remove(upDown === 'up' ? 'downVoters' : 'upVoters', this.loggedInUserId);
           }
           lectureNote.save().then((updatedLecture) => {
             this.updateComponent(updatedLecture);
           });
         } else {
           lectureNote.increment(upDown === 'up' ? 'voteUp' : 'voteDown', -1);
-          lectureNote.remove(upDown === 'up' ? 'upVoters' : 'downVoters', this.userId);
+          lectureNote.remove(upDown === 'up' ? 'upVoters' : 'downVoters', this.loggedInUserId);
           lectureNote.save().then((updatedLecture) => {
             this.updateComponent(updatedLecture);
           });
@@ -97,8 +97,8 @@ export default {
         .then((lecture) => { this.vote('down', lecture); });
     },
     findMyVote(upVoters, downVoters) {
-      if (upVoters.includes(this.userId)) return 'up';
-      else if (downVoters.includes(this.userId)) return 'down';
+      if (upVoters.includes(this.loggedInUserId)) return 'up';
+      else if (downVoters.includes(this.loggedInUserId)) return 'down';
       return false;
     },
     updateComponent(lectureNote) {
