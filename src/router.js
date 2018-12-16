@@ -65,7 +65,7 @@ const router = new Router({
       path: '/manage-reports',
       name: 'reportList',
       component: () => import('./views/ReportList.vue'),
-      meta: { isModerator: true },
+      meta: { isLoggedIn: true, isModerator: true },
     },
     {
       path: '/not-found',
