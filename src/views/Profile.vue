@@ -36,7 +36,9 @@
         </el-tooltip>
       </div>
       <div v-if="isViewingSelf">
-        <el-button round size="mini">ปักหมุดเลคเชอร์</el-button>
+        <el-button round size="mini" @click="pinLectureDialogVisible = true">
+          ปักหมุดเลคเชอร์
+        </el-button>
       </div>
     </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
@@ -59,6 +61,15 @@
                      :disabled="!isSubmitBtnClickable"
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
+    </el-dialog>
+    <el-dialog :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
+      <div class="scroll-vertical">
+        <el-checkbox-group v-model="lectureIdsToPin">
+          <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
+            <el-checkbox :label="lec.title"></el-checkbox>
+          </div>
+        </el-checkbox-group>
+      </div>
     </el-dialog>
   </BoxedContainer>
 </template>
@@ -105,6 +116,17 @@
       right: 0
       top: 0
       opacity: 0
+  .scroll-vertical
+    overflow-y: auto
+    height: 100%
+  .checkbox-wrap
+    border-top: 1px solid #e6e6e6
+    &:last-of-type
+      border-bottom: 1px solid #e6e6e6
+    &:hover
+      background-color: #ecf5ff
+    .el-checkbox
+      padding: 0.6em
 </style>
 
 <script>
@@ -138,6 +160,8 @@ export default {
       foundProfile: false,
       changeAvatarDialogVisible: false,
       newAvatar: '/img/avatar.png',
+      pinLectureDialogVisible: false,
+      lectureIdsToPin: [],
     };
   },
   computed: {
