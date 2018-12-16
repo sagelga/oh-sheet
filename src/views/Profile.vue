@@ -35,11 +35,11 @@
           <img src="/img/reward_badge/register.jpg">
         </el-tooltip>
       </div>
-      <div v-if="isViewingSelf">
+      <!--div v-if="isViewingSelf">
         <el-button round size="mini" @click="pinLectureDialogVisible = true">
           ปักหมุดเลคเชอร์
         </el-button>
-      </div>
+      </div-->
     </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
             v-loading="loadingLectureNotes">
@@ -62,9 +62,9 @@
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
-    <el-dialog class="pin-lecture-dialog"
+    <!--el-dialog class="pin-lecture-dialog"
                :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
-      <el-checkbox-group v-model="lectureIdsToPin">
+      <el-checkbox-group v-model="lectureIdsToPin" :max="2">
         <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
           <el-checkbox :label="lec.title"></el-checkbox>
         </div>
@@ -73,7 +73,7 @@
         <el-button @click="pinLectureDialogVisible = false">ยกเลิก</el-button>
         <el-button type="primary">บันทึก</el-button>
       </span>
-    </el-dialog>
+    </el-dialog-->
   </BoxedContainer>
 </template>
 
