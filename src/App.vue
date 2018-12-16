@@ -69,6 +69,11 @@ a
     .el-dialog__body
       flex: 1
       overflow-y: auto
+.el-row.lecture-grid
+  display: flex
+  flex-wrap: wrap
+  &:before, &:after
+    content: normal
 </style>
 
 <script>
