@@ -89,5 +89,19 @@ export default {
     document.title = 'Reports | Oh Sheet!';
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/manage-reports/';
   },
+  beforeRouteEnter(to, from, next) {
+    // when user directly enters this route, roles.mod will be undefined
+    // which means the first 'if' is true
+    if (store.state.roles.mod !== true) {
+      if (Parse.User.current()) {
+        ph.isUserInRole(Parse.User.current().id, 'moderator')
+          .then(() => {
+            store.commit('updateRoleMod', true);
+            next();
+          })
+          .catch(() => { next({ path: '/not-found/' }); });
+      } else { next({ path: '/login', query: { redirect: to.fullPath } }); }
+    } else { next(); }
+  },
 };
 </script>
