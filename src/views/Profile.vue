@@ -42,7 +42,7 @@
       </div-->
     </div>
     <div class="side-margin">
-      <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
+      <el-row :gutter="20" class="lecture-grid"
               v-loading="loadingLectureNotes">
         <el-col :span="6" v-for="lecture in lectureNotes" :key="lecture.objectId"
                 :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">

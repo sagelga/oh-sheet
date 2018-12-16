@@ -51,7 +51,7 @@
           <h3 v-show="!loading && !showRecent && lectureNotes.length === 0">
             ไม่พบโน้ตเลคเชอร์ที่ต้องการ
           </h3>
-          <el-row :gutter="20" style="display: flex; flex-wrap: wrap;">
+          <el-row :gutter="20" class="lecture-grid">
             <el-col v-for="lecture in lectureNotes" :key="lecture.objectId"
                     :xs="24" :sm="8" :md="6" style="margin-bottom: 1em">
               <LectureNoteCard :author="lecture.author" :lectureNote="lecture" />
