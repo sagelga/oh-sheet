@@ -83,12 +83,7 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath },
       });
     } else { next(); }
-  } else if (to.matched.some(record => record.meta.isModerator)) {
-    if (!store.state.roles.mod) next({ path: '/not-found/' });
-    else next();
-  } else {
-    next();
-  }
+  } else { next(); }
 });
 
 export default router;
