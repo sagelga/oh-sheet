@@ -1,11 +1,11 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" :class="{ 'clickable': isViewingSelf }">
-        <img :src="showAvatar()" :alt="user.username" class="avatar"
-             @click="avatarDialogToggle()" :class="{ 'clickable': isViewingSelf }">
+      <div class="profile-pic" :class="{ 'clickable': isViewingSelf }"
+           @click="avatarDialogToggle()">
+        <img :src="showAvatar()" :alt="user.username" class="avatar">
         <div class="edit">
-          <i class="material-icons" style="position: absolute">edit</i>
+          <i class="material-icons">edit</i>
         </div>
       </div>
       <h1>{{ user.username }}</h1>
@@ -83,17 +83,6 @@
     max-width: 300px
     margin: 0 auto 2em
     text-align: center
-    img.avatar
-      position: relative
-      width: 128px
-      height: 128px
-      border-radius: 50%
-      box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
-      transition: .5s ease
-      &.clickable
-        cursor: pointer
-        &:hover
-          opacity: 0.6
     .achievements
       margin-bottom: 1em
       img
@@ -108,17 +97,33 @@
     text-align: center
     margin: 0 auto
     &.clickable
-      &:hover .edit
-        display: inline-block
-        opacity: 1
-    .edit
+      cursor: pointer
+      &:hover
+        .edit
+          opacity: 1
+        img
+          opacity: 0.4
+    img.avatar
+      position: relative
+      width: 128px
+      height: 128px
+      border-radius: 50%
+      box-shadow: 0 10px 10px -5px rgba(0,0,0,0.2)
       transition: .5s ease
-      padding-top: 5px
-      padding-right: 5px
+    .edit
       position: absolute
-      right: 0
-      top: 0
+      top: 52px
+      left: 52px
+      width: 24px
+      height: 24px
+      background-color: #409eff
+      border-radius: 15px
       opacity: 0
+      transition: .5s ease
+      i
+        padding-left: 1px
+        padding-top: 2px
+        color: #fff
   .checkbox-wrap
     border-top: 1px solid #e6e6e6
     &:last-of-type
