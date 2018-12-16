@@ -128,6 +128,7 @@ export default {
           this.$store.commit('loggedIn', false);
           this.$store.commit('updateRoleMod', false);
           this.$store.commit('updateUsername', undefined);
+          this.$router.push('/login/');
         });
     },
     submitSearch(text) {
