@@ -115,6 +115,7 @@ export default {
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/login/';
 
     if (Parse.User.current() !== null) {
+      this.loading = true;
       const nextPath = this.$route.query.redirect ? this.$route.query.redirect : '/';
       this.$router.push(nextPath);
     }
