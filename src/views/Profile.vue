@@ -1,9 +1,9 @@
 <template>
   <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
     <div class="profile-meta">
-      <div class="profile-pic" :class="{ 'clickable': canUpdateAvatar }">
+      <div class="profile-pic" :class="{ 'clickable': isViewingSelf }">
         <img :src="showAvatar()" :alt="user.username" class="avatar"
-             @click="avatarDialogToggle()" :class="{ 'clickable': canUpdateAvatar }">
+             @click="avatarDialogToggle()" :class="{ 'clickable': isViewingSelf }">
         <div class="edit">
           <i class="material-icons" style="position: absolute">edit</i>
         </div>
@@ -35,6 +35,11 @@
           <img src="/img/reward_badge/register.jpg">
         </el-tooltip>
       </div>
+      <!--div v-if="isViewingSelf">
+        <el-button round size="mini" @click="pinLectureDialogVisible = true">
+          ปักหมุดเลคเชอร์
+        </el-button>
+      </div-->
     </div>
     <el-row :gutter="20" style="display: flex; flex-wrap: wrap;"
             v-loading="loadingLectureNotes">
@@ -43,7 +48,7 @@
         <LectureNoteCard :author="user" :lecture-note="lecture" />
       </el-col>
     </el-row>
-    <div v-show="!loadingLectureNotes && lectureNotes.length === 0" style="text-align: center">
+    <div v-if="hasNoLecture" style="text-align: center">
       <h3>ผู้ใช้นี้ยังไม่ได้อัปโหลดโน้ตเลคเชอร์</h3>
       <img src="/img/undraw_empty_xct9.svg" alt="empty" class="lecture-not-found">
     </div>
@@ -57,6 +62,18 @@
                      @click="uploadAvatar()">บันทึก</el-button>
         </span>
     </el-dialog>
+    <!--el-dialog class="pin-lecture-dialog"
+               :visible.sync="pinLectureDialogVisible" title="ปักหมุดโน้ตเลคเชอร์">
+      <el-checkbox-group v-model="lectureIdsToPin" :max="2">
+        <div class="checkbox-wrap" v-for="lec in lectureNotes" :key="lec.objectId">
+          <el-checkbox :label="lec.title"></el-checkbox>
+        </div>
+      </el-checkbox-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="pinLectureDialogVisible = false">ยกเลิก</el-button>
+        <el-button type="primary">บันทึก</el-button>
+      </span>
+    </el-dialog-->
   </BoxedContainer>
 </template>
 
@@ -77,12 +94,14 @@
         cursor: pointer
         &:hover
           opacity: 0.6
-    .achievements img
-      display: inline-block
-      width: 36px
-      border-radius: 4px
-      &:not(:last-child)
-        margin-right: 1em
+    .achievements
+      margin-bottom: 1em
+      img
+        display: inline-block
+        width: 36px
+        border-radius: 4px
+        &:not(:last-child)
+          margin-right: 1em
   .profile-pic
     position: relative
     width: 128px
@@ -100,6 +119,14 @@
       right: 0
       top: 0
       opacity: 0
+  .checkbox-wrap
+    border-top: 1px solid #e6e6e6
+    &:last-of-type
+      border-bottom: 1px solid #e6e6e6
+    &:hover
+      background-color: #ecf5ff
+    .el-checkbox
+      padding: 0.6em
 </style>
 
 <script>
@@ -133,13 +160,15 @@ export default {
       foundProfile: false,
       changeAvatarDialogVisible: false,
       newAvatar: '/img/avatar.png',
+      pinLectureDialogVisible: false,
+      lectureIdsToPin: [],
     };
   },
   computed: {
     hasNoLecture() {
       return !this.loadingLectureNotes && this.lectureNotes.length === 0;
     },
-    canUpdateAvatar() {
+    isViewingSelf() {
       return this.loggedInUsername === this.$route.params.username;
     },
   },
@@ -151,7 +180,7 @@ export default {
       return '/img/avatar.png';
     },
     avatarDialogToggle() {
-      if (this.canUpdateAvatar) {
+      if (this.isViewingSelf) {
         this.changeAvatarDialogVisible = true;
         if (document.getElementsByClassName('dz-hidden-input').length > 0) {
           document.getElementsByClassName('dz-hidden-input')[0].remove();
