@@ -95,7 +95,7 @@
 <style lang="sass">
 .note-meta-card
   position: relative
-  margin-bottom: 5em
+  margin-bottom: 0
   h1
     font-size: 1em
     margin-bottom: 0.3rem
