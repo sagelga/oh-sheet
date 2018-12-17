@@ -56,7 +56,7 @@ export default {
       const reportId = this.tableData[index].objectId;
       const report = new LectureReport().set('id', reportId);
       report.destroy().then(() => {
-        this.tableData.splice(index);
+        this.tableData.splice(index, 1);
         this.$message({
           type: 'success',
           message: 'ลบรายงานเรียบร้อย',
