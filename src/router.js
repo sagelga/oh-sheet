@@ -10,6 +10,11 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      // catches unknown routes including '/not-found'
+      path: '*',
+      component: () => import('./views/NotFound.vue'),
+    },
+    {
       path: '/',
       name: 'home',
       component: Home,
@@ -66,11 +71,6 @@ const router = new Router({
       name: 'reportList',
       component: () => import('./views/ReportList.vue'),
       meta: { isLoggedIn: true, isModerator: true },
-    },
-    {
-      path: '/not-found',
-      name: 'notFound',
-      component: () => import('./views/NotFound.vue'),
     },
   ],
 });
