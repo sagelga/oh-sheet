@@ -40,6 +40,7 @@ ph.getFavedLectures = async (userId) => {
   const query = new Parse.Query(Parse.User);
   query.equalTo('objectId', userId);
   query.include('favedNotes');
+  query.ascending('title');
   const user = await query.first();
   return user.get('favedNotes');
 };
@@ -54,6 +55,7 @@ ph.getUserProfile = async (username) => {
 ph.getLecturesOfUserPointer = async (user) => {
   const query = new Parse.Query(LectureNote);
   query.equalTo('author', user);
+  query.descending('createdAt');
   const lectureNotes = await query.find();
   return lectureNotes;
 };
@@ -77,6 +79,7 @@ ph.searchForLectures = async (title, levelId, categoryId) => {
     query.equalTo('categories', category);
   }
   query.include('author');
+  query.descending('createdAt');
   return query.find();
 };
 
@@ -84,7 +87,7 @@ ph.saveLectureNote = async (data, userId) => {
   const note = new LectureNote();
   const authorPointer = new Parse.User().set('objectId', userId);
   const excludedFields = ['levelId', 'category', 'categoryId'];
-  const lectureIsNew = data.objectId === '' || data.objectId === undefined;
+  const lectureIsNew = data.objectId === '';
 
   const fields = Object.keys(data);
   fields.forEach((f) => {
@@ -94,7 +97,7 @@ ph.saveLectureNote = async (data, userId) => {
   // If LectureNote is new, set author (else don't do it to prevent overwrite)
   if (lectureIsNew) note.set('author', authorPointer);
   // If user is editing an existing LectureNote, set its id
-  else note.set('id', data.objectId);
+  if (!lectureIsNew) note.set('id', data.objectId);
 
   const level = new LectureLevel().set('objectId', data.levelId);
   note.addUnique('levels', level);

@@ -35,7 +35,7 @@
             </el-form-item>
             <div>
               <label class="el-form-item__label" style="float: none;">อัปโหลดไฟล์ PDF</label>
-              <div style="font-size:0.85em; letter-spacing: 0.03em">ขนาดไฟล์ไม่เกิน 5 MB</div>
+              <div style="font-size:0.85em; letter-spacing: 0.03em">ขนาดไฟล์ไม่เกิน 10 MB</div>
               <el-alert title="ตอนนี้มีไฟล์อยู่แล้ว แต่หากต้องการเปลี่ยนให้ลากไฟล์มาใหม่ได้เลย"
                         type="warning" :closable="false" show-icon
                         v-show="formData.objectId"></el-alert>
@@ -153,7 +153,17 @@ export default {
 
           ph.saveLectureNote(this.formData, Parse.User.current().id)
             .then((returnedNote) => {
-              this.$router.push(`/note/${returnedNote.id}/`);
+              /* if (this.$router.currentRoute.path.match(/^\/upload(?:\/(?=$))?$/i)) {
+                const notiParams = {
+                  authorId: Parse.User.current().id,
+                  link: `/note/${returnedNote.id}/`,
+                  detail: `${this.$store.state.username} ได้อัปโหลดเลคเชอร์ใหม่ "${returnedNote.get('title')}" ดูเลย!`,
+                  thumbnail: Parse.User.current().get('avatarPath'),
+                };
+                Parse.Cloud.run('notifySubscribers', notiParams);
+              } */
+              if (returnedNote.id) this.$router.push(`/note/${returnedNote.id}/`);
+              else this.$router.push(`/profile/${this.$store.state.username}/`);
               this.loading = false;
             }, (error) => {
               this.$message({
