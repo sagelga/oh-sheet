@@ -157,6 +157,7 @@ export default {
                 const notiParams = {
                   authorId: Parse.User.current().id,
                   link: `/note/${returnedNote.id}/`,
+                  // eslint-disable-next-line
                   detail: `${this.$store.state.username} ได้อัปโหลดเลคเชอร์ใหม่ "${returnedNote.get('title')}" ดูเลย!`,
                   thumbnail: Parse.User.current().get('avatarPath'),
                 };
