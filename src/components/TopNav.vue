@@ -4,7 +4,7 @@
              :router="true" class="main-nav" ref="topNavMenu">
 
       <router-link to="/">
-        <img src="/img/O_for_favi_and_topnav.jpg" class="logo">
+        <img src="/img/logo-topnav.png" class="logo">
       </router-link>
 
       <el-input prefix-icon="el-icon-search" v-model="topSearchInput"></el-input>
@@ -68,6 +68,7 @@
     display: inline-block
     position: absolute
     left: 0
+    margin-top: 2px
     height: 55px
   .el-input
     display: inline-block

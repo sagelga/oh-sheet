@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-      <img src="/img/Oh_sheet_logo_for_footer_crop.jpg" class="logo" align="top">
+      <img src="/img/logo-text-white.svg" class="logo" align="top">
       <p id="quote">{{ randomQuote.quote }}</p>
       <p id="author">{{ randomQuote.author }}</p>
     </div>
@@ -8,10 +8,9 @@
 
 <style lang="sass" scoped>
 .logo
-  height: 50px
+  width: 150px
   display: block
-  margin-left: auto
-  margin-right: auto
+  margin: 0 auto 1em
   padding: 0
 .footer
   padding: 3em 1em
