@@ -79,6 +79,7 @@ ph.searchForLectures = async (title, levelId, categoryId) => {
     query.equalTo('categories', category);
   }
   query.include('author');
+  query.descending('createdAt');
   return query.find();
 };
 
