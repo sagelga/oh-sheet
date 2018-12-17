@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="make-footer-sticky">
     <BoxedContainer class="home-hero">
       <div class="side-margin">
         <h1>ค้นหาและแบ่งปันโน้ตเลคเชอร์</h1>

@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap">
+  <BoxedContainer v-loading="loadingProfile" class="top-gap bottom-gap make-footer-sticky">
     <div class="profile-meta">
       <div class="profile-pic" :class="{ 'clickable': isViewingSelf }"
            @click="avatarDialogToggle()">

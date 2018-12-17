@@ -37,6 +37,10 @@ a
 .side-margin
   margin-left: 10px
   margin-right: 10px
+.make-footer-sticky
+  min-height: calc(100vh - 407px)
+  @media screen and (max-width: 414px)
+    min-height: calc(100vh - 404px)
 .login-wrap
   max-width: 350px
   margin-left: auto

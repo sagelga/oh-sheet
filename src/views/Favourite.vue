@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap bottom-gap">
+  <BoxedContainer class="top-gap bottom-gap make-footer-sticky">
     <div class="side-margin">
       <h1>รายการโน้ตที่ชื่นชอบ</h1>
       <div v-show="!loading && lectureNote.length === 0" style="text-align: center">

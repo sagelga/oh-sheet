@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap bottom-gap">
+  <BoxedContainer class="top-gap bottom-gap make-footer-sticky">
     <div v-loading="loading">
       <div class="side-margin" v-if="!loading">
         <el-row v-if="!foundLecture">

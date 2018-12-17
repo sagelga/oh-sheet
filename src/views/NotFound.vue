@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap bottom-gap">
+  <BoxedContainer class="top-gap bottom-gap make-footer-sticky">
     <div class="side-margin">
       <h1>Error</h1>
       <h2>ไม่พบหน้าดังกล่าว หรือคุณไม่มีสิทธิ์เข้าถึงหน้านี้</h2>
@@ -21,6 +21,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+}
 h2 {
   max-width: 300px;
   text-align: center;
