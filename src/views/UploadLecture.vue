@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap bottom-gap">
+  <BoxedContainer class="top-gap bottom-gap make-footer-sticky">
     <div class="side-margin">
       <el-row :gutter="20">
         <el-col :xs="24" :md="12">

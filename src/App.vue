@@ -37,6 +37,8 @@ a
 .side-margin
   margin-left: 10px
   margin-right: 10px
+.make-footer-sticky
+  min-height: calc(100vh - 407px)
 .login-wrap
   max-width: 350px
   margin-left: auto

@@ -1,5 +1,5 @@
 <template>
-  <BoxedContainer class="top-gap bottom-gap">
+  <BoxedContainer class="top-gap bottom-gap make-footer-sticky">
     <div class="side-margin">
       <h1>จัดการรายงานเนื้อหา</h1>
       <p>รายการโน้ตเลคเชอร์ที่ได้รับรายงานความไม่เหมาะสม</p>

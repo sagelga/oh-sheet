@@ -1,5 +1,5 @@
 <template>
-  <div class="top-gap bottom-gap login-wrap">
+  <div class="top-gap bottom-gap login-wrap make-footer-sticky">
     <el-card>
       <div slot="header">
         <span>สมัครสมาชิก</span>
