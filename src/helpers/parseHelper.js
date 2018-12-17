@@ -54,6 +54,7 @@ ph.getUserProfile = async (username) => {
 ph.getLecturesOfUserPointer = async (user) => {
   const query = new Parse.Query(LectureNote);
   query.equalTo('author', user);
+  query.descending('createdAt');
   const lectureNotes = await query.find();
   return lectureNotes;
 };
