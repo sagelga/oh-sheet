@@ -40,6 +40,7 @@ ph.getFavedLectures = async (userId) => {
   const query = new Parse.Query(Parse.User);
   query.equalTo('objectId', userId);
   query.include('favedNotes');
+  query.ascending('title');
   const user = await query.first();
   return user.get('favedNotes');
 };
