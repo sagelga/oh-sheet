@@ -28,7 +28,7 @@
         </el-tooltip>
         <el-tooltip effect="dark" content="upload 100 times" placement="bottom"
                     v-if="lectureNotes.length >= 100">
-          <img src="/img/reward_badge/100upload.jpg">  
+          <img src="/img/reward_badge/100upload.jpg">
         </el-tooltip>
         <el-tooltip effect="dark" content="Early Bird" placement="bottom"
                     v-if="user.achievements.earlyBird == true">

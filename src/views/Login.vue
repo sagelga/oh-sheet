@@ -27,7 +27,7 @@
           <el-button id="login-btn" type="primary" round @click="logInUser(username, password)">
             เข้าสู่ระบบ
           </el-button>
-          <el-button type="text" style="margin-right: 2em" @click="resetPwdDialogVisible = true">
+          <el-button type="text" style="margin-right: 2em" @click="openForgetDialog">
             ลืมรหัสผ่าน</el-button>
         </div>
       </el-form>
@@ -39,12 +39,16 @@
                 v-if="!resetSucceed && !resetLoading && resetFailText"></el-alert>
       <el-form>
         <el-form-item label="กรอกอีเมลที่ต้องการรีเซ็ตรหัสผ่าน">
-          <el-input v-model="resetPwdEmail" size="large" type="email" id="reset-input"></el-input>
+          <el-input v-model="resetPwdEmail" size="large" type="email"
+                    id="reset-input" :disabled="resetSucceed"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="resetPwdDialogVisible = false">ยกเลิก</el-button>
-        <el-button type="primary" @click="resetPwd(resetPwdEmail)" id="reset-btn">รีเซ็ต</el-button>
+        <el-button @click="resetPwdDialogVisible = false">
+          {{ resetSucceed ? 'ปิด' : 'ยกเลิก' }}
+        </el-button>
+        <el-button type="primary" @click="resetPwd(resetPwdEmail)"
+                   id="reset-btn" v-if="!resetSucceed">รีเซ็ต</el-button>
       </span>
     </el-dialog>
   </div>
@@ -108,6 +112,12 @@ export default {
           this.resetLoading = false;
           this.resetFailText = err.message;
         });
+    },
+    openForgetDialog() {
+      this.resetSucceed = false;
+      this.resetPwdEmail = '';
+      this.resetFailText = '';
+      this.resetPwdDialogVisible = true;
     },
   },
   mounted() {

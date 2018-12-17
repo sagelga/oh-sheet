@@ -32,6 +32,8 @@ a
   padding-top: 7em
 .bottom-gap
   margin-bottom: 5em
+  @media screen and (max-width: 414px)
+    margin-bottom: 2em
 .side-margin
   margin-left: 10px
   margin-right: 10px
