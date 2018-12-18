@@ -65,11 +65,23 @@ export default {
     signUpUser(usr, eml, pwd) {
       this.loading = true;
       const user = new Parse.User();
+      const today = new Date();
+      const m = today.getMonth() + 1;
+      const d = today.getDate();
+      // eslint-disable-next-line
+      const mStr = m < 10 ? '0' + m : m;
+      // eslint-disable-next-line
+      const dStr = d < 10 ? '0' + d : d;
+      const todayStr = `${today.getFullYear()}-${mStr}-${dStr}`;
       user.save({
         username: usr,
         email: eml,
         password: pwd,
-        achievements: { earlyBird: true },
+        achievements: {
+          earlyBird: true,
+          loginStreak: [todayStr],
+          maxLoginStreak: 1,
+        },
       })
         .then(() => {
           this.successfullySignedUp = true;
