@@ -109,8 +109,6 @@ export default {
     }
     ph.getLectureCategories()
       .then((categories) => {
-        console.log('lel');
-        console.log(categories);
         const tempCategories = [];
         const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
         categories.forEach((c) => {
