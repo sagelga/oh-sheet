@@ -18,17 +18,21 @@
                     v-if="user.achievements.maxLoginStreak >= 30">
           <img src="/img/reward_badge/1month.jpg">
         </el-tooltip>
-        <el-tooltip effect="dark" content="upload 20 times" placement="bottom"
+        <el-tooltip effect="dark" content="อัปโหลด 20 เลคเชอร์" placement="bottom"
                     v-if="lectureNotes.length >= 20">
           <img src="/img/reward_badge/20upload.jpg">
         </el-tooltip>
-        <el-tooltip effect="dark" content="upload 50 times" placement="bottom"
+        <el-tooltip effect="dark" content="อัปโหลด 50 เลคเชอร์" placement="bottom"
                     v-if="lectureNotes.length >= 50">
           <img src="/img/reward_badge/50upload.jpg">
         </el-tooltip>
-        <el-tooltip effect="dark" content="upload 100 times" placement="bottom"
+        <el-tooltip effect="dark" content="อัปโหลด 100 เลคเชอร์" placement="bottom"
                     v-if="lectureNotes.length >= 100">
           <img src="/img/reward_badge/100upload.jpg">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="อัปโหลดครั้งแรก" placement="bottom"
+                    v-if="lectureNotes.length >= 1">
+          <img src="/img/reward_badge/1st_upload.jpg">  
         </el-tooltip>
         <el-tooltip effect="dark" content="Early Bird" placement="bottom"
                     v-if="user.achievements.earlyBird == true">
