@@ -56,6 +56,7 @@
     </div>
 
     <el-dialog :visible.sync="changeAvatarDialogVisible" title="เปลี่ยนรูปโปรไฟล์">
+      <div style="font-size:0.85em; letter-spacing: 0.03em">ขนาดไฟล์ไม่เกิน 1 MB</div>
       <div id="avatar-dropzone" class="dropzone"></div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="changeAvatarDialogVisible = false">ยกเลิก</el-button>
@@ -197,7 +198,8 @@ export default {
             url: store.state.endpoints.uploadHandler.concat('/upload-misc'),
             paramName: 'upload',
             maxFiles: 1,
-            maxFilesize: 5, // MB
+            maxFilesize: 1, // MB
+            acceptedFiles: 'image/png, image/jpeg, image/gif, image/bmp',
             headers: {
               'Cache-Control': '',
               'X-Requested-With': '',
