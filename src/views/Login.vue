@@ -85,16 +85,22 @@ export default {
       this.error = '';
       Parse.User.logIn(usr, pwd)
         .then(() => {
-          this.$store.commit('loggedIn', true);
-          ph.isUserInRole(Parse.User.current().id, 'moderator')
-            .then(() => { this.$store.commit('updateRoleMod', true); })
-            .catch();
-          ph.updateLoginStreak(Parse.User.current());
-          this.loading = false;
-          this.$store.commit('updateUsername', Parse.User.current().get('username'));
+          if (Parse.User.current().get('emailVerified')) {
+            this.$store.commit('loggedIn', true);
+            ph.isUserInRole(Parse.User.current().id, 'moderator')
+              .then(() => { this.$store.commit('updateRoleMod', true); })
+              .catch();
+            ph.updateLoginStreak(Parse.User.current());
+            this.loading = false;
+            this.$store.commit('updateUsername', Parse.User.current().get('username'));
 
-          const nextPath = this.$route.query.redirect ? this.$route.query.redirect : '/';
-          this.$router.push(nextPath);
+            const nextPath = this.$route.query.redirect ? this.$route.query.redirect : '/';
+            this.$router.push(nextPath);
+          } else {
+            Parse.User.logOut();
+            this.error = 'Please verify your email before logging in';
+            this.loading = false;
+          }
         }, (e) => {
           this.loading = false;
           this.error = e.message;
