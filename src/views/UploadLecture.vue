@@ -241,6 +241,15 @@ export default {
     if (document.getElementsByClassName('dz-hidden-input').length > 0) {
       document.getElementsByClassName('dz-hidden-input')[0].remove();
     }
+    ph.getLectureCategories()
+      .then((categories) => {
+        const tempCategories = [];
+        const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
+        categories.forEach((c) => {
+          tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
+        });
+        this.$store.commit('updateCategoryList', tempCategories);
+      });
     const myDropzone = new Dropzone('div#my-awesome-dropzone', {
       url: store.state.endpoints.uploadHandler.concat('/upload-lecture-notes'),
       paramName: 'upload',

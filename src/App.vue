@@ -106,16 +106,16 @@ export default {
       ph.isUserInRole(Parse.User.current().id, 'moderator')
         .then(() => { this.$store.commit('updateRoleMod', true); })
         .catch();
-      ph.getLectureCategories()
-        .then((categories) => {
-          const tempCategories = [];
-          const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
-          categories.forEach((c) => {
-            tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
-          });
-          this.$store.commit('updateCategoryList', tempCategories);
-        });
     }
+    ph.getLectureCategories()
+      .then((categories) => {
+        const tempCategories = [];
+        const catAttrs = ['objectId', 'thaiName', 'englishName', 'value'];
+        categories.forEach((c) => {
+          tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
+        });
+        this.$store.commit('updateCategoryList', tempCategories);
+      });
   },
 };
 </script>
