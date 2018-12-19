@@ -105,7 +105,7 @@ export default {
       ph.updateLoginStreak(Parse.User.current());
       ph.isUserInRole(Parse.User.current().id, 'moderator')
         .then(() => { this.$store.commit('updateRoleMod', true); })
-        .catch();
+        .catch(() => { this.$store.commit('updateRoleMod', false); });
     }
     ph.getLectureCategories()
       .then((categories) => {
@@ -115,7 +115,8 @@ export default {
           tempCategories.push(ut.getObjWithAttrs(c, catAttrs));
         });
         this.$store.commit('updateCategoryList', tempCategories);
-      });
+      })
+      .catch();
   },
 };
 </script>
