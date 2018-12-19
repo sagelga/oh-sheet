@@ -66,7 +66,7 @@ export default {
       .catch((err) => {
         this.loading = false;
       });
-    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/favourites/';
+    this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/favourite/';
   },
 };
 </script>
