@@ -62,6 +62,9 @@ export default {
           this.lectureNote.push(tempLecture);
         });
         this.loading = false;
+      })
+      .catch((err) => {
+        this.loading = false;
       });
     this.$parent.$refs.topNav.$refs.topNavMenu.activeIndex = '/favourites/';
   },
